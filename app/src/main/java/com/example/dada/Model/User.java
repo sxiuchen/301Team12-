@@ -13,10 +13,10 @@ public class User {
     private Image profile_photo;
     private int phone_num;
 
-    public User(String user_name, String user_email,
-                int ID, Image profile_photo, int phone_num){
+    public User(String user_name, int ID, int type, Image profile_photo, int phone_num){
         this.user_name = user_name;
         this.ID = ID;
+        this.type = type;
         this.profile_photo = profile_photo;
         this.phone_num = phone_num;
     }
