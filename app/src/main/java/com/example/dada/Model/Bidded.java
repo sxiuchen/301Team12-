@@ -8,6 +8,7 @@ public class Bidded {
     private double price;
     private int Provider_ID;
 
+
     public Bidded(double price, int Provider_ID){
         this.price = price;
         this.Provider_ID = Provider_ID;
