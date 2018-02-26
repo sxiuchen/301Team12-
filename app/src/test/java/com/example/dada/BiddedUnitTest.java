@@ -12,6 +12,7 @@ import static org.hamcrest.core.Is.is;
  */
 
 public class BiddedUnitTest {
+    protected Bidded newBid;
 
     @Test
     public void testGetPrice(){
@@ -28,9 +29,8 @@ public class BiddedUnitTest {
         assertThat(newBid.getProvider_ID(),is(testPid));
     }
 
-    public void testSetPrice(){
+    public void testSet(){
         double testPrice = 12.3;
-        Bidded newBid = new Bidded();
         newBid.setPrice(testPrice);
         assertThat(newBid.getPrice(),is(testPrice));
 
@@ -44,7 +44,6 @@ public class BiddedUnitTest {
 
     public void testSetProvider_ID(){
         int testPid = 123;
-        Bidded newBid = new Bidded();
         newBid.setProvider_ID(testPid);
         assertThat(newBid.getProvider_ID(),is(testPid));
 
