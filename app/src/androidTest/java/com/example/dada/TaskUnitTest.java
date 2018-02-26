@@ -1,86 +1,167 @@
 package com.example.dada;
 
+import android.location.Location;
 import android.media.Image;
 
-import com.example.dada.Model.User;
+import com.example.dada.Model.Bidded;
+import com.example.dada.Model.Task;
 
 import org.junit.Test;
+
+import java.util.ArrayList;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
-
 /**
- * Created by kq on 2/25/2018.
+ * Created by rick on 25/02/2018.
  */
 
-public class UserUnitTest {
-    String testUser_name = "Test User";
-    int testID = 123;
-    int testType = 1;
-    Image testProfile_photo = null;
-    int testPhone_num = 1234567;
-    User newUser = new User(testUser_name,testID, testType, testProfile_photo, testPhone_num);
+public class TaskUnitTest{
+    public static final String UserName = "User1";
+    public static final String Status = "Done";
+    public static final String Description = "good";
+    public static final Location slocation = new Location("");
+    public static final Location elocation = new Location("");
+    public static final Image picture = null;
+    public static final int requester = 0;
+    public static final double assigned_pri = 10.50;
+    public static final int assigned_requester = 0;
+    public static final float distance = 2.345f;
+    public static final ArrayList<Bidded> Bidded_History = new ArrayList<Bidded>();
+
+    Task newTask = new Task(UserName, Status, Description, slocation, elocation, picture, requester, distance, assigned_pri, assigned_requester);
 
 
     @Test
-    public void testGetUser_name(){
-        assertThat(newUser.getUser_name(),is(testUser_name));
+    public void testGetName(){
+        assertThat(newTask.getName(),is(UserName));
     }
 
     @Test
-    public void testSetUser_name(){
-        String testUser_name2 = "Test User 2";
-        newUser.setUser_name(testUser_name2);
-        assertThat(newUser.getUser_name(),is(testUser_name2));
+    public void testGetStatus(){
+        assertThat(newTask.getStatus(),is(Status));
     }
 
     @Test
-    public void testGetID(){
-        assertThat(newUser.getID(),is(testID));
+    public void testGetDescription(){
+        assertThat(newTask.getDescription(),is(Description));
     }
 
     @Test
-    public void testSetID(){
-        int testID2 = 1234;
-        newUser.setID(testID2);
-        assertThat(newUser.getID(),is(testID2));
+    public void testGetLocation(){
+        assertThat(newTask.getLocation(),is(slocation));
     }
 
     @Test
-    public void testGetType(){
-        assertThat(newUser.getType(),is(testType));
+    public void testGetPicture(){
+        assertThat(newTask.getPicture(),is(picture));
     }
 
     @Test
-    public void testSetType(){
-        int testType2 = 2;
-        newUser.setType(testType2);
-        assertThat(newUser.getType(),is(testType2));
+    public void testGetRequestor(){
+        assertThat(newTask.getRequester(),is(requester));
     }
 
     @Test
-    public void testGetProfile_photo(){
-        assertThat(newUser.getProfile_photo(),is(testProfile_photo));
+    public void testGetAssigned_Requester() {
+        assertThat(newTask.getAssigned_Requester(), is(assigned_requester));
     }
 
     @Test
-    public void testSetProfile_photo(){
-        Image testProfile_photo2 = null;
-        newUser.setProfile_photo(testProfile_photo2);
-        assertThat(newUser.getProfile_photo(),is(testProfile_photo2));
+    public void testGetAssigned_Pri(){
+        assertThat(newTask.getAssigned_Pri(), is(assigned_pri));
     }
 
     @Test
-    public void testGetPhone_num(){
-        assertThat(newUser.getPhone_num(),is(testPhone_num));
+    public void testGetELocation(){
+        assertThat(newTask.getElocation(),is(elocation));
     }
 
     @Test
-    public void testSetPhone_num(){
-        int testPhone_num2 = 12345678;
-        newUser.setPhone_num(testPhone_num2);
-        assertThat(newUser.getPhone_num(),is(testPhone_num2));
+    public void testGetDistance(){
+        assertThat(newTask.getDistance(),is(distance));
     }
 
+    @Test
+    public void testGetBidded_History(){
+        assertThat(newTask.getBidded_History(),is(Bidded_History));
+    }
+
+    @Test
+    public void testSetName(){
+        String name1 = "User2";
+        newTask.setName(name1);
+        assertThat(newTask.getName(),is(name1));
+    }
+
+    @Test
+    public void testSetStatus(){
+        String status1 = "Not Done";
+        newTask.setStatus(status1);
+        assertThat(newTask.getStatus(),is(status1));
+    }
+
+    @Test
+    public void testSetDescription(){
+        String description1 = "Not Done";
+        newTask.setDescription(description1);
+        assertThat(newTask.getDescription(),is(description1));
+    }
+
+    @Test
+    public void testSetSlocation(){
+        Location slocation1 = new Location("");
+        newTask.setSlocation(slocation1);
+        assertThat(newTask.getLocation(),is(slocation1));
+    }
+
+    @Test
+    public void testSetPicture(){
+        Image picture1 = null;
+        newTask.setPicture(picture1);
+        assertThat(newTask.getPicture(),is(picture1));
+    }
+
+    @Test
+    public void testSetRequester(){
+        int requester1 = 0;
+        newTask.setRequester(requester1);
+        assertThat(newTask.getRequester(),is(requester1));
+    }
+
+    @Test
+    public void testSetAssigned_Requeste(){
+        int assigned_requester1 = 0;
+        newTask.setAssigned_Requester(assigned_requester1);
+        assertThat(newTask.getAssigned_Requester(),is(assigned_requester1));
+    }
+
+    @Test
+    public void testSetAssigned_Pri(){
+        double assigned_pri1 = 10.50;
+        newTask.setAssigned_Pri(assigned_pri1);
+        assertThat(newTask.getAssigned_Pri(),is(assigned_pri1));
+    }
+
+    @Test
+    public void testSetDistance(){
+        float distance1 = 4.345f;
+        newTask.setDistance(distance1);
+        assertThat(newTask.getDistance(),is(distance1));
+    }
+
+    @Test
+    public void testSetElocation(){
+        Location elocation1 = new Location("");
+        newTask.setElocation(elocation1);
+        assertThat(newTask.getElocation(),is(elocation1));
+    }
+
+    @Test
+    public void testSetBidded_History(){
+        ArrayList<Bidded> Bidded_History1 = new ArrayList<Bidded>();
+        newTask.setBidded_History(Bidded_History1);
+        assertThat(newTask.getBidded_History(),is(Bidded_History1));
+    }
 }
