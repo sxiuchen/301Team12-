@@ -12,7 +12,6 @@ import static org.hamcrest.core.Is.is;
  */
 
 public class BiddedUnitTest {
-    protected Bidded newBid;
 
     @Test
     public void testGetPrice(){
