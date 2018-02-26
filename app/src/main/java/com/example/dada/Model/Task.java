@@ -18,7 +18,7 @@ public class Task {
     private Image picture;
     private int Requester;
     private int Assigned_Requester;
-    private int Assigned_Pri;
+    private double Assigned_Pri;
     private float distance;
     private Location Elocation;
     private ArrayList<Bidded> Bidded_History;
@@ -26,7 +26,7 @@ public class Task {
     public Task(String name, String status, String description,
                 Location Slocation, Location Elocation,
                 Image picture, int Requester, float distance,
-                int Assigned_Pri, int Assigned_Requester){
+                double Assigned_Pri, int Assigned_Requester){
         this.name = name;
         this.status = status;
         this.description = description;
@@ -67,7 +67,7 @@ public class Task {
         return this.Assigned_Requester;
     }
 
-    public int getAssigned_Pri(){
+    public double getAssigned_Pri(){
         return this.Assigned_Pri;
     }
 
@@ -112,7 +112,7 @@ public class Task {
         this.Assigned_Requester = Assigned_Requester;
     }
 
-    public void setAssigned_Pri(int Assigned_Pri){
+    public void setAssigned_Pri(double Assigned_Pri){
         this.Assigned_Pri = Assigned_Pri;
     }
 
