@@ -2,6 +2,7 @@ package com.example.dada;
 
 import android.location.Location;
 import android.media.Image;
+import android.util.Log;
 
 import com.example.dada.Model.Bidded;
 import com.example.dada.Model.Task;
@@ -9,7 +10,6 @@ import com.example.dada.Model.Task;
 import org.junit.Test;
 
 import java.util.ArrayList;
-
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
@@ -28,9 +28,9 @@ public class TaskUnitTest{
     public static final double assigned_pri = 10.50;
     public static final int assigned_requester = 0;
     public static final float distance = 2.345f;
-    public static final ArrayList<Bidded> Bidded_History = new ArrayList<Bidded>();
-
-    Task newTask = new Task(UserName, Status, Description, slocation, elocation, picture, requester, distance, assigned_pri, assigned_requester);
+    Bidded newBid = new Bidded(2.4, 3);
+    ArrayList<Bidded> Bidded_History = new ArrayList<Bidded>();
+    Task newTask = new Task(UserName, Status, Description, slocation, elocation, picture, requester, distance, assigned_pri, assigned_requester, Bidded_History);
 
 
     @Test
@@ -65,6 +65,7 @@ public class TaskUnitTest{
 
     @Test
     public void testGetAssigned_Requester() {
+        Bidded_History.add(newBid);
         assertThat(newTask.getAssigned_Requester(), is(assigned_requester));
     }
 
@@ -160,7 +161,7 @@ public class TaskUnitTest{
 
     @Test
     public void testSetBidded_History(){
-        ArrayList<Bidded> Bidded_History1 = new ArrayList<Bidded>();
+        ArrayList<Bidded> Bidded_History1 = new ArrayList();
         newTask.setBidded_History(Bidded_History1);
         assertThat(newTask.getBidded_History(),is(Bidded_History1));
     }

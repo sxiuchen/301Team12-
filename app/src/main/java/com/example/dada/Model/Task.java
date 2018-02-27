@@ -3,7 +3,6 @@ package com.example.dada.Model;
 
 import android.location.Location;
 import android.media.Image;
-
 import java.util.ArrayList;
 
 /**
@@ -26,7 +25,8 @@ public class Task {
     public Task(String name, String status, String description,
                 Location Slocation, Location Elocation,
                 Image picture, int Requester, float distance,
-                double Assigned_Pri, int Assigned_Requester){
+                double Assigned_Pri, int Assigned_Requester,
+                 ArrayList<Bidded> Bidded_History){
         this.name = name;
         this.status = status;
         this.description = description;
@@ -37,6 +37,7 @@ public class Task {
         this.Assigned_Pri = Assigned_Pri;
         this.distance = distance;
         this.Elocation = Elocation;
+        this.Bidded_History = Bidded_History;
     }
 
     public String getName(){
@@ -80,7 +81,7 @@ public class Task {
     }
 
     public ArrayList<Bidded> getBidded_History(){
-        return  this.Bidded_History;
+        return Bidded_History;
     }
 
 
