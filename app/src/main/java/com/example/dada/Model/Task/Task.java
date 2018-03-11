@@ -1,15 +1,14 @@
-package com.example.dada.Model;
-
+package com.example.dada.Model.Task;
 
 import android.location.Location;
 import android.media.Image;
+
+import com.example.dada.Model.Bidded;
+
 import java.util.ArrayList;
 
-/**
- * Created by rick on 24/02/2018.
- */
+public abstract class Task {
 
-public class Task {
     private String name;
     private String status;
     private String description;
@@ -26,7 +25,7 @@ public class Task {
                 Location Slocation, Location Elocation,
                 Image picture, int Requester, float distance,
                 double Assigned_Pri, int Assigned_Requester,
-                 ArrayList<Bidded> Bidded_History){
+                ArrayList<Bidded> Bidded_History){
         this.name = name;
         this.status = status;
         this.description = description;
