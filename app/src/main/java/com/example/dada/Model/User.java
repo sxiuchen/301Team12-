@@ -25,6 +25,7 @@ public class User {
     private int type;
     private Image profile_photo;
     private int phone_num;
+    private String test;
 
     private transient static JestDroidClient client;
 
