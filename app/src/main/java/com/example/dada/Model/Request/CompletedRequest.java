@@ -1,10 +1,10 @@
-package com.example.dada.Model.Task;
+package com.example.dada.Model.Request;
 
 /**
- * Task that has been completed in the past.
- * @see Task
+ * Request that has been completed in the past.
+ * @see Request
  */
-public class CompletedTask extends Task {
+public class CompletedRequest extends Request {
     public CompletedRequest(String riderUserName, String driverUserName, Route route, double estimatedFare) {
         super(riderUserName, driverUserName, route, estimatedFare);
     }

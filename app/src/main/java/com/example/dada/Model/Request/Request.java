@@ -1,4 +1,4 @@
-package com.example.dada.Model.Task;
+package com.example.dada.Model.Request;
 
 import android.location.Location;
 import android.media.Image;
@@ -7,7 +7,7 @@ import com.example.dada.Model.Bidded;
 
 import java.util.ArrayList;
 
-public abstract class Task {
+public abstract class Request {
 
     private String name;
     private String status;
@@ -21,11 +21,11 @@ public abstract class Task {
     private Location Elocation;
     private ArrayList<Bidded> Bidded_History;
 
-    public Task(String name, String status, String description,
-                Location Slocation, Location Elocation,
-                Image picture, int Requester, float distance,
-                double Assigned_Pri, int Assigned_Requester,
-                ArrayList<Bidded> Bidded_History){
+    public Request(String name, String status, String description,
+                   Location Slocation, Location Elocation,
+                   Image picture, int Requester, float distance,
+                   double Assigned_Pri, int Assigned_Requester,
+                   ArrayList<Bidded> Bidded_History){
         this.name = name;
         this.status = status;
         this.description = description;
