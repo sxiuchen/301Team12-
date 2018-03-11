@@ -5,7 +5,7 @@ import android.media.Image;
 
 import java.util.ArrayList;
 
-public abstract class Task {
+public class Task {
 
     private String name;
     private String status;
