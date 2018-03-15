@@ -5,16 +5,16 @@ package com.example.dada.Model;
  */
 
 public class Bidded {
-    private double price;
+    private int price;
     private int Provider_ID;
 
 
-    public Bidded(double price, int Provider_ID){
+    public Bidded(int price, int Provider_ID){
         this.price = price;
         this.Provider_ID = Provider_ID;
     }
 
-    public double getPrice(){
+    public int getPrice(){
         return price;
     }
 
@@ -22,7 +22,7 @@ public class Bidded {
         return Provider_ID;
     }
 
-    public void setPrice(double price){
+    public void setPrice(int price){
         this.price = price;
     }
 

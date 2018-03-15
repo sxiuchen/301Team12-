@@ -21,6 +21,7 @@ public class Task {
     private float distance;
     private Location Elocation;
     private ArrayList<Bidded> Bidded_History;
+    private int lowestPrice = -1;
 
     public Task(String name, String status, String description,
                 Location Slocation, Location Elocation,
@@ -37,7 +38,6 @@ public class Task {
         this.Assigned_Pri = Assigned_Pri;
         this.distance = distance;
         this.Elocation = Elocation;
-        this.Bidded_History = Bidded_History;
     }
 
     public String getName(){
@@ -128,4 +128,24 @@ public class Task {
     public void setBidded_History(ArrayList<Bidded> Bidded_History){
         this.Bidded_History = Bidded_History;
     }
+
+    public void checkLowestPrice() {
+        if (Bidded_History.size() >= 1) {
+            lowestPrice = Bidded_History.get(0).getPrice();
+            for (int i=1; i<Bidded_History.size(); i++) {
+                if (lowestPrice > Bidded_History.get(i).getPrice()) {
+                    lowestPrice = Bidded_History.get(i).getPrice();
+                }
+            }
+        }
+    }
+
+    public int getLowestPrice() {return lowestPrice; }
+
+    public void addBiddedRecord(Bidded bid) {
+        Bidded_History.add(bid);
+        checkLowestPrice();
+    }
+
+
 }
