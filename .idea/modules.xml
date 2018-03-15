@@ -3,10 +3,10 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/301Team12-.iml" filepath="$PROJECT_DIR$/301Team12-.iml" />
-      <module fileurl="file://$PROJECT_DIR$/301Team12-.iml" filepath="$PROJECT_DIR$/301Team12-.iml" />
-      <module fileurl="file://$PROJECT_DIR$/Dada.iml" filepath="$PROJECT_DIR$/Dada.iml" />
+      <module fileurl="file://C:\Users\liuch\Documents\GitHub\301Team12-\301Team12-.iml" filepath="C:\Users\liuch\Documents\GitHub\301Team12-\301Team12-.iml" />
+      <module fileurl="file://C:\Users\liuch\Documents\GitHub\301Team12-\Dada.iml" filepath="C:\Users\liuch\Documents\GitHub\301Team12-\Dada.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://C:\Users\liuch\Documents\GitHub\301Team12-\app\app.iml" filepath="C:\Users\liuch\Documents\GitHub\301Team12-\app\app.iml" />
     </modules>
   </component>
 </project>
