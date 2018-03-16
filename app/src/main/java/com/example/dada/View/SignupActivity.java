@@ -1,4 +1,4 @@
-package com.example.dada;
+package com.example.dada.View;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -15,6 +15,7 @@ import com.example.dada.Controller.UserController;
 import com.example.dada.Exception.UserException;
 import com.example.dada.Model.OnAsyncTaskCompleted;
 import com.example.dada.Model.User;
+import com.example.dada.R;
 import com.example.dada.Util.FileIOUtil;
 
 public class SignupActivity extends AppCompatActivity {
