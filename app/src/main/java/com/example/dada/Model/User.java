@@ -20,20 +20,22 @@ import io.searchbox.core.Search;
 import io.searchbox.core.SearchResult;
 
 public class User {
-    private String user_name;
+    private String userName;
+    private String phone;
+    private String email;
+
     private String ID;
     private int type;
     private Image profile_photo;
-    private int phone_num;
 
     private transient static JestDroidClient client;
 
-    public User(String user_name, String ID, int type, Image profile_photo, int phone_num){
-        this.user_name = user_name;
+    public User(String userName, String ID, int type, Image profile_photo, String phone){
+        this.userName = userName;
         this.ID = ID;
         this.type = type;
         this.profile_photo = profile_photo;
-        this.phone_num = phone_num;
+        this.phone = phone;
     }
 
     /**
@@ -44,6 +46,15 @@ public class User {
     }
 
     /**
+     * Instantiates a new User.
+     */
+    public User(String userName, String phone, String email) {
+        this.userName = userName;
+        this.phone = phone;
+        this.email = email;
+    }
+
+    /**
      * Static class that check user profile
      */
     public static class SearchUserExistTask extends AsyncTask<String, Void, Boolean> {
@@ -51,7 +62,7 @@ public class User {
         /**
          * Check if username has been taken
          * @param query the username to be searched
-         * @return True or Flase
+         * @return True or False
          */
         @Override
         protected Boolean doInBackground(String... query) {
@@ -259,8 +270,8 @@ public class User {
     }
 
 
-    public String getUser_name(){
-        return user_name;
+    public String getUserName(){
+        return this.userName;
     }
 
     public String getID(){
@@ -271,16 +282,12 @@ public class User {
         return type;
     }
 
-    public int getPhone_num(){
-        return phone_num;
-    }
-
     public Image getProfile_photo(){
         return profile_photo;
     }
 
-    public void setUser_name(String user_name){
-        this.user_name = user_name;
+    public void setUser_name(String userName){
+        this.userName = userName;
     }
 
     public void setID(String ID) {
@@ -295,18 +302,10 @@ public class User {
         this.profile_photo = profile_photo;
     }
 
-    public void setPhone_num(int phone_num){
-        this.phone_num = phone_num;
+    public String getPhone(){
+        return this.phone;
     }
 
-    public User Log_In(String user_name, String Password){
-        // log in
-        return null;
-    }
-
-    public User Sign_Up(String user_name, String Password, int phone_num){
-        // sign up
-        return null;
-    }
+    public void setPhone(String phone){ this.phone = phone; }
 
 }
