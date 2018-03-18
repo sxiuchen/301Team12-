@@ -21,7 +21,6 @@ public class Task {
     private float distance;
     private Location Elocation;
     private ArrayList<Bidded> Bidded_History;
-    private int lowestPrice = -1;
 
     public Task(String name, String status, String description,
                 Location Slocation, Location Elocation,
@@ -38,24 +37,6 @@ public class Task {
         this.Assigned_Pri = Assigned_Pri;
         this.distance = distance;
         this.Elocation = Elocation;
-    }
-
-    public Task(String name, String status, String description,
-                Location Slocation, Location Elocation,
-                Image picture, int Requester, float distance,
-                double Assigned_Pri, int Assigned_Requester,
-                ArrayList<Bidded> Bidded_History, int LowestPrice){
-        this.name = name;
-        this.status = status;
-        this.description = description;
-        this.Slocation = Slocation;
-        this.picture = picture;
-        this.Requester = Requester;
-        this.Assigned_Requester = Assigned_Requester;
-        this.Assigned_Pri = Assigned_Pri;
-        this.distance = distance;
-        this.Elocation = Elocation;
-        this.lowestPrice = lowestPrice;
     }
 
     public String getName(){
@@ -102,9 +83,6 @@ public class Task {
         return this.Bidded_History;
     }
 
-    public int getLowestPrice(){
-        return this.lowestPrice;
-    }
 
 
     public void setName(String name){
@@ -151,9 +129,6 @@ public class Task {
         this.Bidded_History = Bidded_History;
     }
 
-    public void setLowestPrice(int lowestPrice){
-        this.lowestPrice = lowestPrice;
-    }
 
 
     public void add_bid(Bidded bid){
@@ -169,6 +144,7 @@ public class Task {
     }
 
     public int FetchLowestPrice() {
+        int lowestPrice = -1;
         if (Bidded_History.size() >= 1) {
             lowestPrice = Bidded_History.get(0).getPrice();
             for (int i=1; i<Bidded_History.size(); i++) {

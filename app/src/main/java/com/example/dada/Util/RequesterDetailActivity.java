@@ -40,7 +40,7 @@ public class RequesterDetailActivity extends AppCompatActivity {
         TextView textViewDescription = (TextView)findViewById(R.id.textViewDescription);
         textViewDescription.setText(task.getDescription());
 
-        int lowestPrice = task.getLowestPrice()
+        int lowestPrice = task.FetchLowestPrice();
         TextView textViewLowestPrice = (TextView)findViewById(R.id.textViewLowestPrice);
         textViewLowestPrice.setText("Lowest Price Right Now: $" + lowestPrice);
         //Should not allow it since bid cannot with price 0
