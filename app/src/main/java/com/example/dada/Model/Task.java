@@ -40,6 +40,24 @@ public class Task {
         this.Elocation = Elocation;
     }
 
+    public Task(String name, String status, String description,
+                Location Slocation, Location Elocation,
+                Image picture, int Requester, float distance,
+                double Assigned_Pri, int Assigned_Requester,
+                ArrayList<Bidded> Bidded_History, int LowestPrice){
+        this.name = name;
+        this.status = status;
+        this.description = description;
+        this.Slocation = Slocation;
+        this.picture = picture;
+        this.Requester = Requester;
+        this.Assigned_Requester = Assigned_Requester;
+        this.Assigned_Pri = Assigned_Pri;
+        this.distance = distance;
+        this.Elocation = Elocation;
+        this.lowestPrice = lowestPrice;
+    }
+
     public String getName(){
         return this.name;
     }
@@ -81,7 +99,11 @@ public class Task {
     }
 
     public ArrayList<Bidded> getBidded_History(){
-        return Bidded_History;
+        return this.Bidded_History;
+    }
+
+    public int getlowestPrice(){
+        return this.lowestPrice;
     }
 
 
@@ -129,6 +151,11 @@ public class Task {
         this.Bidded_History = Bidded_History;
     }
 
+    public void setLowestPrice(int lowestPrice){
+        this.lowestPrice = lowestPrice;
+    }
+
+
     public void add_bid(Bidded bid){
         this.Bidded_History.add(bid);
     }
@@ -140,6 +167,7 @@ public class Task {
     public int get_count(){
         return this.Bidded_History.size();
     }
+
     public void checkLowestPrice() {
         if (Bidded_History.size() >= 1) {
             lowestPrice = Bidded_History.get(0).getPrice();
@@ -150,8 +178,6 @@ public class Task {
             }
         }
     }
-
-    public int getLowestPrice() {return lowestPrice; }
 
     public void addBiddedRecord(Bidded bid) {
         Bidded_History.add(bid);

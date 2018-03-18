@@ -30,7 +30,7 @@ public class TaskUnitTest {
     public static final double assigned_pri = 10.50;
     public static final int assigned_requester = 0;
     public static final float distance = 2.345f;
-    Bidded newBid = new Bidded(2.4, 3);
+    Bidded newBid = new Bidded(2, 3);
     ArrayList<Bidded> Bidded_History = new ArrayList<Bidded>();
     Task newTask = new Task(TaskName, Status, Description, slocation, elocation, picture, requester, distance, assigned_pri, assigned_requester, Bidded_History);
 
@@ -184,7 +184,7 @@ public class TaskUnitTest {
 
     @Test
     public void test_add() {
-        Bidded bid = new Bidded(2.0, 1);
+        Bidded bid = new Bidded(2, 1);
         newTask.add_bid(bid);
         assertEquals(2, newTask.get_count());
     }
@@ -192,7 +192,7 @@ public class TaskUnitTest {
     @Test
     public void test_delete() {
         Task newTask = new Task(TaskName, Status, Description, slocation, elocation, picture, requester, distance, assigned_pri, assigned_requester, Bidded_History);
-        Bidded Bid = new Bidded(2.0, 1);
+        Bidded Bid = new Bidded(2, 1);
         newTask.add_bid(Bid);
         newTask.delete_bid(Bid);
         assertEquals(0, newTask.get_count());

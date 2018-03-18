@@ -17,7 +17,7 @@ public class BiddedUnitTest {
     @Test
     public void testGetPrice(){
         int testPid = 123;
-        double testPrice = 12.3;
+        int testPrice = 12;
         Bidded newBid = new Bidded(testPrice, testPid);
         assertThat(newBid.getPrice(),is(testPrice));
     }
@@ -25,22 +25,22 @@ public class BiddedUnitTest {
     @Test
     public void testGetProvider_ID(){
         int testPid = 123;
-        double testPrice = 12.3;
+        int testPrice = 12;
         Bidded newBid = new Bidded(testPrice, testPid);
         assertThat(newBid.getProvider_ID(),is(testPid));
     }
 
     @Test
     public void testSetPrice(){
-        double testPrice = 12.3;
+        int testPrice = 13;
         int testPid = 123;
         Bidded newBid = new Bidded(testPrice, testPid);
-        double testPrice2 = 12.34;
+        int testPrice2 = 12;
         newBid.setPrice(testPrice2);
         assertThat(newBid.getPrice(),is(testPrice2));
 
         try{
-            double testPrice3 = -12.3;
+            int testPrice3 = -12;
             newBid.setPrice(testPrice3);
         }catch(Exception e){
             assertTrue(true);
@@ -49,7 +49,7 @@ public class BiddedUnitTest {
 
     @Test
     public void testSetProvider_ID(){
-        double testPrice = 12.3;
+        int testPrice = 12;
         int testPid = 123;
         Bidded newBid = new Bidded(testPrice, testPid);
         int testPid2 = 1234;
