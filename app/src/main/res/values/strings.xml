@@ -1,4 +1,6 @@
 <resources>
     <string name="app_name">Dada</string>
-    <string name="title_activity_requester_detail">RequesterDetailActivity</string>
+    <string name="title_activity_test_request_list">test_requestList</string>
+    <string name="title_activity_requester_task_list">Requester Task List</string>
+    <string name="title_activity_rlist_test">RListTestActivity</string>
 </resources>
