@@ -198,4 +198,15 @@ public class TaskUnitTest {
         assertEquals(0, newTask.get_count());
     }
 
+    @Test
+    public void test_lowest_price(){
+        Task newTask = new Task(TaskName, Status, Description, slocation, elocation, picture, requester, distance, assigned_pri, assigned_requester, Bidded_History);
+        Bidded Bid = new Bidded(2, 1);
+        Bidded Bid1 = new Bidded(1, 3);
+        newTask.add_bid(Bid);
+        newTask.add_bid(Bid1);
+        int lowestPrice = newTask.FetchLowestPrice();
+        assertEquals(lowestPrice, 1);
+    }
+
 }
