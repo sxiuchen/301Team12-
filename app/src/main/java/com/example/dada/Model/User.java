@@ -25,15 +25,17 @@ public class User {
     private int type;
     private Image profile_photo;
     private int phone_num;
+    public String email_address;
 
     private transient static JestDroidClient client;
 
-    public User(String user_name, String ID, int type, Image profile_photo, int phone_num){
+    public User(String user_name, String ID, int type, Image profile_photo, int phone_num, String email_address){
         this.user_name = user_name;
         this.ID = ID;
         this.type = type;
         this.profile_photo = profile_photo;
         this.phone_num = phone_num;
+        this.email_address = email_address;
     }
 
     /**
@@ -279,6 +281,10 @@ public class User {
         return profile_photo;
     }
 
+    public String getEmail_address(){
+        return this.email_address;
+    }
+
     public void setUser_name(String user_name){
         this.user_name = user_name;
     }
@@ -297,6 +303,10 @@ public class User {
 
     public void setPhone_num(int phone_num){
         this.phone_num = phone_num;
+    }
+
+    public void setEmail_address(String email_address){
+        this.email_address = email_address;
     }
 
     public User Log_In(String user_name, String Password){

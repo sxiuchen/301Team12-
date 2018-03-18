@@ -1,4 +1,4 @@
-package java.com.example.dada.UnitTEST;
+package com.example.dada.UnitTEST;
 
 import com.example.dada.Model.Bidded;
 
@@ -31,7 +31,7 @@ public class BiddedUnitTest {
     }
 
     @Test
-    public void testSetPrice(){
+    public void testPriceAmount(){
         int testPrice = 13;
         int testPid = 123;
         Bidded newBid = new Bidded(testPrice, testPid);
@@ -48,7 +48,7 @@ public class BiddedUnitTest {
     }
 
     @Test
-    public void testSetProvider_ID(){
+    public void testProvider_ID(){
         int testPrice = 12;
         int testPid = 123;
         Bidded newBid = new Bidded(testPrice, testPid);

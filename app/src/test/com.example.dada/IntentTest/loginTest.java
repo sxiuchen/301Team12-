@@ -1,21 +1,23 @@
-package java.com.example.dada.IntentTest;
+package com.example.dada.IntentTest;
 
 import android.app.Activity;
 import android.test.ActivityInstrumentationTestCase2;
 import android.util.Log;
 
-import com.example.dada.Util.RequesterDetailActivity;
 import com.robotium.solo.Solo;
+import junit.framework.TestCase;
+import android.widget.EditText;
+import com.example.dada.LoginActivity;
 
 /**
- * Intent test for detailed activity
+ * Intent test for log in
  */
 
-public class RequesterDetailTest extends ActivityInstrumentationTestCase2{
+public class loginTest extends ActivityInstrumentationTestCase2{
     private Solo solo;
 
-    public RequesterDetailTest(){
-        super(RequesterDetailActivity.class);
+    public loginTest(){
+        super(com.example.dada.LoginActivity.class);
     }
 
     public void testStart() throws Exception {
@@ -31,8 +33,7 @@ public class RequesterDetailTest extends ActivityInstrumentationTestCase2{
 
 
     public void TestLogin(){
-        solo.assertCurrentActivity("Wrong Activity", RequesterDetailActivity.class);
-
+        solo.assertCurrentActivity("Wrong Activity", LoginActivity.class);
     }
 
 
@@ -40,4 +41,7 @@ public class RequesterDetailTest extends ActivityInstrumentationTestCase2{
     protected void tearDown() throws Exception {
         solo.finishOpenedActivities();
     }
+
+
+
 }

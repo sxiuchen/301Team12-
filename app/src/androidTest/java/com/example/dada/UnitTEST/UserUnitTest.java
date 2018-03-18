@@ -1,6 +1,7 @@
 package com.example.dada.UnitTEST;
 
 import android.media.Image;
+import android.util.Log;
 
 import com.example.dada.Model.User;
 
@@ -14,24 +15,30 @@ import static org.junit.Assert.assertThat;
 
 public class UserUnitTest{
 
-    String testUser_name = "Test User";
+    String testUser_name = "User";
     String testID = "123";
     int testType = 1;
     Image testProfile_photo = null;
     int testPhone_num = 1234567;
-    User newUser = new User(testUser_name,testID, testType, testProfile_photo, testPhone_num);
+    String email_address = "user@ualberta.ca";
+    User newUser = new User(testUser_name,testID, testType, testProfile_photo, testPhone_num, email_address);
 
 
     @Test
-    public void testGetUser_name(){
-        assertThat(newUser.getUser_name(),is(testUser_name));
-    }
-
-    @Test
-    public void testSetUser_name(){
-        String testUser_name2 = "Test User 2";
-        newUser.setUser_name(testUser_name2);
-        assertThat(newUser.getUser_name(),is(testUser_name2));
+    public void testUser_name_Length(){
+        try {
+            assertThat(newUser.getUser_name(), is(testUser_name));
+        } catch (Exception e) {
+            Log.i("testSetName failed ", "Task name not set properly");
+        }
+        try {
+            String testUser_name2 = "TestUser2";
+            newUser.setUser_name(testUser_name2);
+            assertThat(newUser.getUser_name(), is(testUser_name2));
+        }
+        catch (Exception e){
+            Log.i("testSetName failed: ", "User name need to be less than 8 char");
+        }
     }
 
     @Test
