@@ -1,4 +1,4 @@
-package com.example.dada;
+package java.com.example.dada.UnitTEST;
 
 import com.example.dada.Model.Bidded;
 
@@ -9,7 +9,7 @@ import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
 /**
- * Created by kq on 2/25/2018.
+ * Bidded Unit Test
  */
 
 public class BiddedUnitTest {

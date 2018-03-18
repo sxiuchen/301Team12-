@@ -1,4 +1,4 @@
-package com.example.dada;
+package com.example.dada.UnitTEST;
 
 import android.location.Location;
 import android.media.Image;
@@ -16,7 +16,7 @@ import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertThat;
 
 /**
- * Created by rick on 25/02/2018.
+ * TaskUnit Test
  */
 
 public class TaskUnitTest {
@@ -184,28 +184,29 @@ public class TaskUnitTest {
 
     @Test
     public void test_add() {
+        Task newTask1 = new Task(TaskName, Status, Description, slocation, elocation, picture, requester, distance, assigned_pri, assigned_requester, Bidded_History);
         Bidded bid = new Bidded(2, 1);
-        newTask.add_bid(bid);
-        assertEquals(2, newTask.get_count());
+        newTask1.add_bid(bid);
+        assertEquals(1, newTask1.get_count());
     }
 
     @Test
     public void test_delete() {
-        Task newTask = new Task(TaskName, Status, Description, slocation, elocation, picture, requester, distance, assigned_pri, assigned_requester, Bidded_History);
+        Task newTask2 = new Task(TaskName, Status, Description, slocation, elocation, picture, requester, distance, assigned_pri, assigned_requester, Bidded_History);
         Bidded Bid = new Bidded(2, 1);
-        newTask.add_bid(Bid);
-        newTask.delete_bid(Bid);
+        newTask2.add_bid(Bid);
+        newTask2.delete_bid(Bid);
         assertEquals(0, newTask.get_count());
     }
 
     @Test
     public void test_lowest_price(){
-        Task newTask = new Task(TaskName, Status, Description, slocation, elocation, picture, requester, distance, assigned_pri, assigned_requester, Bidded_History);
+        Task newTask3 = new Task(TaskName, Status, Description, slocation, elocation, picture, requester, distance, assigned_pri, assigned_requester, Bidded_History);
         Bidded Bid = new Bidded(2, 1);
         Bidded Bid1 = new Bidded(1, 3);
-        newTask.add_bid(Bid);
-        newTask.add_bid(Bid1);
-        int lowestPrice = newTask.FetchLowestPrice();
+        newTask3.add_bid(Bid);
+        newTask3.add_bid(Bid1);
+        int lowestPrice = newTask3.FetchLowestPrice();
         assertEquals(lowestPrice, 1);
     }
 

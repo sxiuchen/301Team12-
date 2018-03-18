@@ -1,20 +1,19 @@
-package com.example.dada;
+package com.example.dada.UnitTEST;
 
 import android.media.Image;
 
 import com.example.dada.Model.User;
 
 import org.junit.Test;
-
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
-
 /**
- * Created by kq on 2/25/2018.
+ * user model unit tests
  */
 
-public class UserUnitTest {
+public class UserUnitTest{
+
     String testUser_name = "Test User";
     String testID = "123";
     int testType = 1;

@@ -1,4 +1,4 @@
-package com.example.dada;
+package java.com.example.dada.UnitTEST;
 
 import android.location.Location;
 import android.media.Image;
@@ -10,13 +10,14 @@ import com.example.dada.Model.Task;
 import org.junit.Test;
 
 import java.util.ArrayList;
+
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertThat;
 
 /**
- * Created by rick on 25/02/2018.
+ * TaskUnit Test
  */
 
 public class TaskUnitTest {
