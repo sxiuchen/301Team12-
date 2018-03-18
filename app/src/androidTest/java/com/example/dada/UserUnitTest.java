@@ -16,7 +16,7 @@ import static org.junit.Assert.assertThat;
 
 public class UserUnitTest {
     String testUser_name = "Test User";
-    int testID = 123;
+    String testID = "123";
     int testType = 1;
     Image testProfile_photo = null;
     int testPhone_num = 1234567;
@@ -42,7 +42,7 @@ public class UserUnitTest {
 
     @Test
     public void testSetID(){
-        int testID2 = 1234;
+        String testID2 = "1234";
         newUser.setID(testID2);
         assertThat(newUser.getID(),is(testID2));
     }

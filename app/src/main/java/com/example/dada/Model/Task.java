@@ -128,4 +128,16 @@ public class Task {
     public void setBidded_History(ArrayList<Bidded> Bidded_History){
         this.Bidded_History = Bidded_History;
     }
+
+    public void add_bid(Bidded bid){
+        this.Bidded_History.add(bid);
+    }
+
+    public void delete_bid(Bidded bid){
+        this.Bidded_History.remove(bid);
+    }
+
+    public int get_count(){
+        return this.Bidded_History.size();
+    }
 }
