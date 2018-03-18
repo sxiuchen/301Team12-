@@ -129,7 +129,6 @@ public class Task {
         this.Bidded_History = Bidded_History;
     }
 
-<<<<<<< HEAD
     public void add_bid(Bidded bid){
         this.Bidded_History.add(bid);
     }
@@ -141,7 +140,6 @@ public class Task {
     public int get_count(){
         return this.Bidded_History.size();
     }
-=======
     public void checkLowestPrice() {
         if (Bidded_History.size() >= 1) {
             lowestPrice = Bidded_History.get(0).getPrice();
@@ -159,7 +157,4 @@ public class Task {
         Bidded_History.add(bid);
         checkLowestPrice();
     }
-
-
->>>>>>> a4d234ceaec3fad81914f4dec026695d75689388
 }
