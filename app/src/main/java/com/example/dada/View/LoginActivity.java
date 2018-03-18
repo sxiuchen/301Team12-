@@ -118,13 +118,13 @@ public class LoginActivity extends AppCompatActivity {
         } else {
             try {
                 if (roleSel.equals("P")) {
-                    // intent to RiderMainActivity
-//                    Intent intentRiderMain = new Intent(this, RiderMainActivity.class);
-//                    startActivity(intentRiderMain);
+                    // intent to ProviderMainActivity
+                    Intent intentProviderMain = new Intent(getApplicationContext(), ProviderMainActivity.class);
+                    startActivity(intentProviderMain);
                 } else if (roleSel.equals("R")) {
-                    // intent to DriverMainActivity
-//                    Intent intentDriverMain = new Intent(this, DriverMainActivity.class);
-//                    startActivity(intentDriverMain);
+                    // intent to RequesterMainActivity
+                    Intent intentRequesterMain = new Intent(getApplicationContext(), RequesterMainActivity.class);
+                    startActivity(intentRequesterMain);
                 }
             } catch (Exception e) {
                 openSelRoleDialog();

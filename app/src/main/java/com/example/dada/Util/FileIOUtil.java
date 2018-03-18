@@ -4,7 +4,6 @@ import android.content.Context;
 import android.util.Log;
 
 import com.example.dada.Constant;
-import com.example.dada.Model.Request.Request;
 import com.example.dada.Model.User;
 import com.google.gson.Gson;
 
@@ -13,7 +12,6 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
 
 /**
  * The type File io util.
@@ -65,11 +63,11 @@ public class FileIOUtil {
 //     * @param request the  requests
 //     * @param context the context
 //     */
-//    public static void saveOfflineRequestInFile(Request request, Context context) {
+//    public static void saveOfflineRequestInFile(Task request, Context context) {
 //        try {
-//            Gson gson = RequestUtil.customGsonBuilder();
+//            Gson gson = TaskUtil.customGsonBuilder();
 //            String jsonStr = gson.toJson(request);
-//            String fileName = RequestUtil.generateOfflineRequestFileName(request);
+//            String fileName = TaskUtil.generateOfflineRequestFileName(request);
 //            FileOutputStream fos = context.openFileOutput(fileName, 0);
 //            if (fos == null) {
 //                Log.i("Debug", "null fos in save request");
@@ -86,9 +84,9 @@ public class FileIOUtil {
 //        }
 //    }
 
-//    public static void saveRequestInFile(Request request, String fileName, Context context) {
+//    public static void saveRequestInFile(Task request, String fileName, Context context) {
 //        try {
-//            Gson gson = RequestUtil.customGsonBuilder();
+//            Gson gson = TaskUtil.customGsonBuilder();
 //            String jsonStr = gson.toJson(request);
 //            FileOutputStream fos = context.openFileOutput(fileName, 0);
 //            if (fos == null) {
@@ -106,11 +104,11 @@ public class FileIOUtil {
 //        }
 //    }
 
-//    public static void saveRiderRequestInFile(Request request, Context context) {
+//    public static void saveRiderRequestInFile(Task request, Context context) {
 //        try {
-//            Gson gson = RequestUtil.customGsonBuilder();
+//            Gson gson = TaskUtil.customGsonBuilder();
 //            String jsonStr = gson.toJson(request);
-//            String fileName = RequestUtil.generateRiderRequestFileName(request);
+//            String fileName = TaskUtil.generateRiderRequestFileName(request);
 //            FileOutputStream fos = context.openFileOutput(fileName, 0);
 //            if (fos == null) {
 //                Log.i("Debug", "null fos in save request");
@@ -133,9 +131,9 @@ public class FileIOUtil {
 //     * @param context the context
 //     * @return the array list of requests
 //     */
-//    public static ArrayList<Request> loadRequestFromFile(Context context, ArrayList<String> fileList) {
-//        ArrayList<Request> requestList = new ArrayList<>();
-//        Gson gson = RequestUtil.customGsonBuilder();
+//    public static ArrayList<Task> loadRequestFromFile(Context context, ArrayList<String> fileList) {
+//        ArrayList<Task> requestList = new ArrayList<>();
+//        Gson gson = TaskUtil.customGsonBuilder();
 //        for (String f : fileList) {
 //            FileInputStream fis = null;
 //            try {
@@ -150,10 +148,10 @@ public class FileIOUtil {
 //        return requestList;
 //    }
 
-//    public static Request loadSingleRequestFromFile(String fileName, Context context) {
-//        Request request = new NormalRequest();
+//    public static Task loadSingleRequestFromFile(String fileName, Context context) {
+//        Task request = new NormalRequest();
 //        FileInputStream fis = null;
-//        Gson gson = RequestUtil.customGsonBuilder();
+//        Gson gson = TaskUtil.customGsonBuilder();
 //        try {
 //            fis = context.openFileInput(fileName);
 //            BufferedReader in = new BufferedReader(new InputStreamReader(fis));

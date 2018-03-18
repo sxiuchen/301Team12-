@@ -3,8 +3,6 @@ package com.example.dada;
 import android.location.Location;
 import android.media.Image;
 
-import com.example.dada.Model.Bidded;
-
 import org.junit.Test;
 
 import java.util.ArrayList;

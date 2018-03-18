@@ -1,7 +1,5 @@
 package com.example.dada;
 
-import com.example.dada.Model.Bidded;
-
 import org.junit.Test;
 
 import static org.hamcrest.core.Is.is;
