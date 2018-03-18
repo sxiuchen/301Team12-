@@ -102,7 +102,7 @@ public class Task {
         return this.Bidded_History;
     }
 
-    public int getlowestPrice(){
+    public int getLowestPrice(){
         return this.lowestPrice;
     }
 
@@ -168,7 +168,7 @@ public class Task {
         return this.Bidded_History.size();
     }
 
-    public void checkLowestPrice() {
+    public int FetchLowestPrice() {
         if (Bidded_History.size() >= 1) {
             lowestPrice = Bidded_History.get(0).getPrice();
             for (int i=1; i<Bidded_History.size(); i++) {
@@ -177,10 +177,11 @@ public class Task {
                 }
             }
         }
+        return lowestPrice;
     }
 
     public void addBiddedRecord(Bidded bid) {
         Bidded_History.add(bid);
-        checkLowestPrice();
+        FetchLowestPrice();
     }
 }

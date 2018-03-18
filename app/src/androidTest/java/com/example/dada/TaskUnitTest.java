@@ -197,4 +197,5 @@ public class TaskUnitTest {
         newTask.delete_bid(Bid);
         assertEquals(0, newTask.get_count());
     }
+
 }
