@@ -23,7 +23,9 @@ public class UserUnitTest{
     String email_address = "user@ualberta.ca";
     User newUser = new User(testUser_name,testID, testType, testProfile_photo, testPhone_num, email_address);
 
-
+    /**
+     * test user name length
+     */
     @Test
     public void testUser_name_Length(){
         try {

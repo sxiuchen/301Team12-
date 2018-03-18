@@ -1,3 +1,4 @@
+
 package com.example.dada.UnitTEST;
 
 import android.location.Location;
@@ -91,6 +92,9 @@ public class TaskUnitTest {
         assertThat(newTask.getBidded_History(), is(Bidded_History));
     }
 
+    /**
+     * test task name length constrain
+     */
     @Test
     public void testSetName() {
         // test for task name that is more than 30 characters
@@ -175,30 +179,41 @@ public class TaskUnitTest {
         assertThat(newTask.getElocation(), is(elocation1));
     }
 
+    /**
+     * Test edit bid
+     */
     @Test
-    public void testSetBidded_History() {
+    public void testEditBidded_History() {
         ArrayList<Bidded> Bidded_History1 = new ArrayList();
         newTask.setBidded_History(Bidded_History1);
         assertThat(newTask.getBidded_History(), is(Bidded_History1));
     }
 
+    /**
+     * test add task
+     */
     @Test
     public void test_add() {
-        Task newTask1 = new Task(TaskName, Status, Description, slocation, elocation, picture, requester, distance, assigned_pri, assigned_requester, Bidded_History);
         Bidded bid = new Bidded(2, 1);
-        newTask1.add_bid(bid);
-        assertEquals(1, newTask1.get_count());
+        newTask.add_bid(bid);
+        assertEquals(1, newTask.get_count());
     }
 
+    /**
+     * test delete task
+     */
     @Test
     public void test_delete() {
         Task newTask2 = new Task(TaskName, Status, Description, slocation, elocation, picture, requester, distance, assigned_pri, assigned_requester, Bidded_History);
         Bidded Bid = new Bidded(2, 1);
-        newTask2.add_bid(Bid);
-        newTask2.delete_bid(Bid);
+        newTask.add_bid(Bid);
+        newTask.delete_bid(Bid);
         assertEquals(0, newTask.get_count());
     }
 
+    /**
+     * test lowest price function
+     */
     @Test
     public void test_lowest_price(){
         Task newTask3 = new Task(TaskName, Status, Description, slocation, elocation, picture, requester, distance, assigned_pri, assigned_requester, Bidded_History);

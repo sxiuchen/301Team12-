@@ -20,7 +20,7 @@ public class Task {
     private double Assigned_Pri;
     private float distance;
     private Location Elocation;
-    private ArrayList<Bidded> Bidded_History;
+    private ArrayList<Bidded> Bidded_History = new ArrayList<Bidded>();
 
     public Task(String name, String status, String description,
                 Location Slocation, Location Elocation,
