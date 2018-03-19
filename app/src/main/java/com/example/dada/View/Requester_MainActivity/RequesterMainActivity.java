@@ -15,6 +15,7 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.example.dada.Model.Task.NormalTask;
 import com.example.dada.Model.Task.Task;
 import com.example.dada.R;
 
@@ -22,7 +23,8 @@ import java.util.ArrayList;
 
 public class RequesterMainActivity extends AppCompatActivity {
     private ListView rTaskList;
-    private ArrayList<Task> subList;
+    private ArrayList<Task> tasks = new ArrayList<>();
+    private taskAdapter adapter;
 
 
     ////////////////////////////////////// onCreate ////////////////////////////////////////////////
@@ -91,11 +93,7 @@ public class RequesterMainActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
 
-//        getListContent();
-
-//        ArrayAdapter<Task> adapter = new ArrayAdapter<Task>(this,
-//                R.layout.content_requester_activity_main_listitem, subList);
-//        rTaskList.setAdapter(adapter);
+        loadIntoList();
 
     }
 
@@ -105,7 +103,6 @@ public class RequesterMainActivity extends AppCompatActivity {
         super.onDestroy();
 
     }
-
 
     ////////////////////////////////////// other ////////////////////////////////////////////////
 
@@ -131,20 +128,26 @@ public class RequesterMainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-//    private void getListContent(){
-//        Task t1 = new Task("name1","DONE","des1",null,null,
-//                null,1,1f,1.1,1,null);
-//        Task t2 = new Task("name2","DONE","des2",null,null,
-//                null,2,2f,2.2,2,null);
-//        Task t3 = new Task("name3","BIDDED","des3",null,null,
-//                null,3,3f,3.3,3,null);
-//
-//        subList.add(t1);
-//        subList.add(t2);
-//        subList.add(t3);
-//    }
+    private void loadIntoList(){
+        //For testing
+        NormalTask t1 = new NormalTask("name1","des1", "r1");
+        t1.setStatus("DONE");
+        NormalTask t2 = new NormalTask("name2","des2", "r2");
+        t2.setStatus("DONE");
+        NormalTask t3 = new NormalTask("name3","des3", "r3");
+        t3.setStatus("BIDDED");
 
-//    private void loadIntoList(){
-//
-//    }
+        tasks.add(t1);
+        tasks.add(t2);
+        tasks.add(t3);
+
+        /*
+
+         */
+
+        adapter = new taskAdapter(this, tasks);
+        rTaskList.setAdapter(adapter);
+
+    }
+
 }
