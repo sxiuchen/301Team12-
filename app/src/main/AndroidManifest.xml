@@ -23,10 +23,6 @@
         </activity>
         <activity android:name=".Util.RequesterDetailActivity" />
         <activity
-            android:name=".listViewRequester.RListTestActivity"
-            android:label="@string/title_activity_rlist_test"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
             android:name=".listViewRequester.RequesterTaskListActivity"
             android:label="@string/title_activity_requester_task_list"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>

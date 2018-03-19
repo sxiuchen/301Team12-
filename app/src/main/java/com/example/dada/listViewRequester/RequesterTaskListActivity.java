@@ -11,12 +11,23 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.example.dada.Model.*;
 import com.example.dada.R;
 
+import java.util.ArrayList;
+
 public class RequesterTaskListActivity extends AppCompatActivity {
+    private ListView rTaskList;
+    private ArrayList<Task> subList;
+    private ArrayAdapter<Task> adapter;
+
+
+
+    ////////////////////////////////////// onCreate ////////////////////////////////////////////////
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +61,7 @@ public class RequesterTaskListActivity extends AppCompatActivity {
             }
         });
 
-        //add
+        //add button
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -59,8 +70,48 @@ public class RequesterTaskListActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+
+        //listView
+        rTaskList = (ListView) findViewById(R.id.rListView);
+        rTaskList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+            }
+        });
+
+        rTaskList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                return false;
+            }
+        });
     }
 
+    ////////////////////////////////onStart/////////////////////////////////////////////////
+
+    protected void onStart() {
+        super.onStart();
+
+        getListContent();
+
+        adapter = new ArrayAdapter<Task>(this,
+                R.layout.requester_tasklist_listitem, subList);
+        rTaskList.setAdapter(adapter);
+
+    }
+
+    ///////////////////////////////onDestroy////////////////////////////////////////////////////
+
+    protected void onDestroy() {
+        super.onDestroy();
+
+    }
+
+
+    ////////////////////////////////////// other ////////////////////////////////////////////////
+
+    //toolBar menu
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater menuInflater = getMenuInflater();
@@ -69,6 +120,7 @@ public class RequesterTaskListActivity extends AppCompatActivity {
         //return super.onCreateOptionsMenu(menu);
     }
 
+    //search button
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int res_id = item.getItemId();
@@ -79,5 +131,22 @@ public class RequesterTaskListActivity extends AppCompatActivity {
 
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void getListContent(){
+        Task t1 = new Task("name1","DONE","des1",null,null,
+                null,1,1f,1.1,1,null);
+        Task t2 = new Task("name2","DONE","des2",null,null,
+                null,2,2f,2.2,2,null);
+        Task t3 = new Task("name3","BIDDED","des3",null,null,
+                null,3,3f,3.3,3,null);
+
+        subList.add(t1);
+        subList.add(t2);
+        subList.add(t3);
+    }
+
+    private void loadIntoList(){
+
     }
 }
