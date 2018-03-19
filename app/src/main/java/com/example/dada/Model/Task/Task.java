@@ -164,7 +164,7 @@ public abstract class Task {
     }
 
     /**
-     * Static class that update the request
+     * Static class that update the task
      */
     public static class UpdateTaskTask extends AsyncTask<Task, Void, Task> {
         /**
@@ -201,8 +201,7 @@ public abstract class Task {
         protected Task doInBackground(Task... tasks) {
             verifySettings();
             // Constructs json string
-            Gson gson = new GsonBuilder().registerTypeAdapter(GeoPoint.class, new GeoPointConverter()).create();
-            String query = String.format(gson.toJson(tasks[0]));
+            String query = TaskUtil.serializer(tasks[0]);
             Log.i("Debug", query);
             Index index = new Index.Builder(query)
                     .index("team12")
@@ -241,7 +240,7 @@ public abstract class Task {
     }
 
     /**
-     * TODO Static class that cancel the request
+     * TODO Static class that cancel the task
      */
     public static class DeleteTaskTask extends AsyncTask<Task, Void, Task> {
         /**
@@ -250,7 +249,7 @@ public abstract class Task {
         public OnAsyncTaskCompleted listener;
 
         /**
-         * Constructor for DeleteRequestTask class
+         * Constructor for DeleteTaskTask class
          *
          * @param listener the customize job after the async task is done
          */
@@ -267,7 +266,7 @@ public abstract class Task {
             verifySettings();
 
             for (Task t : tasks) {
-                Delete delete = new Delete.Builder(t.getID()).index("team12").type("request").build();
+                Delete delete = new Delete.Builder(t.getID()).index("team12").type("task").build();
                 try {
                     DocumentResult result = client.execute(delete);
                     if (result.isSucceeded()) {
@@ -317,13 +316,13 @@ public abstract class Task {
         /**
          * Fetch request list that matched the parameters, by keyword, geo-location, and all requests
          * @param search_parameters the parameter to search
-         * @return a arraylist of requests
+         * @return an arraylist of tasks
          */
         @Override
         protected ArrayList<NormalTask> doInBackground(String... search_parameters) {
             verifySettings();
 
-            ArrayList<NormalTask> requests = new ArrayList<>();
+            ArrayList<NormalTask> tasks = new ArrayList<>();
 
             // assume that search_parameters[0] is the only search term we are interested in using
             Search search = new Search.Builder(search_parameters[0])
@@ -333,8 +332,8 @@ public abstract class Task {
             try {
                 SearchResult result = client.execute(search);
                 if (result.isSucceeded()) {
-                    List<NormalTask> findRequest = result.getSourceAsObjectList(NormalTask.class);
-                    requests.addAll(findRequest);
+                    List<NormalTask> findTask = result.getSourceAsObjectList(NormalTask.class);
+                    tasks.addAll(findTask);
                     Log.i("Debug", "Successful get the request list");
                 }
                 else {
@@ -344,7 +343,7 @@ public abstract class Task {
             catch (Exception e) {
                 Log.i("Error", "Something went wrong when we tried to communicate with the elasticsearch server!");
             }
-            return requests;
+            return tasks;
         }
 
         @Override
@@ -366,9 +365,8 @@ public abstract class Task {
     private static void verifySettings() {
         // if the client hasn't been initialized then we should make it!
         if (client == null) {
-            // Custom gson Serializer and JsonDeserializer
-            Gson gson = TaskUtil.customGsonBuilder();
-            DroidClientConfig.Builder builder = new DroidClientConfig.Builder(Constant.ELASTIC_SEARCH_URL).gson(gson);
+            DroidClientConfig.Builder builder = new DroidClientConfig
+                    .Builder(Constant.ELASTIC_SEARCH_URL);
             DroidClientConfig config = builder.build();
 
             JestClientFactory factory = new JestClientFactory();
