@@ -1,3 +1,14 @@
+/*
+ * RequesterMainActivity
+ *
+ *
+ * Mar 19, 2018
+ *
+ * Copyright (c) 2018 Haotian Qi. CMPUT301, University of Alberta - All Rights Reserved.
+ * You may use, distribute, or modify this code under terms and condition of the Code of Student Behaviour at University of Alberta.
+ * You can find a copy of the license in this project. Otherwise please contact me.
+ */
+
 package com.example.dada.View.Requester_MainActivity;
 
 import android.content.Intent;
@@ -25,6 +36,16 @@ import com.example.dada.View.RequesterDetailActivity;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+
+/**
+ * The main activity for requester
+ * Show a listView of task and connect to addTask activity and detail activity
+ *
+ * @author haotian qi
+ *
+ * @see RequesterDetailActivity
+ * @see RequesterAddTaskActivity
+ */
 
 public class RequesterMainActivity extends AppCompatActivity {
     private ListView rTaskList;
@@ -119,7 +140,12 @@ public class RequesterMainActivity extends AppCompatActivity {
 
     ////////////////////////////////////// other ////////////////////////////////////////////////
 
-    //toolBar menu
+    /**
+     * initialize the toolbar
+     *
+     * @param menu
+     * @return
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater menuInflater = getMenuInflater();
@@ -128,7 +154,12 @@ public class RequesterMainActivity extends AppCompatActivity {
         //return super.onCreateOptionsMenu(menu);
     }
 
-    //search button
+    /**
+     * handle process of search
+     *
+     * @param item
+     * @return
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int res_id = item.getItemId();
@@ -141,6 +172,9 @@ public class RequesterMainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * load the list of tasks into listView
+     */
     private void loadIntoList(){
         //For testing
         NormalTask t1 = new NormalTask("name1","des1", "r1");
