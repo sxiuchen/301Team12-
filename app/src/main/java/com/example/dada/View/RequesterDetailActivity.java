@@ -15,9 +15,16 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.dada.Controller.TaskController;
+import com.example.dada.Model.OnAsyncTaskCompleted;
+import com.example.dada.Model.OnAsyncTaskFailure;
 import com.example.dada.Model.Task.NormalTask;
+import com.example.dada.Model.Task.Task;
+import com.example.dada.Model.User;
 import com.example.dada.R;
+import com.example.dada.Util.FileIOUtil;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -31,6 +38,19 @@ public class RequesterDetailActivity extends ListActivity {
     private String statusBidded = "BIDDED";
     private String statusDone = "DONE";
     private String providerName;
+    private TaskController taskController = new TaskController(new OnAsyncTaskCompleted() {
+        @Override
+        public void onTaskCompleted(Object o) {
+            Task task = (Task) o;
+            FileIOUtil.saveTaskInFile(task, "temp", getApplicationContext()); //    //^_^//
+        }
+    }, new OnAsyncTaskFailure() {
+        @Override
+        public void onTaskFailed(Object o) {
+            Task task = (Task) o;
+            FileIOUtil.saveOfflineTaskInFile(task, getApplicationContext());
+        }
+    });
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,8 +77,12 @@ public class RequesterDetailActivity extends ListActivity {
                     builder.setPositiveButton("Is Him", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
-                            task.setStatus(statusAssigned);
-                            setViews();
+                            try {
+                                task.requesterAssignProvider(providerName);
+                            } catch (Exception e) {
+                                Toast.makeText(getApplicationContext(), e.toString(),
+                                        Toast.LENGTH_SHORT).show();
+                            }
                         }
                     });
                     builder.setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
@@ -76,6 +100,7 @@ public class RequesterDetailActivity extends ListActivity {
                             setViews();
                         }
                     });
+                    taskController.updateTask(task);
                     AlertDialog dialog = builder.create();
                     dialog.show();
                 }
@@ -187,6 +212,7 @@ public class RequesterDetailActivity extends ListActivity {
     public void doneOnClick(View view) {
         if (task.getStatus().equals(statusAssigned)) {
             task.setStatus(statusDone);
+            taskController.updateTask(task);
             setViews();
         }
     }
@@ -194,6 +220,7 @@ public class RequesterDetailActivity extends ListActivity {
     public void notCompleteOnClick(View view) {
         if (task.getStatus().equals(statusAssigned)) {
             task.setStatus(statusRequested);
+            taskController.updateTask(task);
             setViews();
         }
     }
