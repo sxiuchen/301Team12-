@@ -35,7 +35,7 @@
             android:label="@string/title_activity_provider_main"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".View.RequesterActivityMain"
+            android:name=".View.RequesterMainActivity"
             android:label="@string/title_activity_requester_main"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>

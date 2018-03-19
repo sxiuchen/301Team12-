@@ -47,7 +47,7 @@ public class LoginTest extends ActivityInstrumentationTestCase2{
         solo.assertCurrentActivity("Wrong Activity", LoginActivity.class);
         solo.clearEditText((EditText) solo.getView(R.id.edit_text_login_username));
         solo.enterText((EditText) solo.getView(R.id.edit_text_login_username), "user");
-        solo.clickOnButton("provider");
+        solo.clickOnButton("Provider");
         solo.clickOnButton("Login");
 
     }

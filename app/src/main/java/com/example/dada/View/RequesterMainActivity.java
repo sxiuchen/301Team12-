@@ -15,7 +15,7 @@ import android.view.MenuItem;
 
 import com.example.dada.R;
 
-public class RequesterActivityMain extends AppCompatActivity
+public class RequesterMainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     @Override
