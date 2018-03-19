@@ -40,21 +40,21 @@ public class UserEaditProfilrTest extends ActivityInstrumentationTestCase2{
 
         // invalid edit
         solo.enterText((EditText) solo.getView(R.id.editText_userName_EditUserProfileActivity), "user");
-        solo.enterText((EditText) solo.getView(R.id.R.id.editText_email_EditUserProfileActivity),
+        solo.enterText((EditText) solo.getView(R.id.editText_email_EditUserProfileActivity),
                 "user");
-        solo.enterText((EditText) solo.getView(R.id.R.id.editText_mobile_EditUserProfileActivity), "911");
+        solo.enterText((EditText) solo.getView(R.id.editText_mobile_EditUserProfileActivity), "911");
         solo.clickOnButton("SaveButton");
         assertTrue(solo.waitForText("Username/Email/Mobile is not valid."));
 
 
         // valid edit
-        solo.clearEditText((EditText) solo.getView(R.id.R.id.editText_userName_EditUserProfileActivity));
-        solo.clearEditText((EditText) solo.getView(R.id.R.id.editText_email_EditUserProfileActivity));
-        solo.clearEditText((EditText) solo.getView(R.id.R.id.editText_mobile_EditUserProfileActivity));
+        solo.clearEditText((EditText) solo.getView(R.id.editText_userName_EditUserProfileActivity));
+        solo.clearEditText((EditText) solo.getView(R.id.editText_email_EditUserProfileActivity));
+        solo.clearEditText((EditText) solo.getView(R.id.editText_mobile_EditUserProfileActivity));
         solo.enterText((EditText) solo.getView(R.id.editText_userName_EditUserProfileActivity), "user");
-        solo.enterText((EditText) solo.getView(R.id.R.id.editText_email_EditUserProfileActivity),
+        solo.enterText((EditText) solo.getView(R.id.editText_email_EditUserProfileActivity),
                 "user@ualberta.ca");
-        solo.enterText((EditText) solo.getView(R.id.R.id.editText_mobile_EditUserProfileActivity), "911");
+        solo.enterText((EditText) solo.getView(R.id.editText_mobile_EditUserProfileActivity), "911");
         solo.clickOnButton("SaveButton");
     }
 

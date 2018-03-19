@@ -41,9 +41,9 @@ public class UserEditProfileActivity extends AppCompatActivity {
 
         user = FileIOUtil.loadUserFromFile(getApplicationContext());
 
-//        usernameText = findViewById(R.id.editText_userName_EditUserProfileActivity);
-//        emailText = findViewById(R.id.editText_email_EditUserProfileActivity);
-//        mobileText = findViewById(R.id.editText_mobile_EditUserProfileActivity);
+        usernameText = findViewById(R.id.editText_userName_EditUserProfileActivity);
+        emailText = findViewById(R.id.editText_email_EditUserProfileActivity);
+        mobileText = findViewById(R.id.editText_mobile_EditUserProfileActivity);
 
         // get the user, use the user to setText
         usernameText.setText(user.getUserName());   // setText(user.getName)
