@@ -269,43 +269,46 @@ public class User {
         }
     }
 
-
     public String getUserName(){
         return this.userName;
+    }
+
+    public void setUserName(String userName){
+        this.userName = userName;
     }
 
     public String getID(){
         return ID;
     }
 
-    public int getType(){
-        return type;
-    }
-
-    public Image getProfile_photo(){
-        return profile_photo;
-    }
-
-    public void setUser_name(String userName){
-        this.userName = userName;
-    }
-
     public void setID(String ID) {
         this.ID = ID;
+    }
+
+    public int getType(){
+        return type;
     }
 
     public void setType(int type){
         this.type = type;
     }
 
-    public void setProfile_photo(Image profile_photo){
-        this.profile_photo = profile_photo;
-    }
+//    public Image getProfile_photo(){
+//        return profile_photo;
+//    }
+//
+//    public void setProfile_photo(Image profile_photo){
+//        this.profile_photo = profile_photo;
+//    }
 
     public String getPhone(){
         return this.phone;
     }
 
     public void setPhone(String phone){ this.phone = phone; }
+
+    public String getEmail(){ return this.email; }
+
+    public void setEmail(String email){ this.email = email; }
 
 }
