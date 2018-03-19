@@ -142,20 +142,6 @@ public class TaskUnitTest{
     }
 
     @Test
-    public void testSetDistance(){
-        float distance1 = 4.345f;
-        newTask.setDistance(distance1);
-        assertThat(newTask.getDistance(),is(distance1));
-    }
-
-    @Test
-    public void testSetElocation(){
-        Location elocation1 = new Location("");
-        newTask.setElocation(elocation1);
-        assertThat(newTask.getElocation(),is(elocation1));
-    }
-
-    @Test
     public void testSetBidded_History(){
         ArrayList<Bidded> Bidded_History1 = new ArrayList<Bidded>();
         newTask.setBidded_History(Bidded_History1);
