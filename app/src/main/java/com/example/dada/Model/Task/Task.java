@@ -27,24 +27,14 @@ import io.searchbox.core.SearchResult;
 
 public abstract class Task {
 
-    private Location Slocation;
-    private Image picture;
-    private int Requester;
-    private int Assigned_Requester;
-    private double Assigned_Pri;
-    private float distance;
-    private Location Elocation;
-    private ArrayList<BiddedTask> Bidded_History;
-
     private String ID;
+    private double price;
     private String title;
     private String taskDescription;
     private String status;
-    private double price;
     private String requesterUserName;
     private String providerUserName;
-
-
+    private Boolean isCompleted;
 
     private ArrayList<String> providerList = new ArrayList<>();
 
@@ -95,123 +85,6 @@ public abstract class Task {
         this.providerList = providerList;
         this.price = price;
     }
-
-
-//    public Task(String name, String status, String description,
-//                Location Slocation, Location Elocation,
-//                Image picture, int Requester, float distance,
-//                double Assigned_Pri, int Assigned_Requester,
-//                ArrayList<BiddedTask> Bidded_History){
-//        this.name = name;
-//        this.status = status;
-//        this.description = description;
-//        this.Slocation = Slocation;
-//        this.picture = picture;
-//        this.Requester = Requester;
-//        this.Assigned_Requester = Assigned_Requester;
-//        this.Assigned_Pri = Assigned_Pri;
-//        this.distance = distance;
-//        this.Elocation = Elocation;
-//        this.Bidded_History = Bidded_History;
-//    }
-
-
-
-    public Location getLocation(){
-        return this.Slocation;
-    }
-
-    public Image getPicture(){
-        return this.picture;
-    }
-
-    public int getRequester(){
-        return this.Requester;
-    }
-
-    public int getAssigned_Requester(){
-        return this.Assigned_Requester;
-    }
-
-    public double getAssigned_Pri(){
-        return this.Assigned_Pri;
-    }
-
-    public Location getElocation(){
-        return this.Elocation;
-    }
-
-    public float getDistance(){
-        return this.distance;
-    }
-
-    public ArrayList<BiddedTask> getBidded_History(){
-        return Bidded_History;
-    }
-
-    public void setSlocation(Location Slocation){
-        this.Slocation = Slocation;
-    }
-
-    public void setPicture(Image picture){
-        this.picture = picture;
-    }
-
-    public void setRequester(int Requester){
-        this.Requester = Requester;
-    }
-
-    public void setAssigned_Requester(int Assigned_Requester){
-        this.Assigned_Requester = Assigned_Requester;
-    }
-
-    public void setAssigned_Pri(double Assigned_Pri){
-        this.Assigned_Pri = Assigned_Pri;
-    }
-
-    public void setDistance(float distance){
-        this.distance = distance;
-    }
-
-    public void setElocation(Location Elocation){
-        this.Elocation = Elocation;
-    }
-
-    public void setBidded_History(ArrayList<BiddedTask> Bidded_History){
-        this.Bidded_History = Bidded_History;
-    }
-
-    public String getID(){ return this.ID; }
-
-    public void setID(String ID){
-        this.ID = ID;
-    }
-
-    public Double getPrice(){ return this.price; }
-
-    public void setPrice(Double price){ this.price = price; }
-
-    public String getTitle(){ return this.title; }
-
-    public void setTitle(String title){ this.title = title; }
-
-    public String getTaskDescription(){
-        return this.taskDescription;
-    }
-
-    public void setTaskDescription(String taskDescription){
-        this.taskDescription = taskDescription;
-    }
-
-    public String getStatus(){
-        return this.status;
-    }
-
-    public void setStatus(String status){
-        this.status = status;
-    }
-
-
 
     /**
      * Static class that adds the task
@@ -520,6 +393,9 @@ public abstract class Task {
      * @param providerUserName the provider user name who bids the requested task
      */
     public void providerAcceptRequest(String providerUserName) {
+        if ( this.status == "Requested" ){
+            this.status = "Bidded";
+        }
         providerList.add(providerUserName);
     }
 
@@ -536,8 +412,62 @@ public abstract class Task {
             throw new TaskException("This task has not been bidded by any provider yet");
         } else {
             // Assigned provider
+            assert this.status == "Bidded";
             this.providerUserName = providerUserName;
+            this.status = "Assigned";
             providerList.clear();
         }
     }
+
+    /**
+     * Requester confirm task complete.
+     */
+    public void requesterConfirmTaskComplete() {
+        this.isCompleted = true;
+    }
+
+    /**
+     * Getters and Setters
+     */
+    public String getID(){ return this.ID; }
+
+    public void setID(String ID){
+        this.ID = ID;
+    }
+
+    public Double getPrice(){ return this.price; }
+
+    public void setPrice(Double price){ this.price = price; }
+
+    public String getTitle(){ return this.title; }
+
+    public void setTitle(String title){ this.title = title; }
+
+    public String getTaskDescription(){
+        return this.taskDescription;
+    }
+
+    public void setTaskDescription(String taskDescription){
+        this.taskDescription = taskDescription;
+    }
+
+    public String getStatus(){
+        return this.status;
+    }
+
+    public void setStatus(String status){
+        this.status = status;
+    }
+
+    public String getRequesterUserName(){ return this.requesterUserName; }
+
+    public void setRequesterUserName(String requesterUserName){ this.requesterUserName = requesterUserName; }
+
+    public String getProviderUserName(){ return this.providerUserName; }
+
+    public void setProviderUserName(String providerUserName){ this.providerUserName = providerUserName; }
+
+    public Boolean getIsCompleted(){ return this.isCompleted; }
+
+    public void setIsCompleted(boolean isCompleted){ this.isCompleted = isCompleted; }
 }
