@@ -3,6 +3,8 @@ package com.example.dada.View;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
+import com.example.dada.R;
+
 public class UserEditProfileActivity extends AppCompatActivity {
 
     @Override
