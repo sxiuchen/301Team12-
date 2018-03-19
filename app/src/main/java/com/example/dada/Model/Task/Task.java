@@ -43,8 +43,7 @@ public abstract class Task {
     private double price;
     private String requesterUserName;
     private String providerUserName;
-
-
+    private Boolean isCompleted;
 
     private ArrayList<String> providerList = new ArrayList<>();
 
@@ -539,5 +538,12 @@ public abstract class Task {
             this.providerUserName = providerUserName;
             providerList.clear();
         }
+    }
+
+    /**
+     * Requester confirm task complete.
+     */
+    public void requesterConfirmTaskComplete() {
+        this.isCompleted = true;
     }
 }
