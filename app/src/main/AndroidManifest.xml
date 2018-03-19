@@ -38,7 +38,11 @@
             android:name=".View.RequesterMainActivity"
             android:label="@string/title_activity_requester_main"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".View.UserEditProfileActivity"></activity>
+        <activity android:name=".View.UserEditProfileActivity" />
+        <activity
+            android:name=".View.RequesterBrowseRequestActivity"
+            android:label="@string/title_activity_requester_browse_request"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>
