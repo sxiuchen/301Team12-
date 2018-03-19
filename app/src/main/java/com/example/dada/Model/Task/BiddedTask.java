@@ -1,5 +1,7 @@
 package com.example.dada.Model.Task;
 
+import com.example.dada.Exception.TaskException;
+
 import java.util.ArrayList;
 
 /**
@@ -10,16 +12,16 @@ import java.util.ArrayList;
  */
 public class BiddedTask extends Task {
 
-    public BiddedTask(String requesterUserName, String providerUserName, Route route, Double estimatedFare) {
-        super(requesterUserName, providerUserName, route, estimatedFare);
+    public BiddedTask(String requesterUserName, String providerUserName, Double price) {
+        super(requesterUserName, providerUserName, price);
     }
 
-    public AcceptedRequest(String riderUserName, ArrayList<String> driverList, Route route, Double estimatedFare) {
-        super(riderUserName, driverList, route, estimatedFare);
+    public BiddedTask(String requesterUserName, ArrayList<String> providerList, Double price) {
+        super(requesterUserName, providerList, price);
     }
 
     @Override
-    public void riderConfirmDriver(String driverUserName) throws RequestException{
-        super.riderConfirmDriver(driverUserName);
+    public void requesterAssignProvider(String providerUserName) throws TaskException {
+        super.requesterAssignProvider(providerUserName);
     }
 }

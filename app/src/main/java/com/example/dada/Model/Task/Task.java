@@ -41,6 +41,10 @@ public abstract class Task {
     private String taskDescription;
     private String status;
     private double price;
+    private String requesterUserName;
+    private String providerUserName;
+
+
 
     private ArrayList<String> providerList = new ArrayList<>();
 
@@ -63,8 +67,35 @@ public abstract class Task {
     public Task(String title, String description, String status) {
         this.title = title;
         this.taskDescription = description;
-        this.status =
+        this.status = status;
     }
+
+    /**
+     * Constructor for AssignedTask or CompletedTask.
+     *
+     * @param requesterUserName  the requester user name
+     * @param providerUserName   the provider user name
+     * @param price              the price
+     */
+    public Task(String requesterUserName, String providerUserName, double price) {
+        this.requesterUserName = requesterUserName;
+        this.providerUserName = providerUserName;
+        this.price = price;
+    }
+
+    /**
+     * Constructor for BiddedTask
+     *
+     * @param requesterUserName     the requester user name
+     * @param providerList          the list of providers username who bidded the task
+     * @param price                 the price
+     */
+    public Task(String requesterUserName, ArrayList<String> providerList, Double price){
+        this.requesterUserName = requesterUserName;
+        this.providerList = providerList;
+        this.price = price;
+    }
+
 
 //    public Task(String name, String status, String description,
 //                Location Slocation, Location Elocation,
@@ -492,4 +523,21 @@ public abstract class Task {
         providerList.add(providerUserName);
     }
 
+    /**
+     * Requester assign provider.
+     *
+     * @param  providerUserName the provider user name
+     * @throws TaskException    the request exception
+     * @throws TaskException    raise exception when request has not been confirmed
+     */
+    public void requesterAssignProvider(String providerUserName) throws TaskException {
+        if (providerList == null || providerList.isEmpty()) {
+            // If the task has not been bidded yet
+            throw new TaskException("This task has not been bidded by any provider yet");
+        } else {
+            // Assigned provider
+            this.providerUserName = providerUserName;
+            providerList.clear();
+        }
+    }
 }
