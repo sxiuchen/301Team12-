@@ -25,21 +25,21 @@ public class TaskUtil {
         return gson.fromJson(string, NormalTask.class);
     }
 
-//    public static String generateOfflineRequestFileName(Task request) {
-//        return "offline-" + request.getID() + ".json";
-//    }
-//
-//    public static String generateAcceptedReqestFileName(Task request) {
-//        return "accepted-" + request.getID() + ".json";
-//    }
-//
-//    public static String generateRiderRequestFileName(Task request) {
-//        return "rider-" + request.getID() + ".json";
-//    }
-//
-//    public static String generateDriverRequestFileName(Task request) {
-//        return "driver-" + request.getID() + ".json";
-//    }
+    public static String generateOfflineTaskFileName(Task request) {
+        return "offline-" + request.getID() + ".json";
+    }
+
+    public static String generateAcceptedTaskFileName(Task request) {
+        return "accepted-" + request.getID() + ".json";
+    }
+
+    public static String generateRequesterTaskFileName(Task request) {
+        return "rider-" + request.getID() + ".json";
+    }
+
+    public static String generateProviderTaskFileName(Task request) {
+        return "driver-" + request.getID() + ".json";
+    }
 
     public static ArrayList<String> getOfflineTaskList(Context context) {
         String[] fileList = context.fileList();
