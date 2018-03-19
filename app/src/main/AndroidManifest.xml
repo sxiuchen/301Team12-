@@ -21,7 +21,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Util.RequesterDetailActivity" />
+        <activity android:name=".listViewRequester.RequesterDetailActivity" />
         <activity
             android:name=".listViewRequester.RListTestActivity"
             android:label="@string/title_activity_rlist_test"

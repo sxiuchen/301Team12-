@@ -1,14 +1,10 @@
-package com.example.dada.Util;
+package com.example.dada.listViewRequester;
 
 import android.app.AlertDialog;
-import android.app.FragmentManager;
 import android.app.ListActivity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
-import android.location.Location;
-import android.media.Image;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -18,9 +14,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.example.dada.Model.Bidded;
 import com.example.dada.Model.Task;
 import com.example.dada.R;
 
