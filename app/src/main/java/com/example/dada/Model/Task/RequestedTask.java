@@ -10,8 +10,8 @@ public class RequestedTask extends Task {
      * @param title         title of the task
      * @param description   description of the task
      */
-    public RequestedTask(String title, String description) {
-        super(title, description, "Requested");
+    public RequestedTask(String title, String description, String requesterUserName) {
+        super(title, description, requesterUserName,"Requested");
     }
 
     /**
@@ -20,8 +20,8 @@ public class RequestedTask extends Task {
      * @param providerUserName the provider user name who bids the requested task
      */
     @Override
-    public void providerAcceptRequest(String providerUserName) {
-        super.providerAcceptRequest(providerUserName);
+    public void providerBidTask(String providerUserName) {
+        super.providerBidTask(providerUserName);
     }
 
 }
