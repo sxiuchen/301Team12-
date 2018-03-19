@@ -1,6 +1,15 @@
 <resources>
     <string name="app_name">Dada</string>
     <string name="title_activity_test_request_list">test_requestList</string>
-    <string name="title_activity_requester_task_list">Requester Task List</string>
+    <string name="title_activity_requester_task_list"></string>
     <string name="title_activity_rlist_test">RListTestActivity</string>
+
+    <string-array name="filterOption">
+        <item>ALL TASKS</item>
+        <item>ASSIGNED</item>
+        <item>BIDDED</item>
+        <item>DONE</item>
+        <item>MY TASKS</item>
+        <item>PROFILE</item>
+    </string-array>
 </resources>

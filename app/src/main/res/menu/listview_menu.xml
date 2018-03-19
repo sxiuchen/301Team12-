@@ -7,13 +7,15 @@
         android:icon="@drawable/ic_search"
         app:showAsAction="ifRoom|collapseActionView"
         app:actionViewClass="android.support.v7.widget.SearchView"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
         />
-    <item
-        android:id="@+id/menu_button"
-        android:title="menu"
-        android:icon="@drawable/ic_filter"
-        app:showAsAction="ifRoom"
-        />
+    <!--<item-->
+        <!--android:id="@+id/menu_button"-->
+        <!--android:title="menu"-->
+        <!--android:icon="@drawable/ic_filter"-->
+        <!--app:showAsAction="ifRoom"-->
+        <!--app:actionViewClass="android.widget.Spinner"-->
+        <!--/>-->
 
 
 </menu>

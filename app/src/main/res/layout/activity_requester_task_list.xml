@@ -17,7 +17,18 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@android:color/holo_blue_bright"
-            app:popupTheme="@style/PopupOverlay" />
+            app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+            <Spinner
+                android:id="@+id/filter_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/toolbar"
+                android:layout_alignLeft="@+id/toolbar"
+                android:layout_alignStart="@+id/toolbar"
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
+
+        </android.support.v7.widget.Toolbar>
 
 
     </android.support.design.widget.AppBarLayout>
