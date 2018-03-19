@@ -7,5 +7,14 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="action_settings">Settings</string>
-    <string name="title_activity_requester_main">RequesterActivityMain</string>
+    <string name="title_activity_requester_main"></string>
+
+    <string-array name="filterOption">
+        <item>ALL TASKS</item>
+        <item>ASSIGNED</item>
+        <item>BIDDED</item>
+        <item>DONE</item>
+        <item>MY TASKS</item>
+        <item>PROFILE</item>
+    </string-array>
 </resources>

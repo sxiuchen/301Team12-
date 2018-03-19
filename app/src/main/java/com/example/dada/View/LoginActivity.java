@@ -43,6 +43,10 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        //for testing
+        Intent intentProviderMain = new Intent(getApplicationContext(), RequesterMainActivity.class);
+        startActivity(intentProviderMain);
+
         usernameText = findViewById(R.id.edit_text_login_username);
 
         requesterRadio = findViewById(R.id.radio_button_login_requester);

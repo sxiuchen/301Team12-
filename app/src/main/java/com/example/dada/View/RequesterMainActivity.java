@@ -3,101 +3,149 @@ package com.example.dada.View;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
-import android.view.View;
-import android.support.design.widget.NavigationView;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+import android.widget.Spinner;
+import android.widget.Toast;
 
+import com.example.dada.Model.*;
+import com.example.dada.Model.Task.Task;
 import com.example.dada.R;
 
-public class RequesterMainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+import java.util.ArrayList;
+
+public class RequesterMainActivity extends AppCompatActivity {
+    private ListView rTaskList;
+    private ArrayList<Task> subList;
+
+
+    ////////////////////////////////////// onCreate ////////////////////////////////////////////////
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_requester_main);
+
+        //Toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        //Spinner
+        final Spinner RLspinner = (Spinner) findViewById(R.id.filter_button);
+        ArrayAdapter<String> filterAdapter = new ArrayAdapter<String>(RequesterMainActivity.this,
+                R.layout.nav_spinner_requester_activity_main,
+                getResources().getStringArray(R.array.filterOption));
+        filterAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        RLspinner.setAdapter(filterAdapter);
+
+        RLspinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                Toast.makeText(RequesterMainActivity.this,
+                        RLspinner.getSelectedItem().toString(),
+                        Toast.LENGTH_SHORT)
+                        .show();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        //add button
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                Snackbar.make(view, "Go to new activity and create new task", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
         });
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.addDrawerListener(toggle);
-        toggle.syncState();
+        //listView
+        rTaskList = (ListView) findViewById(R.id.rListView);
+        rTaskList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
+            }
+        });
+
+        rTaskList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                return false;
+            }
+        });
     }
 
-    @Override
-    public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
-        }
+    ////////////////////////////////onStart/////////////////////////////////////////////////
+
+    protected void onStart() {
+        super.onStart();
+
+//        getListContent();
+
+//        ArrayAdapter<Task> adapter = new ArrayAdapter<Task>(this,
+//                R.layout.content_requester_activity_main_listitem, subList);
+//        rTaskList.setAdapter(adapter);
+
     }
 
+    ///////////////////////////////onDestroy////////////////////////////////////////////////////
+
+    protected void onDestroy() {
+        super.onDestroy();
+
+    }
+
+
+    ////////////////////////////////////// other ////////////////////////////////////////////////
+
+    //toolBar menu
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.requester_activity_main, menu);
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.requester_activity_main_toolbar,menu);
         return true;
+        //return super.onCreateOptionsMenu(menu);
     }
 
+    //search button
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
+        int res_id = item.getItemId();
+        switch(res_id){
+            case R.id.search_button:
+                //
+                return true;
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 
-    @SuppressWarnings("StatementWithEmptyBody")
-    @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
-        int id = item.getItemId();
+//    private void getListContent(){
+//        Task t1 = new Task("name1","DONE","des1",null,null,
+//                null,1,1f,1.1,1,null);
+//        Task t2 = new Task("name2","DONE","des2",null,null,
+//                null,2,2f,2.2,2,null);
+//        Task t3 = new Task("name3","BIDDED","des3",null,null,
+//                null,3,3f,3.3,3,null);
+//
+//        subList.add(t1);
+//        subList.add(t2);
+//        subList.add(t3);
+//    }
 
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
-
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
-        }
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
-        return true;
-    }
+//    private void loadIntoList(){
+//
+//    }
 }
