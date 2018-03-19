@@ -24,7 +24,7 @@ public class Task implements Parcelable {
     private double Assigned_Pri;
     private float distance;
     private Location Elocation;
-    private ArrayList<Bidded> Bidded_History;
+    private ArrayList<Bidded> Bidded_History = new ArrayList<Bidded>();
 
     public Task(String name, String status, String description,
                 Location Slocation, Location Elocation,
@@ -165,7 +165,7 @@ public class Task implements Parcelable {
         FetchLowestPrice();
     }
 
-    public Task(Parcel in) {
+    protected Task(Parcel in) {
         name = in.readString();
         status = in.readString();
         description = in.readString();
