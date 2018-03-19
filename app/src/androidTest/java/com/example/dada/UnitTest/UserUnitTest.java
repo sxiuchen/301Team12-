@@ -1,86 +1,146 @@
 package com.example.dada.UnitTest;
 
-import android.media.Image;
+import android.os.AsyncTask;
+import android.test.ActivityInstrumentationTestCase2;
+import android.util.Log;
+import android.widget.EditText;
 
+import com.example.dada.Model.OnAsyncTaskCompleted;
 import com.example.dada.Model.User;
+import com.example.dada.R;
+import com.example.dada.View.LoginActivity;
+import com.robotium.solo.Solo;
 
-import org.junit.Test;
-
-import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertThat;
-
-
-/**
- * Created by kq on 2/25/2018.
- */
-
-public class UserUnitTest {
-    String testUser_name = "Test User";
-    int testID = 123;
-    int testType = 1;
-    Image testProfile_photo = null;
-    int testPhone_num = 1234567;
-    User newUser = new User(testUser_name,testID, testType, testProfile_photo, testPhone_num);
+import java.util.UUID;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
 
 
-    @Test
-    public void testGetUser_name(){
-        assertThat(newUser.getUser_name(),is(testUser_name));
+public class UserUnitTest extends ActivityInstrumentationTestCase2<LoginActivity> {
+
+    private Solo solo;
+
+    /**
+     * Mock callback method
+     */
+    OnAsyncTaskCompleted mockTask = new OnAsyncTaskCompleted() {
+        @Override
+        public void onTaskCompleted(Object o) {
+
+        }
+    };
+
+    public UserUnitTest() {
+        super("com.example.dada.View", LoginActivity.class);
     }
 
-    @Test
-    public void testSetUser_name(){
-        String testUser_name2 = "Test User 2";
-        newUser.setUser_name(testUser_name2);
-        assertThat(newUser.getUser_name(),is(testUser_name2));
+    @Override
+    public void setUp() throws Exception {
+        Log.d("TAG1", "setUp()");
+        solo = new Solo(getInstrumentation(), getActivity());
     }
 
-    @Test
-    public void testGetID(){
-        assertThat(newUser.getID(),is(testID));
+    @Override
+    protected void tearDown() throws Exception {
+        solo.finishOpenedActivities();
     }
 
-    @Test
-    public void testSetID(){
-        int testID2 = 1234;
-        newUser.setID(testID2);
-        assertThat(newUser.getID(),is(testID2));
+    /*
+    This method is only here for making
+    Junit test method work on robotinum
+    http://stackoverflow.com/questions/11390276/android-junit-tests-not-detecting-in-robotium
+    Author: BlackHatSamurai
+     */
+    public void testClickButton() {
+        solo.enterText((EditText) solo.getView(R.id.edit_text_login_username), "balabl");
+        solo.clickOnButton("Requester");
+        solo.clickOnButton("Login");
+        assertTrue(solo.waitForText("User does not exist, please signup"));
     }
 
-    @Test
-    public void testGetType(){
-        assertThat(newUser.getType(),is(testType));
+    // http://stackoverflow.com/questions/7588584/android-asynctask-check-status
+
+    /**
+     * Test case for creating new user
+     * and get user profile method.
+     *
+     * Generally, the interaction with database or server should be mocked
+     * up in the unittest (waste of resource, and possbility to mess up
+     * the production environment). Also, this test is not guarantee to pass.
+     */
+    public void testCreateUser() {
+        String userName = "sfeng3_tutu";
+        String mobileNumber = "100-1000-2000";
+        String emailAddress = userName + "@cs.ualberta.ca";
+        User user = new User(userName, mobileNumber, emailAddress);
+        user.setID(UUID.randomUUID().toString());
+
+        User.CreateUserTask createUserTask = new User.CreateUserTask(mockTask);
+        createUserTask.execute(user);
+        // Hang around till is done
+        AsyncTask.Status taskStatus;
+        do {
+            taskStatus = createUserTask.getStatus();
+        } while (taskStatus != AsyncTask.Status.FINISHED);
+
+        try {
+            TimeUnit.SECONDS.sleep(5);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        String query = String.format(
+                "{\n" +
+                        "    \"query\": {\n" +
+                        "       \"term\" : { \"userName\" : \"%s\" }\n" +
+                        "    }\n" +
+                        "}", userName);
+        Log.d("Debug", query);
+
+        User.GetUserProfileTask getUserTask = new User.GetUserProfileTask(mockTask);
+        getUserTask.execute(query);
+        User getUser = new User();
+        // Hang around till is done
+        AsyncTask.Status anotherStatus;
+        do {
+            anotherStatus = getUserTask.getStatus();
+        } while (anotherStatus != AsyncTask.Status.FINISHED);
+
+        try {
+            getUser = getUserTask.get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+        assertEquals(user.getID(), getUser.getID());
+        assertEquals(user, getUser);
     }
 
-    @Test
-    public void testSetType(){
-        int testType2 = 2;
-        newUser.setType(testType2);
-        assertThat(newUser.getType(),is(testType2));
-    }
+    /**
+     * Test cases for search user exist task
+     */
+    public void testSearchUserExist() {
+        String query = String.format(
+                "{\n" +
+                        "    \"query\": {\n" +
+                        "       \"term\" : { \"userName\" : \"%s\" }\n" +
+                        "    }\n" +
+                        "}", "sfeng3");
+        User.SearchUserExistTask task = new User.SearchUserExistTask();
+        task.execute(query);
+        // Hang around till it's done
+        AsyncTask.Status taskStatus;
+        do {
+            taskStatus = task.getStatus();
+        } while (taskStatus != AsyncTask.Status.FINISHED);
 
-    @Test
-    public void testGetProfile_photo(){
-        assertThat(newUser.getProfile_photo(),is(testProfile_photo));
+        try {
+            assertTrue(task.get());
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
     }
-
-    @Test
-    public void testSetProfile_photo(){
-        Image testProfile_photo2 = null;
-        newUser.setProfile_photo(testProfile_photo2);
-        assertThat(newUser.getProfile_photo(),is(testProfile_photo2));
-    }
-
-    @Test
-    public void testGetPhone_num(){
-        assertThat(newUser.getPhone_num(),is(testPhone_num));
-    }
-
-    @Test
-    public void testSetPhone_num(){
-        int testPhone_num2 = 12345678;
-        newUser.setPhone_num(testPhone_num2);
-        assertThat(newUser.getPhone_num(),is(testPhone_num2));
-    }
-
 }

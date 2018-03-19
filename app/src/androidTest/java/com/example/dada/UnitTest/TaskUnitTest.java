@@ -2,163 +2,170 @@ package com.example.dada.UnitTest;
 
 import android.location.Location;
 import android.media.Image;
+import android.os.AsyncTask;
+import android.test.ActivityInstrumentationTestCase2;
+import android.util.Log;
+import android.widget.EditText;
+
+import com.example.dada.Exception.TaskException;
+import com.example.dada.Model.OnAsyncTaskCompleted;
+import com.example.dada.Model.Task.NormalTask;
+import com.example.dada.Model.Task.RequestedTask;
+import com.example.dada.Model.Task.Task;
+import com.example.dada.R;
+import com.example.dada.View.LoginActivity;
+import com.robotium.solo.Solo;
 
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.Random;
+import java.util.UUID;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
 /**
- * Created by rick on 25/02/2018.
+ * Unit test cases for task model Since the controller class are designed to be as thick as
+ * possible, all business logic are inside the model class, which fits the MVC pattern. Therefore,
+ * it's pretty much no need to test controller class.
  */
+public class TaskUnitTest extends ActivityInstrumentationTestCase2<LoginActivity> {
 
-public class TaskUnitTest{
-    public static final String UserName = "User1";
-    public static final String Status = "Done";
-    public static final String Description = "good";
-    public static final Location slocation = new Location("");
-    public static final Location elocation = new Location("");
-    public static final Image picture = null;
-    public static final int requester = 0;
-    public static final double assigned_pri = 10.50;
-    public static final int assigned_requester = 0;
-    public static final float distance = 2.345f;
-    Bidded newBid = new Bidded(2.4, 3);
-    ArrayList<Bidded> Bidded_History = new ArrayList<Bidded>();
-    Task newTask = new Task(UserName, Status, Description, slocation, elocation, picture, requester, distance, assigned_pri, assigned_requester, Bidded_History);
+    private Solo solo;
 
+    /**
+     * Mock callback method
+     */
+    OnAsyncTaskCompleted mockTask = new OnAsyncTaskCompleted() {
+        @Override
+        public void onTaskCompleted(Object o) {
 
-    @Test
-    public void testGetName(){
-        assertThat(newTask.getName(),is(UserName));
+        }
+    };
+
+    /**
+     * Instantiates a new Task test.
+     */
+    public TaskUnitTest() {
+        super("com.example.dada.View", LoginActivity.class);
     }
 
-    @Test
-    public void testGetStatus(){
-        assertThat(newTask.getStatus(),is(Status));
+    @Override
+    public void setUp() throws Exception {
+        Log.d("TAG1", "setUp()");
+        solo = new Solo(getInstrumentation(), getActivity());
     }
 
-    @Test
-    public void testGetDescription(){
-        assertThat(newTask.getDescription(),is(Description));
+    @Override
+    protected void tearDown() throws Exception {
+        solo.finishOpenedActivities();
     }
 
-    @Test
-    public void testGetLocation(){
-        assertThat(newTask.getLocation(),is(slocation));
+    /**
+     * This method is only here for making Junit test method work on robotinum
+     * http://stackoverflow.com/questions/11390276/android-junit-tests-not-detecting-in-robotium
+     * Author: BlackHatSamurai
+     */
+    public void testClickButton() {
+        solo.enterText((EditText) solo.getView(R.id.edit_text_login_username), "balabl");
+        solo.clickOnButton("Requester");
+        solo.clickOnButton("Login");
+        assertTrue(solo.waitForText("User does not exist, please signup"));
     }
 
-    @Test
-    public void testGetPicture(){
-        assertThat(newTask.getPicture(),is(picture));
+    /**
+     * Test update task. Once the task is modified,
+     * created, this method would be called to update task
+     * to the server. This test covers all update method
+     * for the rest of tests. In other word, no need to implement
+     * UpdateRequestTask in the rest of the test cases.
+     * Generally, the interaction with database or server should be mocked
+     * up in the unittest (waste of resource, and possbility to mess up
+     * the production environment). Also, this test is not guarantee to pass.
+     */
+    public void testUpdateRequest() {
+        Task.CreateTaskTask createTaskTask = new Task.CreateTaskTask(null);
+        String requesterUserName = "sfeng3_tutu";
+        Task task = new RequestedTask("title1", "description1", requesterUserName);
+        task.setID(UUID.randomUUID().toString());
+        createTaskTask.execute(task);
+        AsyncTask.Status taskStatus;
+        do {
+            taskStatus = createTaskTask.getStatus();
+        } while (taskStatus != AsyncTask.Status.FINISHED);
+
+        // Wait for task to finished
+        try {
+            TimeUnit.SECONDS.sleep(5);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        String query = String.format(
+                "{\n" +
+                        "    \"filter\": {\n" +
+                        "       \"bool\" : {\n" +
+                        "           \"must\" : [\n " +
+                        "               { \"term\": {\"requesterUserName\": \"%s\"} },\n" +
+                        "           ]\n" +
+                        "       }\n" +
+                        "    }\n" +
+                        "}", requesterUserName);
+
+        Task.GetTasksListTask getTasksListTask = new Task.GetTasksListTask(null);
+        getTasksListTask.execute(query);
+        AsyncTask.Status anotherStatus;
+        do {
+            anotherStatus = getTasksListTask.getStatus();
+        } while (anotherStatus != AsyncTask.Status.FINISHED);
+
+        ArrayList<NormalTask> getTasks = new ArrayList<>();
+        try {
+            getTasks = getTasksListTask.get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+        assertEquals(task.getID(), getTasks.get(0).getID());
+        assertEquals(task, getTasks.get(0));
     }
 
-    @Test
-    public void testGetRequestor(){
-        assertThat(newTask.getRequester(),is(requester));
+    /**
+     * Test requester confirm task's completion.
+     */
+    public void testRequesterConfirmTaskComplete() {
+        Task request = new RequestedTask("title1", "description1", "sfeng3");
+        request.requesterConfirmTaskComplete();
+        assertTrue(request.getIsCompleted());
     }
 
-    @Test
-    public void testGetAssigned_Requester() {
-        Bidded_History.add(newBid);
-        assertThat(newTask.getAssigned_Requester(), is(assigned_requester));
+    /**
+     * Test requester assign provider.
+     */
+    public void testRequesterAssignProvider() {
+        Task request = new RequestedTask("title1", "description1", "sfeng3");
+        request.providerBidTask("yz6_1");
+        request.providerBidTask("yz6_2");
+        try {
+            request.requesterAssignProvider("yz6_1");
+        } catch (TaskException e) {
+            e.printStackTrace();
+        }
+        assertEquals(request.getProviderUserName(), "yz6_1");
+        assertNull(request.getProviderList());
     }
 
-    @Test
-    public void testGetAssigned_Pri(){
-        assertThat(newTask.getAssigned_Pri(), is(assigned_pri));
+    /**
+     * Test provider bid task.
+     */
+    public void testRequesterBidTask() {
+        Task request = new RequestedTask("title1", "description1", "sfeng3");
+        request.providerBidTask("yz6");
+        assertTrue(request.getProviderUserName().contains("yz6"));
     }
 
-    @Test
-    public void testGetELocation(){
-        assertThat(newTask.getElocation(),is(elocation));
-    }
-
-    @Test
-    public void testGetDistance(){
-        assertThat(newTask.getDistance(),is(distance));
-    }
-
-    @Test
-    public void testGetBidded_History(){
-        assertThat(newTask.getBidded_History(),is(Bidded_History));
-    }
-
-    @Test
-    public void testSetName(){
-        String name1 = "User2";
-        newTask.setName(name1);
-        assertThat(newTask.getName(),is(name1));
-    }
-
-    @Test
-    public void testSetStatus(){
-        String status1 = "Not Done";
-        newTask.setStatus(status1);
-        assertThat(newTask.getStatus(),is(status1));
-    }
-
-    @Test
-    public void testSetDescription(){
-        String description1 = "Not Done";
-        newTask.setDescription(description1);
-        assertThat(newTask.getDescription(),is(description1));
-    }
-
-    @Test
-    public void testSetSlocation(){
-        Location slocation1 = new Location("");
-        newTask.setSlocation(slocation1);
-        assertThat(newTask.getLocation(),is(slocation1));
-    }
-
-    @Test
-    public void testSetPicture(){
-        Image picture1 = null;
-        newTask.setPicture(picture1);
-        assertThat(newTask.getPicture(),is(picture1));
-    }
-
-    @Test
-    public void testSetRequester(){
-        int requester1 = 0;
-        newTask.setRequester(requester1);
-        assertThat(newTask.getRequester(),is(requester1));
-    }
-
-    @Test
-    public void testSetAssigned_Requeste(){
-        int assigned_requester1 = 0;
-        newTask.setAssigned_Requester(assigned_requester1);
-        assertThat(newTask.getAssigned_Requester(),is(assigned_requester1));
-    }
-
-    @Test
-    public void testSetAssigned_Pri(){
-        double assigned_pri1 = 10.50;
-        newTask.setAssigned_Pri(assigned_pri1);
-        assertThat(newTask.getAssigned_Pri(),is(assigned_pri1));
-    }
-
-    @Test
-    public void testSetDistance(){
-        float distance1 = 4.345f;
-        newTask.setDistance(distance1);
-        assertThat(newTask.getDistance(),is(distance1));
-    }
-
-    @Test
-    public void testSetElocation(){
-        Location elocation1 = new Location("");
-        newTask.setElocation(elocation1);
-        assertThat(newTask.getElocation(),is(elocation1));
-    }
-
-    @Test
-    public void testSetBidded_History(){
-        ArrayList<Bidded> Bidded_History1 = new ArrayList();
-        newTask.setBidded_History(Bidded_History1);
-        assertThat(newTask.getBidded_History(),is(Bidded_History1));
-    }
 }

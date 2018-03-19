@@ -16,6 +16,7 @@ import com.searchly.jestdroid.DroidClientConfig;
 import com.searchly.jestdroid.JestClientFactory;
 import com.searchly.jestdroid.JestDroidClient;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -469,4 +470,8 @@ public abstract class Task {
     public Boolean getIsCompleted(){ return this.isCompleted; }
 
     public void setIsCompleted(boolean isCompleted){ this.isCompleted = isCompleted; }
+
+    public ArrayList<String> getProviderList(){ return this.providerList; }
+
+    public void setProviderList(ArrayList<String> providerList){ this.providerList = providerList; }
 }
