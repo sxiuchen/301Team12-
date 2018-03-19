@@ -3,6 +3,8 @@ package com.example.dada.Util;
 import android.content.Context;
 import android.util.Log;
 
+import com.example.dada.Model.Task.NormalTask;
+import com.example.dada.Model.Task.Task;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -13,20 +15,16 @@ import java.util.ArrayList;
  */
 public class TaskUtil {
 
-//    public static String serializer(Task request) {
-//        Gson gson = new GsonBuilder().registerTypeAdapter(GeoPoint.class, new GeoPointConverter()).create();
-//        return gson.toJson(request);
-//    }
-//
-//    public static Task deserializer(String string) {
-//        Gson gson = new GsonBuilder().registerTypeAdapter(GeoPoint.class, new GeoPointConverter()).create();
-//        return gson.fromJson(string, NormalRequest.class);
-//    }
-//
-//    public static Gson customGsonBuilder() {
-//        return new GsonBuilder().registerTypeAdapter(GeoPoint.class, new GeoPointConverter()).create();
-//    }
-//
+    public static String serializer(Task task) {
+        Gson gson = new Gson();
+        return gson.toJson(task);
+    }
+
+    public static Task deserializer(String string) {
+        Gson gson = new Gson();
+        return gson.fromJson(string, NormalTask.class);
+    }
+
 //    public static String generateOfflineRequestFileName(Task request) {
 //        return "offline-" + request.getID() + ".json";
 //    }
