@@ -328,7 +328,7 @@ public abstract class Task {
             // assume that search_parameters[0] is the only search term we are interested in using
             Search search = new Search.Builder(search_parameters[0])
                     .addIndex("team12")
-                    .addType("request")
+                    .addType("task")
                     .build();
             try {
                 SearchResult result = client.execute(search);
@@ -391,7 +391,7 @@ public abstract class Task {
      *
      * @param providerUserName the provider user name who bids the requested task
      */
-    public void providerAcceptRequest(String providerUserName) {
+    public void providerBidTask(String providerUserName) {
         if ( this.status == "Requested" ){
             this.status = "Bidded";
         }
