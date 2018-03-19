@@ -40,7 +40,9 @@ public abstract class Task {
     private String title;
     private String taskDescription;
     private String status;
+    private double price;
 
+    private ArrayList<String> providerList = new ArrayList<>();
 
     private transient static JestDroidClient client;
 
@@ -64,23 +66,23 @@ public abstract class Task {
         this.status =
     }
 
-    public Task(String name, String status, String description,
-                Location Slocation, Location Elocation,
-                Image picture, int Requester, float distance,
-                double Assigned_Pri, int Assigned_Requester,
-                ArrayList<BiddedTask> Bidded_History){
-        this.name = name;
-        this.status = status;
-        this.description = description;
-        this.Slocation = Slocation;
-        this.picture = picture;
-        this.Requester = Requester;
-        this.Assigned_Requester = Assigned_Requester;
-        this.Assigned_Pri = Assigned_Pri;
-        this.distance = distance;
-        this.Elocation = Elocation;
-        this.Bidded_History = Bidded_History;
-    }
+//    public Task(String name, String status, String description,
+//                Location Slocation, Location Elocation,
+//                Image picture, int Requester, float distance,
+//                double Assigned_Pri, int Assigned_Requester,
+//                ArrayList<BiddedTask> Bidded_History){
+//        this.name = name;
+//        this.status = status;
+//        this.description = description;
+//        this.Slocation = Slocation;
+//        this.picture = picture;
+//        this.Requester = Requester;
+//        this.Assigned_Requester = Assigned_Requester;
+//        this.Assigned_Pri = Assigned_Pri;
+//        this.distance = distance;
+//        this.Elocation = Elocation;
+//        this.Bidded_History = Bidded_History;
+//    }
 
 
 
@@ -148,18 +150,26 @@ public abstract class Task {
         this.Bidded_History = Bidded_History;
     }
 
+    public String getID(){ return this.ID; }
+
+    public void setID(String ID){
+        this.ID = ID;
+    }
+
+    public Double getPrice(){ return this.price; }
+
+    public void setPrice(Double price){ this.price = price; }
+
+    public String getTitle(){ return this.title; }
+
+    public void setTitle(String title){ this.title = title; }
+
     public String getTaskDescription(){
         return this.taskDescription;
     }
 
     public void setTaskDescription(String taskDescription){
         this.taskDescription = taskDescription;
-    }
-
-    public String getID(){ return this.ID; }
-
-    public void setID(String ID){
-        this.ID = ID;
     }
 
     public String getStatus(){
@@ -169,6 +179,8 @@ public abstract class Task {
     public void setStatus(String status){
         this.status = status;
     }
+
+
 
     /**
      * Static class that adds the task
@@ -469,6 +481,15 @@ public abstract class Task {
     public String toString() {
         if (taskDescription == null) return null;
         return taskDescription;
+    }
+
+    /**
+     * Provider bids the requested task.
+     *
+     * @param providerUserName the provider user name who bids the requested task
+     */
+    public void providerAcceptRequest(String providerUserName) {
+        providerList.add(providerUserName);
     }
 
 }

@@ -2,6 +2,13 @@ package com.example.dada.Controller;
 
 import android.content.Context;
 
+import com.example.dada.Model.OnAsyncTaskCompleted;
+import com.example.dada.Model.OnAsyncTaskFailure;
+import com.example.dada.Model.Task.NormalTask;
+import com.example.dada.Model.Task.Task;
+import com.example.dada.Util.FileIOUtil;
+import com.example.dada.Util.TaskUtil;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.concurrent.ExecutionException;
@@ -10,7 +17,7 @@ import java.util.concurrent.ExecutionException;
  * Request model's controller, a glue between Activity and Model. Give access for activity(View) to
  * modify and update model.
  */
-public class RequestController {
+public class TaskController {
 
     /**
      * The Listener, callback method when the async task is done
@@ -23,25 +30,25 @@ public class RequestController {
      *
      * @param listener the listener, custom callback method
      */
-    public RequestController(OnAsyncTaskCompleted listener) {
+    public TaskController(OnAsyncTaskCompleted listener) {
         this.listener = listener;
     }
 
-    public RequestController(OnAsyncTaskCompleted listener, OnAsyncTaskFailure offlineHandler) {
+    public TaskController(OnAsyncTaskCompleted listener, OnAsyncTaskFailure offlineHandler) {
         this.listener = listener;
         this.offlineHandler = offlineHandler;
     }
 
     /**
-     * Create a new request and send it to the server
+     * Create a new task and send it to the server
      *
-     * @param request The request to be created
+     * @param task The request to be created
      */
-    public void createRequest(Request request) {
-        Request.CreateRequestTask task = new Request.CreateRequestTask(listener, offlineHandler);
+    public void createTask(Task task) {
+        Task.CreateTaskTask t = new Task.CreateTaskTask(listener, offlineHandler);
         try {
 //            request.setID(UUID.randomUUID().toString());
-            task.execute(request);
+            t.execute(task);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -53,8 +60,8 @@ public class RequestController {
      *
      * @param request The request to be updated
      */
-    public void updateRequest(Request request) {
-        Request.UpdateRequestTask task = new Request.UpdateRequestTask(listener, offlineHandler);
+    public void updateRequest(Task request) {
+        Task.UpdateTaskTask task = new Task.UpdateTaskTask(listener, offlineHandler);
         task.execute(request);
     }
 
@@ -63,8 +70,8 @@ public class RequestController {
      *
      * @param request The request to be deleted
      */
-    public void deleteRequest(Request request) {
-        Request.DeleteRequestTask task = new Request.DeleteRequestTask(listener);
+    public void deleteTask(Task request) {
+        Task.DeleteTaskTask task = new Task.DeleteTaskTask(listener);
         task.execute(request);
     }
 
@@ -73,11 +80,11 @@ public class RequestController {
      *
      * @return An ArrayList of requests
      */
-    public ArrayList<NormalRequest> getAllRequest() {
-        Request.GetRequestsListTask task = new Request.GetRequestsListTask(listener);
+    public ArrayList<NormalTask> getAllTask() {
+        Task.GetTasksListTask task = new Task.GetTasksListTask(listener);
         task.execute("");
 
-        ArrayList<NormalRequest> requests = new ArrayList<>();
+        ArrayList<NormalTask> requests = new ArrayList<>();
 
         try {
             requests =  task.get();
@@ -97,7 +104,7 @@ public class RequestController {
      */
     // http://stackoverflow.com/questions/36805014/how-to-merge-geo-distance-filter-with-bool-term-query
     // Author: Val
-    public void searchRequestByGeoLocation(GeoPoint location, String driverUserName) {
+    public void searchTaskByGeoLocation(GeoPoint location, String driverUserName) {
         String query = String.format(
                 "{\n" +
                         "    \"filter\": {\n" +
@@ -123,7 +130,7 @@ public class RequestController {
                         "    }\n" +
                         "}", driverUserName, location.getLongitude(), location.getLatitude());
 
-        Request.GetRequestsListTask task = new Request.GetRequestsListTask(listener);
+        Task.GetTasksListTask task = new Task.GetTasksListTask(listener);
         task.execute(query);
     }
 
@@ -134,7 +141,7 @@ public class RequestController {
      * @param driverUserName the driver user name
      * @return An arraylist of matching request.
      */
-    public void searchRequestByKeyword(String keyword, String driverUserName) {
+    public void searchTaskByKeyword(String keyword, String driverUserName) {
         String query = String.format(
                 "{\n" +
                         "    \"query\": {\n" +
@@ -152,7 +159,7 @@ public class RequestController {
                         "    }\n" +
                         "}", keyword, driverUserName);
 
-        Request.GetRequestsListTask task = new Request.GetRequestsListTask(listener);
+        Task.GetTasksListTask task = new Task.GetTasksListTask(listener);
         task.execute(query);
     }
 
@@ -162,7 +169,7 @@ public class RequestController {
      *
      * @param driverUserName the driver's username
      */
-    public void getDriverAcceptedRequest(String driverUserName) {
+    public void getDriverAcceptedTask(String driverUserName) {
         String query = String.format(
                 "{\n" +
                         "    \"filter\": {\n" +
@@ -176,7 +183,7 @@ public class RequestController {
                         "       }\n" +
                         "    }\n" +
                         "}", driverUserName);
-        Request.GetRequestsListTask task = new Request.GetRequestsListTask(listener);
+        Task.GetTasksListTask task = new Task.GetTasksListTask(listener);
         task.execute(query);
     }
 
@@ -185,7 +192,7 @@ public class RequestController {
      *
      * @param driverUserName the driver's username
      */
-    public void getDriverPendingRequest(String driverUserName) {
+    public void getDriverPendingTask(String driverUserName) {
         String query = String.format(
                 "{\n" +
                         "    \"filter\": {\n" +
@@ -199,7 +206,7 @@ public class RequestController {
                         "       }\n" +
                         "    }\n" +
                         "}", driverUserName);
-        Request.GetRequestsListTask task = new Request.GetRequestsListTask(listener);
+        Task.GetTasksListTask task = new Task.GetTasksListTask(listener);
         task.execute(query);
     }
 
@@ -208,7 +215,7 @@ public class RequestController {
      *
      * @param driverUserName the driver's user name
      */
-    public void getDriverCompletedRequest(String driverUserName) {
+    public void getDriverCompletedTask(String driverUserName) {
         String query = String.format(
                 "{\n" +
                         "    \"filter\": {\n" +
@@ -220,7 +227,7 @@ public class RequestController {
                         "       }\n" +
                         "    }\n" +
                         "}", driverUserName);
-        Request.GetRequestsListTask task = new Request.GetRequestsListTask(listener);
+        Task.GetTasksListTask task = new Task.GetTasksListTask(listener);
         task.execute(query);
     }
 
@@ -229,7 +236,7 @@ public class RequestController {
      *
      * @param riderUserName the rider's user name
      */
-    public void getRiderCompletedRequest(String riderUserName) {
+    public void getRiderCompletedTask(String riderUserName) {
         String query = String.format(
                 "{\n" +
                         "    \"filter\": {\n" +
@@ -241,7 +248,7 @@ public class RequestController {
                         "       }\n" +
                         "    }\n" +
                         "}", riderUserName);
-        Request.GetRequestsListTask task = new Request.GetRequestsListTask(listener);
+        Task.GetTasksListTask task = new Task.GetTasksListTask(listener);
         task.execute(query);
     }
 
@@ -250,7 +257,7 @@ public class RequestController {
      *
      * @param riderUserName the rider's username
      */
-    public void getRiderInProgressRequest(String riderUserName) {
+    public void getRiderInProgressTask(String riderUserName) {
         String query = String.format(
                 "{\n" +
                         "    \"filter\": {\n" +
@@ -264,17 +271,17 @@ public class RequestController {
                         "       }\n" +
                         "    }\n" +
                         "}", riderUserName);
-        Request.GetRequestsListTask task = new Request.GetRequestsListTask(listener);
+        Task.GetTasksListTask task = new Task.GetTasksListTask(listener);
         task.execute(query);
     }
 
-    public void getRiderOfflineRequest(String riderUserName, Context context) {
-        ArrayList<String> fileList = RequestUtil.getRiderRequestList(context);
+    public void getRiderOfflineTask(String riderUserName, Context context) {
+        ArrayList<String> fileList = TaskUtil.getRiderTaskList(context);
         if (fileList == null) return;
-        ArrayList<Request> requestsList = FileIOUtil.loadRequestFromFile(context, fileList);
-        Iterator<Request> it = requestsList.iterator();
+        ArrayList<Task> requestsList = FileIOUtil.loadTaskFromFile(context, fileList);
+        Iterator<Task> it = requestsList.iterator();
         while (it.hasNext()) {
-            Request r = it.next();
+            Task r = it.next();
             if (!r.getRiderUserName().equals(riderUserName)) {
                 it.remove();
             }
@@ -288,13 +295,13 @@ public class RequestController {
      * @param driverUserName the driver's user name
      * @param context activity context
      */
-    public void getDriverOfflinePendingRequest(String driverUserName, Context context) {
-        ArrayList<String> fileList = RequestUtil.getDriverRequestList(context);
+    public void getDriverOfflinePendingTask(String driverUserName, Context context) {
+        ArrayList<String> fileList = TaskUtil.getDriverTaskList(context);
         if (fileList == null) return;
-        ArrayList<Request> requestsList = FileIOUtil.loadRequestFromFile(context, fileList);
-        Iterator<Request> it = requestsList.iterator();
+        ArrayList<Task> requestsList = FileIOUtil.loadTaskFromFile(context, fileList);
+        Iterator<Task> it = requestsList.iterator();
         while (it.hasNext()) {
-            Request r = it.next();
+            Task r = it.next();
             if (r.getDriverList() == null) continue;
             if (!r.getDriverList().contains(driverUserName)) {
                 it.remove();
@@ -309,13 +316,13 @@ public class RequestController {
      * @param driverUserName the driver's user name
      * @param context activity context
      */
-    public void getDriverOfflineAcceptedRequest(String driverUserName, Context context) {
-        ArrayList<String> fileList = RequestUtil.getDriverRequestList(context);
+    public void getDriverOfflineAcceptedTask(String driverUserName, Context context) {
+        ArrayList<String> fileList = TaskUtil.getDriverTaskList(context);
         if (fileList == null) return;
-        ArrayList<Request> requestsList = FileIOUtil.loadRequestFromFile(context, fileList);
-        Iterator<Request> it = requestsList.iterator();
+        ArrayList<Task> requestsList = FileIOUtil.loadTaskFromFile(context, fileList);
+        Iterator<Task> it = requestsList.iterator();
         while (it.hasNext()) {
-            Request r = it.next();
+            Task r = it.next();
             if (r.getDriverUserName() == null || !r.getDriverUserName().equals(driverUserName)) {
                 it.remove();
             }
@@ -329,15 +336,15 @@ public class RequestController {
      * @param driverUserName the driver's user name
      * @param context activity context
      */
-    public void updateDriverOfflineRequest(String driverUserName, Context context) {
-        ArrayList<String> fileList = RequestUtil.getAcceptedRequestList(context);
+    public void updateDriverOfflineTask(String driverUserName, Context context) {
+        ArrayList<String> fileList = TaskUtil.getAcceptedTaskList(context);
         if (fileList == null) return;
-        ArrayList<Request> requestsList = FileIOUtil.loadRequestFromFile(context, fileList);
-        for (Request r : requestsList) {
+        ArrayList<Task> requestsList = FileIOUtil.loadTaskFromFile(context, fileList);
+        for (Task r : requestsList) {
             if (r.getDriverList() == null || r.getDriverList().contains(driverUserName)) {
-                updateRequest(r);
+                updateTask(r);
                 // Delete file after it has been upload
-                context.deleteFile(RequestUtil.generateAcceptedReqestFileName(r));
+                context.deleteFile(TaskUtil.generateAcceptedReqestFileName(r));
             }
         }
     }
@@ -348,9 +355,9 @@ public class RequestController {
      * @param request        the request
      * @param driverUserName the driver user name
      */
-    public void driverConfirmRequest(Request request, String driverUserName) {
-        request.driverAcceptRequest(driverUserName);
-        updateRequest(request);
+    public void driverConfirmTask(Task request, String driverUserName) {
+        request.driverAcceptTask(driverUserName);
+        updateTask(request);
     }
 
     /**
@@ -358,9 +365,9 @@ public class RequestController {
      *
      * @param request the request to be confirmed completed
      */
-    public void riderConfirmRequestComplete(Request request) {
-        request.riderConfirmRequestComplete();
-        updateRequest(request);
+    public void riderConfirmTaskComplete(Task request) {
+        request.riderConfirmTaskComplete();
+        updateTask(request);
     }
 
     /**
@@ -368,12 +375,12 @@ public class RequestController {
      *
      * @param request        the request to be confirmed by the rider
      * @param driverUserName the driver user name
-     * @throws RequestException the request exception
+     * @throws TaskException the request exception
      */
-    public void riderConfirmDriver(Request request, String driverUserName) throws RequestException {
+    public void riderConfirmDriver(Task request, String driverUserName) throws TaskException {
         request.riderConfirmDriver(driverUserName);
 
-        updateRequest(request);
+        updateTask(request);
     }
 
 
@@ -382,7 +389,7 @@ public class RequestController {
      *
      * @param request the request
      */
-    public void calculateEstimatedFare(Request request) {
+    public void calculateEstimatedFare(Task request) {
         double fare = request.getDistance() * 0.50;
         request.setEstimatedFare(fare);
     }
@@ -393,7 +400,7 @@ public class RequestController {
      * @param request  the request
      * @param distance the distance
      */
-    public void setDistance(Request request, double distance) {
+    public void setDistance(Task request, double distance) {
         request.setDistance(distance);
     }
 }

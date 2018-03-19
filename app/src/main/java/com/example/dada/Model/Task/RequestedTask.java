@@ -14,14 +14,14 @@ public class RequestedTask extends Task {
         super(title, description, "Requested");
     }
 
-//    /**
-//     * Driver accepts the request.
-//     *
-//     * @param driverUserName the driver user name who accepts the ride request
-//     */
-//    @Override
-//    public void driverAcceptRequest(String driverUserName) { // changed from driverConfirmRequest
-//        super.driverAcceptRequest(driverUserName);
-//    }
+    /**
+     * Provider bids the requested task.
+     *
+     * @param providerUserName the provider user name who bids the requested task
+     */
+    @Override
+    public void providerAcceptRequest(String providerUserName) {
+        super.providerAcceptRequest(providerUserName);
+    }
 
 }
