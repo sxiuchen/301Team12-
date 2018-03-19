@@ -20,7 +20,6 @@ import android.widget.Toast;
 import com.example.dada.Controller.TaskController;
 import com.example.dada.Model.OnAsyncTaskCompleted;
 import com.example.dada.Model.OnAsyncTaskFailure;
-import com.example.dada.Model.Task.NormalTask;
 import com.example.dada.Model.Task.Task;
 import com.example.dada.Model.User;
 import com.example.dada.R;
@@ -31,8 +30,22 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * The view of all 4 status of task detail for Requester
+ * all view is in one class be careful with disable or active views
+ */
+
 public class RequesterDetailActivity extends ListActivity {
-    private NormalTask task;
+    /**
+     * @param task is stand for the task
+     * @param statusRequested just help to avoid spelling mistake
+     * @param statusAssigned same
+     * @param statusBidded same
+     * @param statusDone same
+     * @param providerName providerName that be selected(for use in innner class)
+     * @param taskController save and load tha task
+     */
+    private Task task;
     private String statusRequested = "REQUSTED";
     private String statusAssigned = "ASSIGNED";
     private String statusBidded = "BIDDED";
@@ -52,13 +65,17 @@ public class RequesterDetailActivity extends ListActivity {
         }
     });
 
+    /**
+     * main function of requesterdetailclass; control the listview click action
+     * @param savedInstanceState Bundle that tran objects
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_requester_detail);
         //more intent part need                                                              //^_^//
         Intent intent = getIntent();
-        task = (NormalTask)intent.getSerializableExtra("task");
+        task = (Task)intent.getSerializableExtra("task");
 
         setViews();
 
@@ -109,6 +126,10 @@ public class RequesterDetailActivity extends ListActivity {
 
 
     }
+
+    /**
+     * set the view of the activity
+     */
 
     private void setViews(){
         // Hidden the view that will not in requested page
@@ -184,6 +205,10 @@ public class RequesterDetailActivity extends ListActivity {
     }
 
     // from https://www.cnblogs.com/allin/archive/2010/05/11/1732200.html
+
+    /**
+     * set the listview (adapter)
+     */
     private void setListview() {
 
         SimpleAdapter listViewAdapter = new SimpleAdapter(this, setListItem(),
@@ -192,6 +217,10 @@ public class RequesterDetailActivity extends ListActivity {
         setListAdapter(listViewAdapter);
     }
 
+    /**
+     * perpare the thing for listview
+     * @return list of map(listview item content)
+     */
     private List<Map<String, Object>> setListItem() {
         List<Map<String, Object>> itemList = new ArrayList<Map<String, Object>>();
         ArrayList<String> providerNames = task.getProviderList();
@@ -209,17 +238,26 @@ public class RequesterDetailActivity extends ListActivity {
         return itemList;
     }
 
+    /**
+     * done button click
+     * @param view click action
+     */
     public void doneOnClick(View view) {
         if (task.getStatus().equals(statusAssigned)) {
-            task.setStatus(statusDone);
+            task.requesterConfirmTaskComplete();
             taskController.updateTask(task);
             setViews();
         }
     }
 
+    /**
+     * not complete button click
+     * @param view click action
+     */
+
     public void notCompleteOnClick(View view) {
         if (task.getStatus().equals(statusAssigned)) {
-            task.setStatus(statusRequested);
+            task.requesterConfirmTaskNotComplete();
             taskController.updateTask(task);
             setViews();
         }
