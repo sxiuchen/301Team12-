@@ -34,7 +34,7 @@ public class RequesterViewTest extends ActivityInstrumentationTestCase2 {
     public void Detail_test(){
         // check current activity
         solo.assertCurrentActivity("Wrong Activity", RequesterDetailActivity.class);
-        solo.getView(R.id.textViewStatus)
+        solo.getView(R.id.textViewStatus);
 
     }
 
