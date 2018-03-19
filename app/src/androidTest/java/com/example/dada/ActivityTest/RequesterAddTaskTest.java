@@ -18,6 +18,7 @@ import android.util.Log;
 import com.example.dada.R;
 import com.example.dada.View.RequesterAddTaskActivity;
 import com.example.dada.View.RequesterBrowseTaskActivity;
+import com.example.dada.View.Requester_MainActivity.RequesterMainActivity;
 import com.robotium.solo.Solo;
 import android.widget.EditText;
 import com.example.dada.View.LoginActivity;
@@ -47,7 +48,7 @@ public class RequesterAddTaskTest extends ActivityInstrumentationTestCase2{
         solo.assertCurrentActivity("Wrong Activity", RequesterAddTaskTest.class);
         solo.getView(R.layout.activity_requester_add_task);
         solo.clickOnButton(R.id.newTask_done_button);
-        solo.assertCurrentActivity("Wrong Activity", RequesterBrowseTaskActivity.class);
+        solo.assertCurrentActivity("Wrong Activity", RequesterMainActivity.class);
     }
 
 
