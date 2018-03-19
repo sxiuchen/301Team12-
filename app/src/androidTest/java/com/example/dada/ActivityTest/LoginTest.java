@@ -10,6 +10,8 @@ import com.robotium.solo.Solo;
 import android.widget.EditText;
 import com.example.dada.View.LoginActivity;
 
+import junit.framework.TestCase;
+
 /**
  * Intent test for log in
  */

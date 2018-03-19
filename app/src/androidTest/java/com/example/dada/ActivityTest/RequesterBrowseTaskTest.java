@@ -5,15 +5,16 @@ import android.test.ActivityInstrumentationTestCase2;
 import android.util.Log;
 
 import com.example.dada.R;
+import com.example.dada.View.RequesterBrowseTaskActivity;
 import com.robotium.solo.Solo;
 import android.widget.EditText;
-import com.example.dada.View.RequesterDetailActivity;
+import com.example.dada.View.LoginActivity;
 
-public class RequesterDetailTest extends ActivityInstrumentationTestCase2{
+public class RequesterBrowseTaskTest extends ActivityInstrumentationTestCase2 {
     private Solo solo;
 
-    public RequesterDetailTest(){
-        super(com.example.dada.View.LoginActivity.class);
+    public RequesterBrowseTaskTest() {
+        super(com.example.dada.View.RequesterBrowseTaskActivity.class);
     }
 
     public void testStart() throws Exception {
@@ -28,12 +29,11 @@ public class RequesterDetailTest extends ActivityInstrumentationTestCase2{
     }
 
     /**
-     * Test for detail click
+     * Test for list click
      */
-    public void testdetail(){
-        solo.assertCurrentActivity("Wrong Activity", RequesterDetailActivity.class);
+    public void Testrequest() {
+        solo.assertCurrentActivity("Wrong Activity", RequesterBrowseTaskActivity.class);
         solo.clickInList(0);
-
     }
 
 
