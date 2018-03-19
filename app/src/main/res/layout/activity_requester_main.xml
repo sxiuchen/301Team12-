@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.dada.View.RequesterMainActivity"
+    tools:context="com.example.dada.View.Requester_MainActivity.RequesterMainActivity"
     >
 
     <android.support.design.widget.AppBarLayout

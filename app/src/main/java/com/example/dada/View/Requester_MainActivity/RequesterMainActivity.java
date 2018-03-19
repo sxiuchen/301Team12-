@@ -1,4 +1,4 @@
-package com.example.dada.View;
+package com.example.dada.View.Requester_MainActivity;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -15,7 +15,6 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.example.dada.Model.*;
 import com.example.dada.Model.Task.Task;
 import com.example.dada.R;
 

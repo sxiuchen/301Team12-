@@ -17,6 +17,7 @@ import com.example.dada.Model.OnAsyncTaskCompleted;
 import com.example.dada.Model.User;
 import com.example.dada.R;
 import com.example.dada.Util.FileIOUtil;
+import com.example.dada.View.Requester_MainActivity.RequesterMainActivity;
 
 public class LoginActivity extends AppCompatActivity {
 
