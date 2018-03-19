@@ -1,21 +1,20 @@
-package com.example.dada.Util;
+package com.example.dada.listViewRequester;
 
+import android.app.AlertDialog;
 import android.app.ListActivity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
-import android.location.Location;
-import android.media.Image;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
-import com.example.dada.Model.Bidded;
 import com.example.dada.Model.Task;
 import com.example.dada.R;
 
@@ -31,6 +30,7 @@ public class RequesterDetailActivity extends ListActivity {
     private String statusAssigned = "ASSIGNED";
     private String statusBidded = "BIDDED";
     private String statusDone = "DONE";
+    private Bidded bid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +41,44 @@ public class RequesterDetailActivity extends ListActivity {
         task = (Task)intent.getSerializableExtra("task");
 
         setViews();
+
+        /**
+         * listener of listview click action
+         */
+
+        if (task.getStatus().equals(statusBidded)) {
+            final ListView listView = (ListView)findViewById(R.id.listView);
+            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    bid = task.getBidded_History().get(position);
+                    AlertDialog.Builder builder = new AlertDialog.Builder(RequesterDetailActivity.this);
+                    builder.setMessage("What do you due with" + bid.getProvider_ID()).setTitle("Notofocation");
+
+                    builder.setPositiveButton("Is Him", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            task.setStatus(statusAssigned);
+                            setViews();
+                        }
+                    });
+                    builder.setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+
+                        }
+                    });
+                    builder.setNeutralButton("Delete Him", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            task.delete_bid(bid);
+                            setViews();
+                        }
+                    });
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
+                }
+            });
+        }
 
         
     }
@@ -95,6 +133,8 @@ public class RequesterDetailActivity extends ListActivity {
             textViewName.setText(task.getRequester());
             textViewPhone.setVisibility(View.VISIBLE);
             textViewPhone.setText(task.getRequester());
+            buttonDone.setVisibility(View.VISIBLE);
+            buttonNotComplete.setVisibility(View.VISIBLE);
         }
 
         if (task.getStatus().equals(statusDone)) {
@@ -106,8 +146,6 @@ public class RequesterDetailActivity extends ListActivity {
             textViewName.setText(task.getRequester());
             textViewPhone.setVisibility(View.VISIBLE);
             textViewPhone.setText(task.getRequester());
-            buttonDone.setVisibility(View.VISIBLE);
-            buttonNotComplete.setVisibility(View.VISIBLE);
         }
 
         //Wait to set Picture                                                                //^_^//
@@ -139,5 +177,19 @@ public class RequesterDetailActivity extends ListActivity {
             itemList.add(map);
         }
         return itemList;
+    }
+
+    public void doneOnClick(View view) {
+        if (task.getStatus().equals(statusAssigned)) {
+            task.setStatus(statusDone);
+            setViews();
+        }
+    }
+
+    public void notCompleteOnClick(View view) {
+        if (task.getStatus().equals(statusAssigned)) {
+            task.setStatus(statusRequested);
+            setViews();
+        }
     }
 }
