@@ -31,11 +31,11 @@
             android:label="@string/title_activity_signup"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ProviderMainActivity"
+            android:name=".View.ProviderMainActivity"
             android:label="@string/title_activity_provider_main"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".RequesterActivityMain"
+            android:name=".View.RequesterActivityMain"
             android:label="@string/title_activity_requester_main"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
