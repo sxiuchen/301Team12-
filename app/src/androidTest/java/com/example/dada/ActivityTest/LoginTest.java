@@ -7,7 +7,6 @@ import android.util.Log;
 
 import com.example.dada.R;
 import com.robotium.solo.Solo;
-import junit.framework.TestCase;
 import android.widget.EditText;
 import com.example.dada.View.LoginActivity;
 
@@ -33,12 +32,14 @@ public class LoginTest extends ActivityInstrumentationTestCase2{
         solo = new Solo(getInstrumentation(), getActivity());
     }
 
-
+    /**
+     * Test for invalid and valid log in format
+     */
     public void TestLogin(){
         solo.assertCurrentActivity("Wrong Activity", LoginActivity.class);
         // test not exist user
         solo.enterText((EditText) solo.getView(R.id.edit_text_login_username), "notuser");
-        solo.clickOnButton("provider");
+        solo.clickOnButton("Provider");
         solo.clickOnButton("Login");
         assertTrue(solo.waitForText("User does not exist, please signup"));
 
