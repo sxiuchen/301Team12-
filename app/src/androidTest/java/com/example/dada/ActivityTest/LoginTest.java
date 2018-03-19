@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.test.ActivityInstrumentationTestCase2;
 import android.util.Log;
 
+import com.example.dada.R;
 import com.robotium.solo.Solo;
 import junit.framework.TestCase;
 import android.widget.EditText;
@@ -35,6 +36,18 @@ public class LoginTest extends ActivityInstrumentationTestCase2{
 
     public void TestLogin(){
         solo.assertCurrentActivity("Wrong Activity", LoginActivity.class);
+        // test not exist user
+        solo.enterText((EditText) solo.getView(R.id.edit_text_login_username), "notuser");
+        solo.clickOnButton("provider");
+        solo.clickOnButton("Login");
+        assertTrue(solo.waitForText("User does not exist, please signup"));
+
+        //test exist user
+        solo.assertCurrentActivity("Wrong Activity", LoginActivity.class);
+        solo.clearEditText((EditText) solo.getView(R.id.edit_text_login_username));
+        solo.enterText((EditText) solo.getView(R.id.edit_text_login_username), "user");
+        solo.clickOnButton("provider");
+        solo.clickOnButton("Login");
 
     }
 

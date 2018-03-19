@@ -38,6 +38,8 @@ public class SignUpTest extends ActivityInstrumentationTestCase2{
 
     public void TestSignup(){
         solo.assertCurrentActivity("Wrong Activity", SignupActivity.class);
+        
+
     }
 
 
