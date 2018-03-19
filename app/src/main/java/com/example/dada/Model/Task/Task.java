@@ -393,8 +393,8 @@ public abstract class Task {
      * @param providerUserName the provider user name who bids the requested task
      */
     public void providerBidTask(String providerUserName) {
-        if ( this.status == "Requested" ){
-            this.status = "Bidded";
+        if ( this.status == "REQUESTER" ){
+            this.status = "BIDDED";
         }
         providerList.add(providerUserName);
     }
@@ -412,9 +412,9 @@ public abstract class Task {
             throw new TaskException("This task has not been bidded by any provider yet");
         } else {
             // Assigned provider
-            assert this.status == "Bidded";
+            assert this.status == "BIDDED";
             this.providerUserName = providerUserName;
-            this.status = "Assigned";
+            this.status = "ASSIGNED";
             providerList.clear();
         }
     }
@@ -424,6 +424,14 @@ public abstract class Task {
      */
     public void requesterConfirmTaskComplete() {
         this.isCompleted = true;
+        this.setStatus("DONE");
+    }
+
+    /**
+     * Requester confirm task not complete.
+     */
+    public void requesterConfirmTaskNotComplete() {
+        this.setStatus("REQUESTED");
     }
 
     /**
