@@ -12,11 +12,64 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
+import com.example.dada.Controller.TaskController;
+import com.example.dada.Model.OnAsyncTaskCompleted;
+import com.example.dada.Model.Task.Task;
+import com.example.dada.Model.User;
 import com.example.dada.R;
+import com.example.dada.Util.FileIOUtil;
+
+import java.util.ArrayList;
 
 public class RequesterBrowseRequestActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    private ListView inProgressTaskListView;
+    private ListView completedTaskListView;
+
+    private ArrayAdapter<Task> inProgressTaskAdapter;
+    private ArrayAdapter<Task> completedTaskAdapter;
+
+    private ArrayList<Task> inProgressTaskList = new ArrayList<>();
+    private ArrayList<Task> completedTaskList = new ArrayList<>();
+
+    private TaskController inProgressTaskController = new TaskController(new OnAsyncTaskCompleted() {
+        @Override
+        public void onTaskCompleted(Object o) {
+            inProgressTaskList = (ArrayList<Task>) o;
+            inProgressTaskAdapter.clear();
+            inProgressTaskAdapter.addAll(inProgressTaskList);
+            inProgressTaskAdapter.notifyDataSetChanged();
+        }
+    });
+
+    private TaskController confirmTaskController = new TaskController(new OnAsyncTaskCompleted() {
+        @Override
+        public void onTaskCompleted(Object o) {
+            // save it locally afterware
+            FileIOUtil.saveRequesterTaskInFile((Task) o, getApplicationContext());
+            inProgressTaskAdapter.remove((Task) o);
+            completedTaskAdapter.add((Task) o);
+            inProgressTaskAdapter.notifyDataSetChanged();
+            completedTaskAdapter.notifyDataSetChanged();
+
+        }
+    });
+
+    private TaskController completedTaskController = new TaskController(new OnAsyncTaskCompleted() {
+        @Override
+        public void onTaskCompleted(Object o) {
+            completedTaskList = (ArrayList<Task>) o;
+            completedTaskAdapter.clear();
+            completedTaskAdapter.addAll(completedTaskList);
+            completedTaskAdapter.notifyDataSetChanged();
+        }
+    });
+
+    private User requester;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
