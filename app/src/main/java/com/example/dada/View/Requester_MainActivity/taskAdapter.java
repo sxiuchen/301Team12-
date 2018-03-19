@@ -20,8 +20,8 @@ import java.util.ArrayList;
  */
 
 public class taskAdapter extends BaseAdapter{
-    Activity context;
-    ArrayList<Task> tasks;
+    private Activity context;
+    private ArrayList<Task> tasks;
     private static LayoutInflater inflater = null;
 
     public taskAdapter(Activity context, ArrayList<Task> tasks){

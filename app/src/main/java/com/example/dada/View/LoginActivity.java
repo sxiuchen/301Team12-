@@ -45,8 +45,8 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         //for testing
-//        Intent intentProviderMain = new Intent(getApplicationContext(), RequesterMainActivity.class);
-//        startActivity(intentProviderMain);
+        Intent intentProviderMain = new Intent(getApplicationContext(), RequesterMainActivity.class);
+        startActivity(intentProviderMain);
 
         usernameText = findViewById(R.id.edit_text_login_username);
 
