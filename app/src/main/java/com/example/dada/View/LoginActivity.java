@@ -44,7 +44,7 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        //for testing
+//        //for testing
 //        Intent intentProviderMain = new Intent(getApplicationContext(), RequesterMainActivity.class);
 //        startActivity(intentProviderMain);
 

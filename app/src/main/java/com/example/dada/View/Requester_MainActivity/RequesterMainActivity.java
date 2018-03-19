@@ -2,6 +2,7 @@ package com.example.dada.View.Requester_MainActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -20,13 +21,16 @@ import com.example.dada.Model.Task.NormalTask;
 import com.example.dada.Model.Task.Task;
 import com.example.dada.R;
 import com.example.dada.View.RequesterAddTaskActivity;
+import com.example.dada.View.RequesterDetailActivity;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 public class RequesterMainActivity extends AppCompatActivity {
     private ListView rTaskList;
     private ArrayList<Task> tasks = new ArrayList<>();
     private taskAdapter adapter;
+    private int index;
 
 
     ////////////////////////////////////// onCreate ////////////////////////////////////////////////
@@ -78,7 +82,14 @@ public class RequesterMainActivity extends AppCompatActivity {
         rTaskList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
+//                //get the text to be edit
+//                Task toBeEditTask = tasks.get(position);
+//                index = position;
+//
+//                //send the text to the editActivity and request text after edit
+//                Intent intentRequesterDetailAct = new Intent(RequesterMainActivity.this, RequesterDetailActivity.class);
+//                intentRequesterDetailAct.putExtra("task", (Serializable) toBeEditTask);
+//                startActivityForResult(intentRequesterDetailAct,1);
             }
         });
 
