@@ -2,10 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/301Team12-.iml" filepath="$PROJECT_DIR$/301Team12-.iml" />
-      <module fileurl="file://$PROJECT_DIR$/301Team12-.iml" filepath="$PROJECT_DIR$/301Team12-.iml" />
-      <module fileurl="file://D:\UA\CMPUT301\project_part4\301Team12-\301Team12-sxiuchen.iml" filepath="D:\UA\CMPUT301\project_part4\301Team12-\301Team12-sxiuchen.iml" />
-      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/301Team12-group.iml" filepath="$PROJECT_DIR$/301Team12-group.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>
