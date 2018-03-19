@@ -1,11 +1,7 @@
-package com.example.dada;
+package com.example.dada.UnitTest;
 
 import android.location.Location;
 import android.media.Image;
-import android.util.Log;
-
-import com.example.dada.Model.Bidded;
-import com.example.dada.Model.Task;
 
 import org.junit.Test;
 

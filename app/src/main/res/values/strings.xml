@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">Dada</string>
+    <string name="title_activity_signup">SignupActivity</string>
+    <string name="title_activity_provider_main">ProviderMainActivity</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_requester_main">RequesterActivityMain</string>
 </resources>

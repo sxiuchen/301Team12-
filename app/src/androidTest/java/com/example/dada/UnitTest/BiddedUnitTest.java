@@ -1,6 +1,4 @@
-package com.example.dada;
-
-import com.example.dada.Model.Bidded;
+package com.example.dada.UnitTest;
 
 import org.junit.Test;
 
