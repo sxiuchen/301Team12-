@@ -40,8 +40,12 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".View.UserEditProfileActivity" />
         <activity
-            android:name=".View.RequesterBrowseRequestActivity"
+            android:name=".View.RequesterBrowseTaskActivity"
             android:label="@string/title_activity_requester_browse_request"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".View.ProviderBrowseTaskActivity"
+            android:label="@string/title_activity_provider_browse_task"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 

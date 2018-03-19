@@ -24,7 +24,7 @@ import com.example.dada.Util.FileIOUtil;
 
 import java.util.ArrayList;
 
-public class RequesterBrowseRequestActivity extends AppCompatActivity
+public class RequesterBrowseTaskActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private ListView inProgressTaskListView;
@@ -74,7 +74,7 @@ public class RequesterBrowseRequestActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_requester_browse_request);
+        setContentView(R.layout.activity_requester_browse_task);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -110,7 +110,7 @@ public class RequesterBrowseRequestActivity extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.requester_browse_request, menu);
+        getMenuInflater().inflate(R.menu.requester_browse_task, menu);
         return true;
     }
 

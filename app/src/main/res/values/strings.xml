@@ -8,5 +8,6 @@
 
     <string name="action_settings">Settings</string>
     <string name="title_activity_requester_main">RequesterActivityMain</string>
-    <string name="title_activity_requester_browse_request">RequesterBrowseRequestActivity</string>
+    <string name="title_activity_requester_browse_task">RequesterBrowseTaskActivity</string>
+    <string name="title_activity_provider_browse_task">ProviderBrowseTaskActivity</string>
 </resources>
