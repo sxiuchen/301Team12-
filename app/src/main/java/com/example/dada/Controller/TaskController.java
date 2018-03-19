@@ -2,6 +2,7 @@ package com.example.dada.Controller;
 
 import android.content.Context;
 
+import com.example.dada.Exception.TaskException;
 import com.example.dada.Model.OnAsyncTaskCompleted;
 import com.example.dada.Model.OnAsyncTaskFailure;
 import com.example.dada.Model.Task.NormalTask;
@@ -56,120 +57,122 @@ public class TaskController {
     }
 
     /**
-     * Update a a request
+     * Update a task
      *
-     * @param request The request to be updated
+     * @param task The task to be updated
      */
-    public void updateRequest(Task request) {
-        Task.UpdateTaskTask task = new Task.UpdateTaskTask(listener, offlineHandler);
-        task.execute(request);
+    public void updateTask(Task task) {
+        Task.UpdateTaskTask t = new Task.UpdateTaskTask(listener, offlineHandler);
+        t.execute(task);
     }
 
     /**
-     * Cancle a request
+     * Cancel a task
      *
-     * @param request The request to be deleted
+     * @param task The task to be deleted
      */
-    public void deleteTask(Task request) {
-        Task.DeleteTaskTask task = new Task.DeleteTaskTask(listener);
-        task.execute(request);
+    public void deleteTask(Task task) {
+        Task.DeleteTaskTask t = new Task.DeleteTaskTask(listener);
+        t.execute(task);
     }
 
     /**
-     * Get a list of all request
+     * Get a list of all task
      *
-     * @return An ArrayList of requests
+     * @return An ArrayList of tasks
      */
     public ArrayList<NormalTask> getAllTask() {
-        Task.GetTasksListTask task = new Task.GetTasksListTask(listener);
-        task.execute("");
+        Task.GetTasksListTask t = new Task.GetTasksListTask(listener);
+        t.execute("");
 
-        ArrayList<NormalTask> requests = new ArrayList<>();
+        ArrayList<NormalTask> tasks = new ArrayList<>();
 
         try {
-            requests =  task.get();
+            tasks = t.get();
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
             e.printStackTrace();
         }
-        return requests;
+        return tasks;
     }
 
-    /**
-     * Get a list of request that match the geo-location
-     *
-     * @param location       the coordinate of the location
-     * @param driverUserName the driver user name
-     */
-    // http://stackoverflow.com/questions/36805014/how-to-merge-geo-distance-filter-with-bool-term-query
-    // Author: Val
-    public void searchTaskByGeoLocation(GeoPoint location, String driverUserName) {
-        String query = String.format(
-                "{\n" +
-                        "    \"filter\": {\n" +
-                        "       \"bool\" : {\n" +
-                        "           \"must_not\" : [\n" +
-                        "               { \"term\": {\"isCompleted\": true} },\n" +
-                        "               { \"term\": {\"driverList\": \"%s\"} }\n" +
-                        "           ],\n" +
-                        "           \"must\": [\n" +
-                        "               {\n" +
-                        "                   \"nested\": {\n" +
-                        "                       \"path\": \"route\",\n" +
-                        "                       \"filter\": {\n" +
-                        "                           \"geo_distance\": {\n" +
-                        "                               \"distance\": \"5km\",\n" +
-                        "                               \"origin\": [%.6f, %.6f]\n" +
-                        "                           }\n" +
-                        "                       }\n" +
-                        "                   }\n" +
-                        "               }\n" +
-                        "           ]\n" +
-                        "       }\n" +
-                        "    }\n" +
-                        "}", driverUserName, location.getLongitude(), location.getLatitude());
 
-        Task.GetTasksListTask task = new Task.GetTasksListTask(listener);
-        task.execute(query);
-    }
+    // TODO Get a list of task that match the geo-location
+//    /**
+//     * Get a list of task that match the geo-location
+//     *
+//     * @param location       the coordinate of the location
+//     * @param driverUserName the driver user name
+//     */
+//    // http://stackoverflow.com/questions/36805014/how-to-merge-geo-distance-filter-with-bool-term-query
+//    // Author: Val
+//    public void searchTaskByGeoLocation(GeoPoint location, String driverUserName) {
+//        String query = String.format(
+//                "{\n" +
+//                        "    \"filter\": {\n" +
+//                        "       \"bool\" : {\n" +
+//                        "           \"must_not\" : [\n" +
+//                        "               { \"term\": {\"isCompleted\": true} },\n" +
+//                        "               { \"term\": {\"driverList\": \"%s\"} }\n" +
+//                        "           ],\n" +
+//                        "           \"must\": [\n" +
+//                        "               {\n" +
+//                        "                   \"nested\": {\n" +
+//                        "                       \"path\": \"route\",\n" +
+//                        "                       \"filter\": {\n" +
+//                        "                           \"geo_distance\": {\n" +
+//                        "                               \"distance\": \"5km\",\n" +
+//                        "                               \"origin\": [%.6f, %.6f]\n" +
+//                        "                           }\n" +
+//                        "                       }\n" +
+//                        "                   }\n" +
+//                        "               }\n" +
+//                        "           ]\n" +
+//                        "       }\n" +
+//                        "    }\n" +
+//                        "}", driverUserName, location.getLongitude(), location.getLatitude());
+//
+//        Task.GetTasksListTask task = new Task.GetTasksListTask(listener);
+//        task.execute(query);
+//    }
 
     /**
-     * Get a list of request that match the keyword
+     * Get a list of tasks that match the keyword
      *
-     * @param keyword        The keyword to match
-     * @param driverUserName the driver user name
-     * @return An arraylist of matching request.
+     * @param keyword           The keyword to match
+     * @param providerUserName  The driver user name
+     * @return An Arraylist of matching tasks.
      */
-    public void searchTaskByKeyword(String keyword, String driverUserName) {
+    public void searchTaskByKeyword(String keyword, String providerUserName) {
         String query = String.format(
                 "{\n" +
                         "    \"query\": {\n" +
                         "       \"match\" : {\n" +
-                        "           \"requestDescription\" : \"%s\" \n" +
+                        "           \"taskDescription\" : \"%s\" \n" +
                         "       }\n" +
                         "    },\n" +
                         "    \"filter\": {\n" +
                         "       \"bool\" : {\n" +
                         "           \"must_not\" : [" +
                         "               { \"term\": {\"isCompleted\": true} },\n" +
-                        "               { \"term\": {\"driverList\": \"%s\"} }\n" +
+                        "               { \"term\": {\"providerList\": \"%s\"} }\n" +
                         "           ]\n" +
                         "       }\n" +
                         "    }\n" +
-                        "}", keyword, driverUserName);
+                        "}", keyword, providerUserName);
 
         Task.GetTasksListTask task = new Task.GetTasksListTask(listener);
         task.execute(query);
     }
 
     /**
-     * Get a list of reuqest that has been accepted by the rider but the request is not completed
+     * Get a list of tasks that has been assigned by the requester but the task is not completed
      * yet
      *
-     * @param driverUserName the driver's username
+     * @param providerUserName the driver's username
      */
-    public void getDriverAcceptedTask(String driverUserName) {
+    public void getProviderAcceptedTask(String providerUserName) {
         String query = String.format(
                 "{\n" +
                         "    \"filter\": {\n" +
@@ -178,21 +181,21 @@ public class TaskController {
                         "               \"term\": {\"isCompleted\": true}\n" +
                         "           },\n" +
                         "           \"should\" : [\n " +
-                        "               { \"term\": {\"driverUserName\": \"%s\"} }\n" +
+                        "               { \"term\": {\"providerUserName\": \"%s\"} }\n" +
                         "           ]\n" +
                         "       }\n" +
                         "    }\n" +
-                        "}", driverUserName);
+                        "}", providerUserName);
         Task.GetTasksListTask task = new Task.GetTasksListTask(listener);
         task.execute(query);
     }
 
     /**
-     * Get a list of requests that driver accepts but still waiting for confirmation from the rider
+     * Get a list of tasks that provider bidded but still waiting for assign from the requester
      *
-     * @param driverUserName the driver's username
+     * @param providerUserName the provider's username
      */
-    public void getDriverPendingTask(String driverUserName) {
+    public void getProviderPendingTask(String providerUserName) {
         String query = String.format(
                 "{\n" +
                         "    \"filter\": {\n" +
@@ -201,63 +204,63 @@ public class TaskController {
                         "               \"term\": {\"isCompleted\": true}\n" +
                         "           },\n" +
                         "           \"must\" : [\n " +
-                        "               { \"term\": {\"driverList\": \"%s\"} }\n" +
+                        "               { \"term\": {\"providerList\": \"%s\"} }\n" +
                         "           ]\n" +
                         "       }\n" +
                         "    }\n" +
-                        "}", driverUserName);
+                        "}", providerUserName);
         Task.GetTasksListTask task = new Task.GetTasksListTask(listener);
         task.execute(query);
     }
 
     /**
-     * Get a list of requests of driver's past request
+     * Get a list of tasks of provider's past tasks
      *
-     * @param driverUserName the driver's user name
+     * @param providerUserName the provider's user name
      */
-    public void getDriverCompletedTask(String driverUserName) {
+    public void getProviderCompletedTask(String providerUserName) {
         String query = String.format(
                 "{\n" +
                         "    \"filter\": {\n" +
                         "       \"bool\" : {\n" +
                         "           \"must\" : [\n " +
-                        "               { \"term\": {\"driverUserName\": \"%s\"} },\n" +
+                        "               { \"term\": {\"providerUserName\": \"%s\"} },\n" +
                         "               { \"term\": {\"isCompleted\": true} }\n" +
                         "           ]\n" +
                         "       }\n" +
                         "    }\n" +
-                        "}", driverUserName);
+                        "}", providerUserName);
         Task.GetTasksListTask task = new Task.GetTasksListTask(listener);
         task.execute(query);
     }
 
     /**
-     * Get a list of requests of driver's past request
+     * Get a list of tasks of requester's past tasks
      *
-     * @param riderUserName the rider's user name
+     * @param requesterUserName the requester's user name
      */
-    public void getRiderCompletedTask(String riderUserName) {
+    public void getRequesterCompletedTask(String requesterUserName) {
         String query = String.format(
                 "{\n" +
                         "    \"filter\": {\n" +
                         "       \"bool\" : {\n" +
                         "           \"must\" : [\n " +
-                        "               { \"term\": {\"riderUserName\": \"%s\"} },\n" +
+                        "               { \"term\": {\"requesterUserName\": \"%s\"} },\n" +
                         "               { \"term\": {\"isCompleted\": true} }\n" +
                         "           ]\n" +
                         "       }\n" +
                         "    }\n" +
-                        "}", riderUserName);
+                        "}", requesterUserName);
         Task.GetTasksListTask task = new Task.GetTasksListTask(listener);
         task.execute(query);
     }
 
     /**
-     * Get a list of inprogress request of rider
+     * Get a list of in progress tasks of requester
      *
-     * @param riderUserName the rider's username
+     * @param requesterUserName the rider's username
      */
-    public void getRiderInProgressTask(String riderUserName) {
+    public void getRequesterInProgressTask(String requesterUserName) {
         String query = String.format(
                 "{\n" +
                         "    \"filter\": {\n" +
@@ -266,142 +269,127 @@ public class TaskController {
                         "               \"term\": {\"isCompleted\": true}\n" +
                         "           },\n" +
                         "           \"must\" : [\n " +
-                        "               { \"term\": {\"riderUserName\": \"%s\"} }\n" +
+                        "               { \"term\": {\"requesterUserName\": \"%s\"} }\n" +
                         "           ]\n" +
                         "       }\n" +
                         "    }\n" +
-                        "}", riderUserName);
+                        "}", requesterUserName);
         Task.GetTasksListTask task = new Task.GetTasksListTask(listener);
         task.execute(query);
     }
 
-    public void getRiderOfflineTask(String riderUserName, Context context) {
-        ArrayList<String> fileList = TaskUtil.getRiderTaskList(context);
-        if (fileList == null) return;
-        ArrayList<Task> requestsList = FileIOUtil.loadTaskFromFile(context, fileList);
-        Iterator<Task> it = requestsList.iterator();
-        while (it.hasNext()) {
-            Task r = it.next();
-            if (!r.getRiderUserName().equals(riderUserName)) {
-                it.remove();
-            }
-        }
-        if (requestsList.isEmpty()) return;
-        listener.onTaskCompleted(requestsList);
-    }
+
+    // TODO offline task
+//    /**
+//     * Get a list of requester's pending tasks while offline
+//     * @param providerUserName   the driver's user name
+//     * @param context            activity context
+//     */
+//    public void getRequesterOfflineTask(String riderUserName, Context context) {
+//        ArrayList<String> fileList = TaskUtil.getRequesterTaskList(context);
+//        if (fileList == null) return;
+//        ArrayList<Task> requestsList = FileIOUtil.loadTaskFromFile(context, fileList);
+//        Iterator<Task> it = requestsList.iterator();
+//        while (it.hasNext()) {
+//            Task r = it.next();
+//            if (!r.getRiderUserName().equals(riderUserName)) {
+//                it.remove();
+//            }
+//        }
+//        if (requestsList.isEmpty()) return;
+//        listener.onTaskCompleted(requestsList);
+//    }
+
+//    /**
+//     * Get a list of provider's pending tasks while offline
+//     * @param providerUserName   the driver's user name
+//     * @param context            activity context
+//     */
+//    public void getDriverOfflinePendingTask(String providerUserName, Context context) {
+//        ArrayList<String> fileList = TaskUtil.getDriverTaskList(context);
+//        if (fileList == null) return;
+//        ArrayList<Task> requestsList = FileIOUtil.loadTaskFromFile(context, fileList);
+//        Iterator<Task> it = requestsList.iterator();
+//        while (it.hasNext()) {
+//            Task r = it.next();
+//            if (r.getDriverList() == null) continue;
+//            if (!r.getDriverList().contains(providerUserName)) {
+//                it.remove();
+//            }
+//        }
+//        if (requestsList.isEmpty()) return;
+//        listener.onTaskCompleted(requestsList);
+//    }
+
+//    /**
+//     * Get a list of driver's request while offline
+//     * @param driverUserName the driver's user name
+//     * @param context activity context
+//     */
+//    public void getDriverOfflineAcceptedTask(String driverUserName, Context context) {
+//        ArrayList<String> fileList = TaskUtil.getDriverTaskList(context);
+//        if (fileList == null) return;
+//        ArrayList<Task> requestsList = FileIOUtil.loadTaskFromFile(context, fileList);
+//        Iterator<Task> it = requestsList.iterator();
+//        while (it.hasNext()) {
+//            Task r = it.next();
+//            if (r.getDriverUserName() == null || !r.getDriverUserName().equals(driverUserName)) {
+//                it.remove();
+//            }
+//        }
+//        if (requestsList.isEmpty()) return;
+//        listener.onTaskCompleted(requestsList);
+//    }
+
+//    /**
+//     * Send driver's accepted request to the server once the device is back onelin
+//     * @param driverUserName the driver's user name
+//     * @param context activity context
+//     */
+//    public void updateDriverOfflineTask(String driverUserName, Context context) {
+//        ArrayList<String> fileList = TaskUtil.getAcceptedTaskList(context);
+//        if (fileList == null) return;
+//        ArrayList<Task> requestsList = FileIOUtil.loadTaskFromFile(context, fileList);
+//        for (Task r : requestsList) {
+//            if (r.getDriverList() == null || r.getDriverList().contains(driverUserName)) {
+//                updateTask(r);
+//                // Delete file after it has been upload
+//                context.deleteFile(TaskUtil.generateAcceptedReqestFileName(r));
+//            }
+//        }
+//    }
 
     /**
-     * Get a list of driver's pending request while offline
-     * @param driverUserName the driver's user name
-     * @param context activity context
-     */
-    public void getDriverOfflinePendingTask(String driverUserName, Context context) {
-        ArrayList<String> fileList = TaskUtil.getDriverTaskList(context);
-        if (fileList == null) return;
-        ArrayList<Task> requestsList = FileIOUtil.loadTaskFromFile(context, fileList);
-        Iterator<Task> it = requestsList.iterator();
-        while (it.hasNext()) {
-            Task r = it.next();
-            if (r.getDriverList() == null) continue;
-            if (!r.getDriverList().contains(driverUserName)) {
-                it.remove();
-            }
-        }
-        if (requestsList.isEmpty()) return;
-        listener.onTaskCompleted(requestsList);
-    }
-
-    /**
-     * Get a list of driver's request while offline
-     * @param driverUserName the driver's user name
-     * @param context activity context
-     */
-    public void getDriverOfflineAcceptedTask(String driverUserName, Context context) {
-        ArrayList<String> fileList = TaskUtil.getDriverTaskList(context);
-        if (fileList == null) return;
-        ArrayList<Task> requestsList = FileIOUtil.loadTaskFromFile(context, fileList);
-        Iterator<Task> it = requestsList.iterator();
-        while (it.hasNext()) {
-            Task r = it.next();
-            if (r.getDriverUserName() == null || !r.getDriverUserName().equals(driverUserName)) {
-                it.remove();
-            }
-        }
-        if (requestsList.isEmpty()) return;
-        listener.onTaskCompleted(requestsList);
-    }
-
-    /**
-     * Send driver's accepted request to the server once the device is back onelin
-     * @param driverUserName the driver's user name
-     * @param context activity context
-     */
-    public void updateDriverOfflineTask(String driverUserName, Context context) {
-        ArrayList<String> fileList = TaskUtil.getAcceptedTaskList(context);
-        if (fileList == null) return;
-        ArrayList<Task> requestsList = FileIOUtil.loadTaskFromFile(context, fileList);
-        for (Task r : requestsList) {
-            if (r.getDriverList() == null || r.getDriverList().contains(driverUserName)) {
-                updateTask(r);
-                // Delete file after it has been upload
-                context.deleteFile(TaskUtil.generateAcceptedReqestFileName(r));
-            }
-        }
-    }
-
-    /**
-     * Driver confirm request.
+     * Provider bid task.
      *
-     * @param request        the request
-     * @param driverUserName the driver user name
+     * @param task              the task
+     * @param providerUserName  the provider user name
      */
-    public void driverConfirmTask(Task request, String driverUserName) {
-        request.driverAcceptTask(driverUserName);
-        updateTask(request);
+    public void providerBidTask(Task task, String providerUserName) {
+        task.providerBidTask(providerUserName);
+        updateTask(task);
     }
 
     /**
-     * Rider confirm request complete.
+     * Requester confirm task complete.
      *
-     * @param request the request to be confirmed completed
+     * @param task the task to be confirmed completed
      */
-    public void riderConfirmTaskComplete(Task request) {
-        request.riderConfirmTaskComplete();
-        updateTask(request);
+    public void requesterConfirmTaskComplete(Task task) {
+        task.requesterConfirmTaskComplete();
+        updateTask(task);
     }
 
     /**
      * Rider confirm driver.
      *
-     * @param request        the request to be confirmed by the rider
-     * @param driverUserName the driver user name
-     * @throws TaskException the request exception
+     * @param task                  the task to be confirmed by the requester
+     * @param providerUserName      the provider user name
+     * @throws TaskException        the task exception
      */
-    public void riderConfirmDriver(Task request, String driverUserName) throws TaskException {
-        request.riderConfirmDriver(driverUserName);
-
-        updateTask(request);
-    }
-
-
-    /**
-     * Calculate estimated fare.
-     *
-     * @param request the request
-     */
-    public void calculateEstimatedFare(Task request) {
-        double fare = request.getDistance() * 0.50;
-        request.setEstimatedFare(fare);
-    }
-
-    /**
-     * Sets distance.
-     *
-     * @param request  the request
-     * @param distance the distance
-     */
-    public void setDistance(Task request, double distance) {
-        request.setDistance(distance);
+    public void requesterConfirmDriver(Task task, String providerUserName) throws TaskException {
+        task.requesterAssignProvider(providerUserName);
+        updateTask(task);
     }
 }
 
