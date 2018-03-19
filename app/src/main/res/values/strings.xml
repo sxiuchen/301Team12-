@@ -21,6 +21,7 @@
         <item>MY TASKS</item>
         <item>PROFILE</item>
     </string-array>
-    <string name="title_activity_requester_add_task">RequesterAddTaskActivity</string>
+
+    <string name="title_activity_requester_add_task">Add new task</string>
 
 </resources>
