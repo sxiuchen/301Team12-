@@ -48,6 +48,10 @@ public class RequesterDetailActivity extends ListActivity {
 
         setViews();
 
+        /**
+         * listener of listview click action
+         */
+
         if (task.getStatus().equals(statusBidded)) {
             final ListView listView = (ListView)findViewById(R.id.listView);
             listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -55,6 +59,7 @@ public class RequesterDetailActivity extends ListActivity {
                     bid = task.getBidded_History().get(position);
                     AlertDialog.Builder builder = new AlertDialog.Builder(RequesterDetailActivity.this);
                     builder.setMessage("What do you due with" + bid.getProvider_ID()).setTitle("Notofocation");
+
                     builder.setPositiveButton("Is Him", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
