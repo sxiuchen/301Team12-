@@ -8,4 +8,14 @@
     tools:context="com.example.dada.View.RequesterAddTaskActivity"
     tools:showIn="@layout/activity_requester_add_task">
 
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:text="New Task Interface"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:layout_editor_absoluteY="203dp" />
 </android.support.constraint.ConstraintLayout>

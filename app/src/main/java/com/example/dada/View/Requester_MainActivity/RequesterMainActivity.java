@@ -1,5 +1,6 @@
 package com.example.dada.View.Requester_MainActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -18,6 +19,7 @@ import android.widget.Toast;
 import com.example.dada.Model.Task.NormalTask;
 import com.example.dada.Model.Task.Task;
 import com.example.dada.R;
+import com.example.dada.View.RequesterAddTaskActivity;
 
 import java.util.ArrayList;
 
@@ -66,8 +68,8 @@ public class RequesterMainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Go to new activity and create new task", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                Intent intentRequesterAddTask = new Intent(getApplicationContext(), RequesterAddTaskActivity.class);
+                startActivity(intentRequesterAddTask);
             }
         });
 
