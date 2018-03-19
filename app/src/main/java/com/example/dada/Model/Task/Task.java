@@ -40,7 +40,13 @@ public abstract class Task {
     private String title;
     private String taskDescription;
     private String status;
+    private double price;
+    private String requesterUserName;
+    private String providerUserName;
 
+
+
+    private ArrayList<String> providerList = new ArrayList<>();
 
     private transient static JestDroidClient client;
 
@@ -61,26 +67,53 @@ public abstract class Task {
     public Task(String title, String description, String status) {
         this.title = title;
         this.taskDescription = description;
-        this.status =
+        this.status = status;
     }
 
-    public Task(String name, String status, String description,
-                Location Slocation, Location Elocation,
-                Image picture, int Requester, float distance,
-                double Assigned_Pri, int Assigned_Requester,
-                ArrayList<BiddedTask> Bidded_History){
-        this.name = name;
-        this.status = status;
-        this.description = description;
-        this.Slocation = Slocation;
-        this.picture = picture;
-        this.Requester = Requester;
-        this.Assigned_Requester = Assigned_Requester;
-        this.Assigned_Pri = Assigned_Pri;
-        this.distance = distance;
-        this.Elocation = Elocation;
-        this.Bidded_History = Bidded_History;
+    /**
+     * Constructor for AssignedTask or CompletedTask.
+     *
+     * @param requesterUserName  the requester user name
+     * @param providerUserName   the provider user name
+     * @param price              the price
+     */
+    public Task(String requesterUserName, String providerUserName, double price) {
+        this.requesterUserName = requesterUserName;
+        this.providerUserName = providerUserName;
+        this.price = price;
     }
+
+    /**
+     * Constructor for BiddedTask
+     *
+     * @param requesterUserName     the requester user name
+     * @param providerList          the list of providers username who bidded the task
+     * @param price                 the price
+     */
+    public Task(String requesterUserName, ArrayList<String> providerList, Double price){
+        this.requesterUserName = requesterUserName;
+        this.providerList = providerList;
+        this.price = price;
+    }
+
+
+//    public Task(String name, String status, String description,
+//                Location Slocation, Location Elocation,
+//                Image picture, int Requester, float distance,
+//                double Assigned_Pri, int Assigned_Requester,
+//                ArrayList<BiddedTask> Bidded_History){
+//        this.name = name;
+//        this.status = status;
+//        this.description = description;
+//        this.Slocation = Slocation;
+//        this.picture = picture;
+//        this.Requester = Requester;
+//        this.Assigned_Requester = Assigned_Requester;
+//        this.Assigned_Pri = Assigned_Pri;
+//        this.distance = distance;
+//        this.Elocation = Elocation;
+//        this.Bidded_History = Bidded_History;
+//    }
 
 
 
@@ -148,18 +181,26 @@ public abstract class Task {
         this.Bidded_History = Bidded_History;
     }
 
+    public String getID(){ return this.ID; }
+
+    public void setID(String ID){
+        this.ID = ID;
+    }
+
+    public Double getPrice(){ return this.price; }
+
+    public void setPrice(Double price){ this.price = price; }
+
+    public String getTitle(){ return this.title; }
+
+    public void setTitle(String title){ this.title = title; }
+
     public String getTaskDescription(){
         return this.taskDescription;
     }
 
     public void setTaskDescription(String taskDescription){
         this.taskDescription = taskDescription;
-    }
-
-    public String getID(){ return this.ID; }
-
-    public void setID(String ID){
-        this.ID = ID;
     }
 
     public String getStatus(){
@@ -169,6 +210,8 @@ public abstract class Task {
     public void setStatus(String status){
         this.status = status;
     }
+
+
 
     /**
      * Static class that adds the task
@@ -471,4 +514,30 @@ public abstract class Task {
         return taskDescription;
     }
 
+    /**
+     * Provider bids the requested task.
+     *
+     * @param providerUserName the provider user name who bids the requested task
+     */
+    public void providerAcceptRequest(String providerUserName) {
+        providerList.add(providerUserName);
+    }
+
+    /**
+     * Requester assign provider.
+     *
+     * @param  providerUserName the provider user name
+     * @throws TaskException    the request exception
+     * @throws TaskException    raise exception when request has not been confirmed
+     */
+    public void requesterAssignProvider(String providerUserName) throws TaskException {
+        if (providerList == null || providerList.isEmpty()) {
+            // If the task has not been bidded yet
+            throw new TaskException("This task has not been bidded by any provider yet");
+        } else {
+            // Assigned provider
+            this.providerUserName = providerUserName;
+            providerList.clear();
+        }
+    }
 }
