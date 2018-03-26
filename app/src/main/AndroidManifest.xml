@@ -35,19 +35,22 @@
             android:label="@string/title_activity_provider_main"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".View.Requester_MainActivity.RequesterMainActivity"
+            android:name=".View.Requester_MainActivity.RequesterMainActivity2"
             android:label="@string/title_activity_requester_main"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".View.UserEditProfileActivity"></activity>
+        <activity android:name=".View.UserEditProfileActivity" />
         <activity
             android:name=".View.RequesterAddTaskActivity"
             android:label="@string/title_activity_requester_add_task"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
-
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".View.RequesterDetailActivity"
             android:label="Requester Detail Page"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".View.RequesterMainActivity"
+            android:label="@string/title_activity_requester_main"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

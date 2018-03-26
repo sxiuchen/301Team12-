@@ -17,7 +17,7 @@ import com.example.dada.Model.OnAsyncTaskCompleted;
 import com.example.dada.Model.User;
 import com.example.dada.R;
 import com.example.dada.Util.FileIOUtil;
-import com.example.dada.View.Requester_MainActivity.RequesterMainActivity;
+import com.example.dada.View.Requester_MainActivity.RequesterMainActivity2;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -83,9 +83,10 @@ public class LoginActivity extends AppCompatActivity {
         switch(view.getId()) {
 
             case R.id.radio_button_login_provider:
+
                 if (checked) {
-                    providerRadio.setTypeface(null, Typeface.BOLD);
-                    requesterRadio.setTypeface(null, Typeface.NORMAL);
+                    providerRadio.setChecked(true);
+                    requesterRadio.setChecked(false);
                     // will login as provider
                     roleSel = "P";
                     break;
@@ -93,8 +94,8 @@ public class LoginActivity extends AppCompatActivity {
 
             case R.id.radio_button_login_requester:
                 if (checked) {
-                    requesterRadio.setTypeface(null, Typeface.BOLD);
-                    providerRadio.setTypeface(null, Typeface.NORMAL);
+                    requesterRadio.setChecked(true);
+                    providerRadio.setChecked(false);
                     // will login as requester
                     roleSel = "R";
                     break;

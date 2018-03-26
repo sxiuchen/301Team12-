@@ -19,19 +19,28 @@ import com.example.dada.Model.User;
 import com.example.dada.R;
 import com.example.dada.Util.FileIOUtil;
 
-public class ProviderMainActivity extends AppCompatActivity
+public class RequesterMainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    private User provider;
+    private User requester;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_provider_main);
+        setContentView(R.layout.activity_requester_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        DrawerLayout drawer = findViewById(R.id.drawer_provider_layout);
+        FloatingActionButton fab = findViewById(R.id.fab_requester_main);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intentRequesterAddTask = new Intent(getApplicationContext(), RequesterAddTaskActivity.class);
+                startActivity(intentRequesterAddTask);
+            }
+        });
+
+        DrawerLayout drawer = findViewById(R.id.drawer_requester_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
@@ -41,16 +50,15 @@ public class ProviderMainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         View navHeader = navigationView.getHeaderView(0);
-        TextView username = navHeader.findViewById(R.id.nav_drawer_provider_username);
-        TextView email = navHeader.findViewById(R.id.nav_drawer_provider_email);
+        TextView username = navHeader.findViewById(R.id.nav_drawer_requester_username);
+        TextView email = navHeader.findViewById(R.id.nav_drawer_requester_email);
 
         // Get user profile
-        provider = FileIOUtil.loadUserFromFile(getApplicationContext());
+        requester = FileIOUtil.loadUserFromFile(getApplicationContext());
 
         // Set drawer text
-        username.setText(provider.getUserName());
-        email.setText(provider.getEmail());
-
+        username.setText(requester.getUserName());
+        email.setText(requester.getEmail());
     }
 
     @Override
@@ -66,7 +74,7 @@ public class ProviderMainActivity extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.provider_main, menu);
+        getMenuInflater().inflate(R.menu.requester_main, menu);
         return true;
     }
 
@@ -101,7 +109,6 @@ public class ProviderMainActivity extends AppCompatActivity
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
-
         return true;
     }
 }

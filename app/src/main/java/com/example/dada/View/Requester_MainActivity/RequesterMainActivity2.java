@@ -13,9 +13,7 @@ package com.example.dada.View.Requester_MainActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -34,7 +32,6 @@ import com.example.dada.R;
 import com.example.dada.View.RequesterAddTaskActivity;
 import com.example.dada.View.RequesterDetailActivity;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
@@ -47,7 +44,7 @@ import java.util.ArrayList;
  * @see RequesterAddTaskActivity
  */
 
-public class RequesterMainActivity extends AppCompatActivity {
+public class RequesterMainActivity2 extends AppCompatActivity {
     private ListView rTaskList;
     private ArrayList<Task> tasks = new ArrayList<>();
     private taskAdapter adapter;
@@ -59,7 +56,7 @@ public class RequesterMainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_requester_main);
+        setContentView(R.layout.activity_requester_main2);
 
         //Toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -67,7 +64,7 @@ public class RequesterMainActivity extends AppCompatActivity {
 
         //Spinner
         final Spinner RLspinner = (Spinner) findViewById(R.id.filter_button);
-        ArrayAdapter<String> filterAdapter = new ArrayAdapter<String>(RequesterMainActivity.this,
+        ArrayAdapter<String> filterAdapter = new ArrayAdapter<String>(RequesterMainActivity2.this,
                 R.layout.nav_spinner_requester_activity_main,
                 getResources().getStringArray(R.array.filterOption));
         filterAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -76,7 +73,7 @@ public class RequesterMainActivity extends AppCompatActivity {
         RLspinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(RequesterMainActivity.this,
+                Toast.makeText(RequesterMainActivity2.this,
                         RLspinner.getSelectedItem().toString(),
                         Toast.LENGTH_SHORT)
                         .show();
@@ -108,7 +105,7 @@ public class RequesterMainActivity extends AppCompatActivity {
 //                index = position;
 //
 //                //send the text to the editActivity and request text after edit
-//                Intent intentRequesterDetailAct = new Intent(RequesterMainActivity.this, RequesterDetailActivity.class);
+//                Intent intentRequesterDetailAct = new Intent(RequesterMainActivity2.this, RequesterDetailActivity.class);
 //                intentRequesterDetailAct.putExtra("task", (Serializable) toBeEditTask);
 //                startActivityForResult(intentRequesterDetailAct,1);
             }
@@ -149,7 +146,7 @@ public class RequesterMainActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater menuInflater = getMenuInflater();
-        menuInflater.inflate(R.menu.requester_activity_main_toolbar,menu);
+        menuInflater.inflate(R.menu.requester_activity_main_toolbar2,menu);
         return true;
         //return super.onCreateOptionsMenu(menu);
     }

@@ -392,13 +392,13 @@ public class TaskController {
     }
 
     /**
-     * Rider confirm driver.
+     * Requester confirm provider.
      *
      * @param task                  the task to be confirmed by the requester
      * @param providerUserName      the provider user name
      * @throws TaskException        the task exception
      */
-    public void requesterConfirmDriver(Task task, String providerUserName) throws TaskException {
+    public void requesterConfirmProvider(Task task, String providerUserName) throws TaskException {
         task.requesterAssignProvider(providerUserName);
         updateTask(task);
     }
