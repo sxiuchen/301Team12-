@@ -18,8 +18,17 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
 
+import com.example.dada.Controller.TaskController;
+import com.example.dada.Exception.TaskException;
+import com.example.dada.Model.OnAsyncTaskCompleted;
+import com.example.dada.Model.Task.RequestedTask;
+import com.example.dada.Model.Task.Task;
+import com.example.dada.Model.User;
 import com.example.dada.R;
+import com.example.dada.Util.FileIOUtil;
 
 /**
  * activity to handle interface of adding new task from user
@@ -27,20 +36,61 @@ import com.example.dada.R;
 
 public class RequesterAddTaskActivity extends AppCompatActivity {
 
+    private EditText titleText;
+    private EditText descriptionText;
+    private User requester;
+
+    private Button doneButton;
+
+    private TaskController taskController = new TaskController(new OnAsyncTaskCompleted() {
+        @Override
+        public void onTaskCompleted(Object o) {
+            Task t = (Task) o;
+            FileIOUtil.saveRequesterTaskInFile(t, getApplicationContext());
+        }
+    });
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_requester_add_task);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+
+
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        Button done_button = (Button) findViewById(R.id.newTask_done_button);
-        done_button.setOnClickListener(new View.OnClickListener(){
+        titleText = findViewById(R.id.editText_requester_add_task_title);
+        descriptionText = findViewById(R.id.editText_requester_add_task_description);
+
+        doneButton = findViewById(R.id.newTask_done_button);
+        assert doneButton != null;
+        doneButton.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
-                finish();
+                addTask();
             }
         });
 
+        // Get user profile
+        requester = FileIOUtil.loadUserFromFile(getApplicationContext());
+
     }
 
+    public void addTask() {
+        String title = titleText.getText().toString();
+        String description = descriptionText.getText().toString();
+
+        boolean validUsername = !(title.isEmpty() || title.trim().isEmpty());
+        boolean validDescription = !(description.isEmpty() || description.trim().isEmpty());
+
+        if (!(validUsername && validDescription)) {
+            Toast.makeText(this, "Task Title/Description is not valid.", Toast.LENGTH_SHORT).show();
+        } else {
+
+            final Task task = new RequestedTask(title, description, requester.getUserName());
+            taskController.createTask(task);
+            finish();
+
+        }
+    }
 }
