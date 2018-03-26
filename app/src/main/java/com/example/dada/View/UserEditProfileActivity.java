@@ -24,7 +24,6 @@ public class UserEditProfileActivity extends AppCompatActivity {
 
     private Button saveButton;
     private User user;
-    private String id;
 
     private UserController userController = new UserController(new OnAsyncTaskCompleted() {
         @Override
@@ -50,9 +49,16 @@ public class UserEditProfileActivity extends AppCompatActivity {
         emailText.setText(user.getEmail());      // setText(user.getEmail)
         mobileText.setText(user.getPhone());     // setText(user.getMobile)
 
-//        saveButton = (Button) findViewById(R.id.button_save_EditUserProfileActivity);
-//        assert saveButton != null;
-//        saveButton.setOnClickListener(this);
+        saveButton = findViewById(R.id.button_save_EditUserProfileActivity);
+        assert saveButton != null;
+
+        saveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                editProfile();
+            }
+        });
+
     }
 
     @Override
@@ -60,15 +66,8 @@ public class UserEditProfileActivity extends AppCompatActivity {
         super.onStart();
     }
 
-//    @Override
-//    public void onClick(View view) {
-//        if (view == saveButton ) {
-//            editProfile();
-//        }
-//    }
-
     /**
-     * save and upload the new profiel to the ES server
+     * save and upload the new profile to the ES server
      */
     public void editProfile(){
         String username = usernameText.getText().toString();
