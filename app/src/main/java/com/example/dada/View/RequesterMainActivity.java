@@ -40,7 +40,7 @@ public class RequesterMainActivity extends AppCompatActivity
             }
         });
 
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_requester_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
@@ -50,8 +50,8 @@ public class RequesterMainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         View navHeader = navigationView.getHeaderView(0);
-        TextView username = navHeader.findViewById(R.id.nav_drawer_provider_username);
-        TextView email = navHeader.findViewById(R.id.nav_drawer_provider_email);
+        TextView username = navHeader.findViewById(R.id.nav_drawer_requester_username);
+        TextView email = navHeader.findViewById(R.id.nav_drawer_requester_email);
 
         // Get user profile
         requester = FileIOUtil.loadUserFromFile(getApplicationContext());
@@ -99,7 +99,7 @@ public class RequesterMainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
+        if (id == R.id.nav_manage) {
 
             // intent to UserEditProfileActivity
             Intent intentUserEditProfile = new Intent(getApplicationContext(), UserEditProfileActivity.class);
