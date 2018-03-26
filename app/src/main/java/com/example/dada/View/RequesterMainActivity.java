@@ -19,17 +19,26 @@ import com.example.dada.Model.User;
 import com.example.dada.R;
 import com.example.dada.Util.FileIOUtil;
 
-public class ProviderMainActivity extends AppCompatActivity
+public class RequesterMainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    private User provider;
+    private User requester;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_provider_main);
+        setContentView(R.layout.activity_requester_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        FloatingActionButton fab = findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+            }
+        });
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -45,12 +54,11 @@ public class ProviderMainActivity extends AppCompatActivity
         TextView email = navHeader.findViewById(R.id.nav_drawer_provider_email);
 
         // Get user profile
-        provider = FileIOUtil.loadUserFromFile(getApplicationContext());
+        requester = FileIOUtil.loadUserFromFile(getApplicationContext());
 
         // Set drawer text
-        username.setText(provider.getUserName());
-        email.setText(provider.getEmail());
-
+        username.setText(requester.getUserName());
+        email.setText(requester.getEmail());
     }
 
     @Override
@@ -66,7 +74,7 @@ public class ProviderMainActivity extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.provider_main, menu);
+        getMenuInflater().inflate(R.menu.requester_main, menu);
         return true;
     }
 
@@ -91,7 +99,7 @@ public class ProviderMainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_manage) {
+        if (id == R.id.nav_camera) {
 
             // intent to UserEditProfileActivity
             Intent intentUserEditProfile = new Intent(getApplicationContext(), UserEditProfileActivity.class);
@@ -101,7 +109,6 @@ public class ProviderMainActivity extends AppCompatActivity
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
-
         return true;
     }
 }

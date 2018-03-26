@@ -21,8 +21,6 @@ import android.widget.TextView;
 import com.example.dada.Model.Task.Task;
 import com.example.dada.R;
 
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
 
 /**
@@ -71,7 +69,7 @@ public class taskAdapter extends BaseAdapter{
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View itemView = convertView;
-        itemView = (itemView == null) ? inflater.inflate(R.layout.content_requester_activity_main_listitem,null):itemView;
+        itemView = (itemView == null) ? inflater.inflate(R.layout.content_requester_activity_main_listitem2,null):itemView;
         TextView textViewTitle = (TextView) itemView.findViewById(R.id.taskTitle);
         TextView textViewStatus = (TextView) itemView.findViewById(R.id.taskStatus);
         Task selectedTask = tasks.get(position);
