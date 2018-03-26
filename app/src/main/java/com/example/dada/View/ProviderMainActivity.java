@@ -13,11 +13,16 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 
+import com.example.dada.Model.User;
 import com.example.dada.R;
+import com.example.dada.Util.FileIOUtil;
 
 public class ProviderMainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    private User provider;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +39,18 @@ public class ProviderMainActivity extends AppCompatActivity
 
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        View navHeader = navigationView.getHeaderView(0);
+        TextView username = navHeader.findViewById(R.id.nav_drawer_provider_username);
+        TextView email = navHeader.findViewById(R.id.nav_drawer_provider_email);
+
+        // Get user profile
+        provider = FileIOUtil.loadUserFromFile(getApplicationContext());
+
+        // Set drawer text
+        username.setText(provider.getUserName());
+        email.setText(provider.getEmail());
+
     }
 
     @Override
