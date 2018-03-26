@@ -44,10 +44,6 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-//        //for testing
-//        Intent intentProviderMain = new Intent(getApplicationContext(), RequesterMainActivity.class);
-//        startActivity(intentProviderMain);
-
         usernameText = findViewById(R.id.edit_text_login_username);
 
         requesterRadio = findViewById(R.id.radio_button_login_requester);
@@ -141,7 +137,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private void openSelRoleDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
-        builder.setTitle("Please Specify Your Role (Rider/Driver).")
+        builder.setTitle("Please Specify Your Role (Requester/Provider).")
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
