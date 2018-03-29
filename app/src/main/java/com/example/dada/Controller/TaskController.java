@@ -177,74 +177,6 @@ public class TaskController {
     }
 
     /**
-     * Get a list of tasks that has been assigned by the requester but the task is not completed
-     * yet
-     *
-     * @param providerUserName the driver's username
-     */
-    public void getProviderAcceptedTask(String providerUserName) {
-        String query = String.format(
-                "{\n" +
-                        "    \"filter\": {\n" +
-                        "       \"bool\" : {\n" +
-                        "           \"must_not\" : {" +
-                        "               \"term\": {\"isCompleted\": true}\n" +
-                        "           },\n" +
-                        "           \"should\" : [\n " +
-                        "               { \"term\": {\"providerUserName\": \"%s\"} }\n" +
-                        "           ]\n" +
-                        "       }\n" +
-                        "    }\n" +
-                        "}", providerUserName);
-        Task.GetTasksListTask task = new Task.GetTasksListTask(listener);
-        task.execute(query);
-    }
-
-    /**
-     * Get a list of tasks of requester's past tasks
-     *
-     * @param requesterUserName the requester's user name
-     */
-    public void getRequesterCompletedTask(String requesterUserName) {
-        String query = String.format(
-                "{\n" +
-                        "    \"filter\": {\n" +
-                        "       \"bool\" : {\n" +
-                        "           \"must\" : [\n " +
-                        "               { \"term\": {\"requesterUserName\": \"%s\"} },\n" +
-                        "               { \"term\": {\"isCompleted\": true} }\n" +
-                        "           ]\n" +
-                        "       }\n" +
-                        "    }\n" +
-                        "}", requesterUserName);
-        Task.GetTasksListTask task = new Task.GetTasksListTask(listener);
-        task.execute(query);
-    }
-
-    /**
-     * Get a list of in progress tasks of requester
-     *
-     * @param requesterUserName the requester's username
-     */
-    public void getRequesterInProgressTask(String requesterUserName) {
-        String query = String.format(
-                "{\n" +
-                        "    \"filter\": {\n" +
-                        "       \"bool\" : {\n" +
-                        "           \"must_not\" : {" +
-                        "               \"term\": {\"isCompleted\": true}\n" +
-                        "           },\n" +
-                        "           \"must\" : [\n " +
-                        "               { \"term\": {\"requesterUserName\": \"%s\"} }\n" +
-                        "           ]\n" +
-                        "       }\n" +
-                        "    }\n" +
-                        "}", requesterUserName);
-        Task.GetTasksListTask task = new Task.GetTasksListTask(listener);
-        task.execute(query);
-    }
-
-    /**
      * Get a list of requested tasks for provider
      */
     public void getProviderRequestedTask(){
@@ -295,7 +227,7 @@ public class TaskController {
     }
 
     /**
-     * Get a list of tasks of provider's past tasks
+     * Get a list of tasks of provider's completed tasks
      *
      * @param providerUserName the provider's user name
      */
@@ -316,8 +248,288 @@ public class TaskController {
         task.execute(query);
     }
 
-    // TODO offline task
+    /**
+     * Get a list of tasks of requester's requested tasks
+     *
+     * @param requesterUserName the requester's username
+     */
+    public void getRequesterRequestedTask(String requesterUserName) {
+        String query = String.format(
+                "{\n" +
+                        "    \"filter\": {\n" +
+                        "       \"bool\" : {\n" +
+                        "           \"must\" : [\n " +
+                        "               { \"term\": {\"requesterUserName\": \"%s\"} }, \n" +
+                        "               { \"term\": {\"status\": \"requested\"} }\n" +
+                        "           ]\n" +
+                        "       }\n" +
+                        "    }\n" +
+                        "}", requesterUserName);
+        Task.GetTasksListTask task = new Task.GetTasksListTask(listener);
+        task.execute(query);
+    }
+
+    /**
+     * Get a list of tasks of requester's bidded tasks
+     *
+     * @param requesterUserName the requester's username
+     */
+    public void getRequesterBiddedTask(String requesterUserName) {
+        String query = String.format(
+                "{\n" +
+                        "    \"filter\": {\n" +
+                        "       \"bool\" : {\n" +
+                        "           \"must_not\" : {" +
+                        "               \"term\": {\"isCompleted\": true}\n" +
+                        "           },\n" +
+                        "           \"must\" : [\n " +
+                        "               { \"term\": {\"requesterUserName\": \"%s\"} }\n" +
+                        "               { \"term\": {\"status\": \"bidded\"} }\n" +
+                        "           ]\n" +
+                        "       }\n" +
+                        "    }\n" +
+                        "}", requesterUserName);
+        Task.GetTasksListTask task = new Task.GetTasksListTask(listener);
+        task.execute(query);
+    }
+
+    /**
+     * Get a list of tasks of requester's assigned tasks
+     *
+     * @param requesterUserName the requester's username
+     */
+    public void getRequesterAssignedTask(String requesterUserName) {
+        String query = String.format(
+                "{\n" +
+                        "    \"filter\": {\n" +
+                        "       \"bool\" : {\n" +
+                        "           \"must_not\" : {" +
+                        "               \"term\": {\"isCompleted\": true}\n" +
+                        "           },\n" +
+                        "           \"must\" : [\n " +
+                        "               { \"term\": {\"requesterUserName\": \"%s\"} }\n" +
+                        "               { \"term\": {\"status\": \"assigned\"} }\n" +
+                        "           ]\n" +
+                        "       }\n" +
+                        "    }\n" +
+                        "}", requesterUserName);
+        Task.GetTasksListTask task = new Task.GetTasksListTask(listener);
+        task.execute(query);
+    }
+
+    /**
+     * Get a list of tasks of requester's completed tasks
+     *
+     * @param requesterUserName the requester's user name
+     */
+    public void getRequesterCompletedTask(String requesterUserName) {
+        String query = String.format(
+                "{\n" +
+                        "    \"filter\": {\n" +
+                        "       \"bool\" : {\n" +
+                        "           \"must\" : [\n " +
+                        "               { \"term\": {\"requesterUserName\": \"%s\"} },\n" +
+                        "               { \"term\": {\"isCompleted\": true} }\n" +
+                        "               { \"term\": {\"status\": \"completed\"} }\n" +
+                        "           ]\n" +
+                        "       }\n" +
+                        "    }\n" +
+                        "}", requesterUserName);
+        Task.GetTasksListTask task = new Task.GetTasksListTask(listener);
+        task.execute(query);
+    }
+
+    /**
+     * Handle Off Line
+     */
+
+    /**
+     * Get a list of provider's requested tasks while offline
+     * @param context            activity context
+     */
+    public void getProviderOfflineRequestedTask(Context context) {
+        ArrayList<String> fileList = TaskUtil.getProviderTaskList(context);
+        if (fileList == null) return;
+        ArrayList<Task> tasksList = FileIOUtil.loadTaskFromFile(context, fileList);
+        Iterator<Task> it = tasksList.iterator();
+        while (it.hasNext()) {
+            Task r = it.next();
+            if (r.getStatus() == null) continue;
+            if (!r.getStatus().equals("requested")) {
+                it.remove();
+            }
+        }
+        if (tasksList.isEmpty()) return;
+        listener.onTaskCompleted(tasksList);
+    }
+
+    /**
+     * Get a list of provider's bidded tasks while offline
+     * @param context activity context
+     */
+    public void getProviderOfflineBiddedTask(Context context) {
+        ArrayList<String> fileList = TaskUtil.getProviderTaskList(context);
+        if (fileList == null) return;
+        ArrayList<Task> tasksList = FileIOUtil.loadTaskFromFile(context, fileList);
+        Iterator<Task> it = tasksList.iterator();
+        while (it.hasNext()) {
+            Task r = it.next();
+            if (r.getStatus() == null) continue;
+            if (!r.getStatus().equals("bidded")) {
+                it.remove();
+            }
+        }
+        if (tasksList.isEmpty()) return;
+        listener.onTaskCompleted(tasksList);
+    }
+
+    /**
+     * Get a list of provider's assigned tasks while offline
+     * @param providerUserName the provider's user name
+     * @param context activity context
+     */
+    public void getProviderOfflineAssignedTask(String providerUserName, Context context) {
+        ArrayList<String> fileList = TaskUtil.getProviderTaskList(context);
+        if (fileList == null) return;
+        ArrayList<Task> tasksList = FileIOUtil.loadTaskFromFile(context, fileList);
+        Iterator<Task> it = tasksList.iterator();
+        while (it.hasNext()) {
+            Task r = it.next();
+            if (r.getProviderUserName() == null || !r.getProviderUserName().equals(providerUserName)
+                    || r.getStatus() == null || !r.getStatus().equals("assigned")) {
+                it.remove();
+            }
+        }
+        if (tasksList.isEmpty()) return;
+        listener.onTaskCompleted(tasksList);
+    }
+
+    /**
+     * Get a list of provider's completed tasks while offline
+     * @param providerUserName the provider's user name
+     * @param context activity context
+     */
+    public void getProviderOfflineCompletedTask(String providerUserName, Context context) {
+        ArrayList<String> fileList = TaskUtil.getProviderTaskList(context);
+        if (fileList == null) return;
+        ArrayList<Task> tasksList = FileIOUtil.loadTaskFromFile(context, fileList);
+        Iterator<Task> it = tasksList.iterator();
+        while (it.hasNext()) {
+            Task r = it.next();
+            if (r.getProviderUserName() == null || !r.getProviderUserName().equals(providerUserName)
+                    || r.getStatus() == null || !r.getStatus().equals("completed")) {
+                it.remove();
+            }
+        }
+        if (tasksList.isEmpty()) return;
+        listener.onTaskCompleted(tasksList);
+    }
+
+    /**
+     * Get a list of requester's requested tasks while offline
+     * @param requesterUserName the requester's user name
+     * @param context            activity context
+     */
+    public void getRequesterOfflineRequestedTask(String requesterUserName, Context context) {
+        ArrayList<String> fileList = TaskUtil.getRequesterTaskList(context);
+        if (fileList == null) return;
+        ArrayList<Task> tasksList = FileIOUtil.loadTaskFromFile(context, fileList);
+        Iterator<Task> it = tasksList.iterator();
+        while (it.hasNext()) {
+            Task r = it.next();
+            if (r.getStatus() == null) continue;
+            if (r.getRequesterUserName() == null) continue;
+            if (!r.getRequesterUserName().equals(requesterUserName) || !r.getStatus().equals("requested")) {
+                it.remove();
+            }
+        }
+        if (tasksList.isEmpty()) return;
+        listener.onTaskCompleted(tasksList);
+    }
+
+    /**
+     * Get a list of requester's bidded tasks while offline
+     * @param requesterUserName the requester's user name
+     * @param context activity context
+     */
+    public void getRequesterOfflineBiddedTask(String requesterUserName, Context context) {
+        ArrayList<String> fileList = TaskUtil.getRequesterTaskList(context);
+        if (fileList == null) return;
+        ArrayList<Task> tasksList = FileIOUtil.loadTaskFromFile(context, fileList);
+        Iterator<Task> it = tasksList.iterator();
+        while (it.hasNext()) {
+            Task r = it.next();
+            if (r.getStatus() == null) continue;
+            if (r.getRequesterUserName() == null) continue;
+            if (!r.getRequesterUserName().equals(requesterUserName) || !r.getStatus().equals("bidded")) {
+                it.remove();
+            }
+        }
+        if (tasksList.isEmpty()) return;
+        listener.onTaskCompleted(tasksList);
+    }
+
+    /**
+     * Get a list of requester's assigned tasks while offline
+     * @param requesterUserName the requester's user name
+     * @param context activity context
+     */
+    public void getRequesterOfflineAssignedTask(String requesterUserName, Context context) {
+        ArrayList<String> fileList = TaskUtil.getRequesterTaskList(context);
+        if (fileList == null) return;
+        ArrayList<Task> tasksList = FileIOUtil.loadTaskFromFile(context, fileList);
+        Iterator<Task> it = tasksList.iterator();
+        while (it.hasNext()) {
+            Task r = it.next();
+            if (r.getRequesterUserName() == null || !r.getRequesterUserName().equals(requesterUserName)
+                        || r.getStatus() == null || !r.getStatus().equals("assigned")) {
+                it.remove();
+            }
+        }
+        if (tasksList.isEmpty()) return;
+        listener.onTaskCompleted(tasksList);
+    }
+
+    /**
+     * Get a list of requester's completed tasks while offline
+     * @param requesterUserName the requester's user name
+     * @param context activity context
+     */
+    public void getRequesterOfflineCompletedTask(String requesterUserName, Context context) {
+        ArrayList<String> fileList = TaskUtil.getRequesterTaskList(context);
+        if (fileList == null) return;
+        ArrayList<Task> tasksList = FileIOUtil.loadTaskFromFile(context, fileList);
+        Iterator<Task> it = tasksList.iterator();
+        while (it.hasNext()) {
+            Task r = it.next();
+            if (r.getRequesterUserName() == null || !r.getRequesterUserName().equals(requesterUserName)
+                        || r.getStatus() == null || !r.getStatus().equals("completed")) {
+                it.remove();
+            }
+        }
+        if (tasksList.isEmpty()) return;
+        listener.onTaskCompleted(tasksList);
+    }
+
 //    /**
+//     * Send provider's bidded request to the server once the device is back online
+//     * @param providerUserName the provider's user name
+//     * @param context activity context
+//     */
+//    public void updateProviderOfflineTask(String providerUserName, Context context) {
+//        ArrayList<String> fileList = TaskUtil.getAcceptedTaskList(context);
+//        if (fileList == null) return;
+//        ArrayList<Task> requestsList = FileIOUtil.loadTaskFromFile(context, fileList);
+//        for (Task r : requestsList) {
+//            if (r.getProviderList() == null || r.getDriverList().contains(driverUserName)) {
+//                updateTask(r);
+//                // Delete file after it has been upload
+//                context.deleteFile(TaskUtil.generateAcceptedReqestFileName(r));
+//            }
+//        }
+//    }
+
+    //    /**
 //     * Get a list of requester's pending tasks while offline
 //     * @param providerUserName   the driver's user name
 //     * @param context            activity context
@@ -335,65 +547,6 @@ public class TaskController {
 //        }
 //        if (requestsList.isEmpty()) return;
 //        listener.onTaskCompleted(requestsList);
-//    }
-
-//    /**
-//     * Get a list of provider's pending tasks while offline
-//     * @param providerUserName   the driver's user name
-//     * @param context            activity context
-//     */
-//    public void getDriverOfflinePendingTask(String providerUserName, Context context) {
-//        ArrayList<String> fileList = TaskUtil.getDriverTaskList(context);
-//        if (fileList == null) return;
-//        ArrayList<Task> requestsList = FileIOUtil.loadTaskFromFile(context, fileList);
-//        Iterator<Task> it = requestsList.iterator();
-//        while (it.hasNext()) {
-//            Task r = it.next();
-//            if (r.getDriverList() == null) continue;
-//            if (!r.getDriverList().contains(providerUserName)) {
-//                it.remove();
-//            }
-//        }
-//        if (requestsList.isEmpty()) return;
-//        listener.onTaskCompleted(requestsList);
-//    }
-
-//    /**
-//     * Get a list of driver's request while offline
-//     * @param driverUserName the driver's user name
-//     * @param context activity context
-//     */
-//    public void getDriverOfflineAcceptedTask(String driverUserName, Context context) {
-//        ArrayList<String> fileList = TaskUtil.getDriverTaskList(context);
-//        if (fileList == null) return;
-//        ArrayList<Task> requestsList = FileIOUtil.loadTaskFromFile(context, fileList);
-//        Iterator<Task> it = requestsList.iterator();
-//        while (it.hasNext()) {
-//            Task r = it.next();
-//            if (r.getDriverUserName() == null || !r.getDriverUserName().equals(driverUserName)) {
-//                it.remove();
-//            }
-//        }
-//        if (requestsList.isEmpty()) return;
-//        listener.onTaskCompleted(requestsList);
-//    }
-
-//    /**
-//     * Send driver's accepted request to the server once the device is back onelin
-//     * @param driverUserName the driver's user name
-//     * @param context activity context
-//     */
-//    public void updateDriverOfflineTask(String driverUserName, Context context) {
-//        ArrayList<String> fileList = TaskUtil.getAcceptedTaskList(context);
-//        if (fileList == null) return;
-//        ArrayList<Task> requestsList = FileIOUtil.loadTaskFromFile(context, fileList);
-//        for (Task r : requestsList) {
-//            if (r.getDriverList() == null || r.getDriverList().contains(driverUserName)) {
-//                updateTask(r);
-//                // Delete file after it has been upload
-//                context.deleteFile(TaskUtil.generateAcceptedReqestFileName(r));
-//            }
-//        }
 //    }
 
     /**

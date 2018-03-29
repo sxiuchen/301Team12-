@@ -14,6 +14,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -39,31 +40,56 @@ public class RequesterMainActivity extends AppCompatActivity
 
     protected Merlin merlin;
 
-    private ListView acceptedTaskListView;
-    private ListView pendingTaskListView;
+    private ListView requestedTaskListView;
+    private ListView biddedTaskListView;
+    private ListView assignedTaskListView;
+    private ListView completedTaskListView;
 
-    private ArrayAdapter<Task> acceptedTaskAdapter;
-    private ArrayAdapter<Task> pendingTaskAdapter;
+    private ArrayAdapter<Task> requestedTaskAdapter;
+    private ArrayAdapter<Task> biddedTaskAdapter;
+    private ArrayAdapter<Task> assignedTaskAdapter;
+    private ArrayAdapter<Task> completedTaskAdapter;
 
-    private ArrayList<Task> acceptedTaskList = new ArrayList<>();
-    private ArrayList<Task> pendingTaskList = new ArrayList<>();
+    private ArrayList<Task> requestedTaskList = new ArrayList<>();
+    private ArrayList<Task> biddedTaskList = new ArrayList<>();
+    private ArrayList<Task> assignedTaskList = new ArrayList<>();
+    private ArrayList<Task> completedTaskList = new ArrayList<>();
 
-    private TaskController acceptedTaskController = new TaskController(new OnAsyncTaskCompleted() {
+    private TaskController requestedTaskController = new TaskController(new OnAsyncTaskCompleted() {
         @Override
         public void onTaskCompleted(Object o) {
-            acceptedTaskList = (ArrayList<Task>) o;
-            acceptedTaskAdapter.clear();
-            acceptedTaskAdapter.addAll(acceptedTaskList);
-            acceptedTaskAdapter.notifyDataSetChanged();
+            requestedTaskList = (ArrayList<Task>) o;
+            requestedTaskAdapter.clear();
+            requestedTaskAdapter.addAll(requestedTaskList);
         }
     });
 
-    private TaskController pendingTaskController = new TaskController(new OnAsyncTaskCompleted() {
+    private TaskController biddedTaskController = new TaskController(new OnAsyncTaskCompleted() {
         @Override
         public void onTaskCompleted(Object o) {
-            pendingTaskList = (ArrayList<Task>) o;
-            pendingTaskAdapter.clear();
-            pendingTaskAdapter.addAll(pendingTaskList);
+            biddedTaskList = (ArrayList<Task>) o;
+            biddedTaskAdapter.clear();
+            biddedTaskAdapter.addAll(biddedTaskList);
+        }
+    });
+
+    private TaskController assignedTaskController = new TaskController(new OnAsyncTaskCompleted() {
+        @Override
+        public void onTaskCompleted(Object o) {
+            assignedTaskList = (ArrayList<Task>) o;
+            assignedTaskAdapter.clear();
+            assignedTaskAdapter.addAll(assignedTaskList);
+            assignedTaskAdapter.notifyDataSetChanged();
+        }
+    });
+
+    private TaskController completedTaskController = new TaskController(new OnAsyncTaskCompleted() {
+        @Override
+        public void onTaskCompleted(Object o) {
+            completedTaskList = (ArrayList<Task>) o;
+            completedTaskAdapter.clear();
+            completedTaskAdapter.addAll(completedTaskList);
+            completedTaskAdapter.notifyDataSetChanged();
         }
     });
 
@@ -71,6 +97,13 @@ public class RequesterMainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_requester_main);
+
+        // monitor network connectivity
+        merlin = new Merlin.Builder().withConnectableCallbacks().withDisconnectableCallbacks().withBindableCallbacks().build(this);
+        merlin.registerConnectable(this);
+        merlin.registerDisconnectable(this);
+        merlin.registerBindable(this);
+
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -102,6 +135,64 @@ public class RequesterMainActivity extends AppCompatActivity
         // Set drawer text
         username.setText(requester.getUserName());
         email.setText(requester.getEmail());
+
+        // list view
+        requestedTaskListView = findViewById(R.id.listView_requestedTask_RequesterMainActivity);
+        requestedTaskListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                // open request info dialog
+//                openTaskInfoDialog(requestedTaskList.get(position));
+            }
+        });
+
+        biddedTaskListView = findViewById(R.id.listView_biddedTask_RequesterMainActivity);
+        biddedTaskListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                // open request info dialog
+//                openTaskInfoDialog(biddedTaskList.get(position));
+            }
+        });
+
+        assignedTaskListView = findViewById(R.id.listView_assignedTask_RequesterMainActivity);
+        assignedTaskListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                // open request info dialog
+//                openTaskInfoDialog(assignedTaskList.get(position));
+            }
+        });
+
+        completedTaskListView = findViewById(R.id.listView_completedTask_RequesterMainActivity);
+        completedTaskListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                // open request info dialog
+//                openTaskInfoDialog(completedTaskList.get(position));
+            }
+        });
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        requestedTaskAdapter = new ArrayAdapter<>(this, R.layout.task_list_item, requestedTaskList);
+        biddedTaskAdapter = new ArrayAdapter<>(this, R.layout.task_list_item, biddedTaskList);
+        assignedTaskAdapter = new ArrayAdapter<>(this, R.layout.task_list_item, assignedTaskList);
+        completedTaskAdapter = new ArrayAdapter<>(this, R.layout.task_list_item, completedTaskList);
+        requestedTaskListView.setAdapter(requestedTaskAdapter);
+        biddedTaskListView.setAdapter(biddedTaskAdapter);
+        assignedTaskListView.setAdapter(assignedTaskAdapter);
+        completedTaskListView.setAdapter(completedTaskAdapter);
+        updateTaskList();
+    }
+
+    private void updateTaskList() {
+        requestedTaskController.getRequesterRequestedTask(requester.getUserName());
+        biddedTaskController.getRequesterBiddedTask(requester.getUserName());
+        assignedTaskController.getRequesterAssignedTask(requester.getUserName());
+        completedTaskController.getRequesterCompletedTask(requester.getUserName());
     }
 
     @Override
@@ -156,13 +247,13 @@ public class RequesterMainActivity extends AppCompatActivity
     }
 
     /**
-     * Update view
+     * Once the device went offline, try to get task list from internal storage
      */
-    protected void updateRequest() {
-        Log.i("Debug", requester.getUserName());
-//        requestedTaskController.getRequesterRequestedTask(requester.getUserName());
-//        biddedTaskController.getRequesterTask
-//        completedTaskController.getRequesterCompletedTask(requester.getUserName());
+    protected void offlineHandler() {
+        requestedTaskController.getRequesterOfflineRequestedTask(requester.getUserName(), this);
+        biddedTaskController.getRequesterOfflineBiddedTask(requester.getUserName(), this);
+        assignedTaskController.getRequesterOfflineAssignedTask(requester.getUserName(), this);
+        completedTaskController.getRequesterOfflineCompletedTask(requester.getUserName(), this);
     }
 
     @Override
@@ -182,6 +273,6 @@ public class RequesterMainActivity extends AppCompatActivity
 
     @Override
     public void onConnect() {
-
+        offlineHandler();
     }
 }
