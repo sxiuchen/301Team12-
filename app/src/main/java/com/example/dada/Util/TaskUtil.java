@@ -36,20 +36,20 @@ public class TaskUtil {
         return gson.fromJson(string, NormalTask.class);
     }
 
-    public static String generateOfflineTaskFileName(Task request) {
-        return "offline-" + request.getID() + ".json";
+    public static String generateOfflineTaskFileName(Task task) {
+        return "offline-" + task.getID() + ".json";
     }
 
-    public static String generateAcceptedTaskFileName(Task request) {
-        return "accepted-" + request.getID() + ".json";
+    public static String generateAcceptedTaskFileName(Task task) {
+        return "accepted-" + task.getID() + ".json";
     }
 
-    public static String generateRequesterTaskFileName(Task request) {
-        return "rider-" + request.getID() + ".json";
+    public static String generateRequesterTaskFileName(Task task) {
+        return "rider-" + task.getID() + ".json";
     }
 
-    public static String generateProviderTaskFileName(Task request) {
-        return "driver-" + request.getID() + ".json";
+    public static String generateProviderTaskFileName(Task task) {
+        return "driver-" + task.getID() + ".json";
     }
 
     public static ArrayList<String> getOfflineTaskList(Context context) {
@@ -63,7 +63,7 @@ public class TaskUtil {
         return offlineRequestFileList;
     }
 
-    public static ArrayList<String> getRiderTaskList(Context context) {
+    public static ArrayList<String> getRequesterTaskList(Context context) {
         String[] fileList = context.fileList();
         ArrayList<String> offlineAcceptedRequestFileList = new ArrayList<>();
         for (String f : fileList) {
@@ -75,11 +75,11 @@ public class TaskUtil {
         return offlineAcceptedRequestFileList;
     }
 
-    public static ArrayList<String> getDriverTaskList(Context context) {
+    public static ArrayList<String> getProviderTaskList(Context context) {
         String[] fileList = context.fileList();
         ArrayList<String> offlineAcceptedRequestFileList = new ArrayList<>();
         for (String f : fileList) {
-            if (f != null && f.startsWith("driver-")) {
+            if (f != null && f.startsWith("provider-")) {
                 Log.i("Debug", f);
                 offlineAcceptedRequestFileList.add(f);
             }

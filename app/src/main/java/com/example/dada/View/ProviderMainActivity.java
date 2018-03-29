@@ -183,7 +183,7 @@ public class ProviderMainActivity extends AppCompatActivity
         requestedTaskController.getProviderRequestedTask();
         biddedTaskController.getProviderBiddedTask();
         assignedTaskController.getProviderAssignedTask(provider.getUserName());
-        completedTaskController.getProviderAssignedTask(provider.getUserName());
+        completedTaskController.getProviderCompletedTask(provider.getUserName());
     }
 
     @Override
@@ -242,10 +242,10 @@ public class ProviderMainActivity extends AppCompatActivity
      * Once the device went offline, try to get task list from internal storage
      */
     protected void offlineHandler() {
-//        requestedTaskController.getProviderOfflineRequestedTask(provider.getUserName(), this);
-//        assignedTaskController.getProviderOfflineAssignedTask(provider.getUserName(), this);
-//        biddedTaskController.getProviderOfflineRequestedTask(provider.getUserName(), this);
-//        completedTaskController.getProviderOfflineAssignedTask(provider.getUserName(), this);
+        requestedTaskController.getProviderOfflineRequestedTask(this);
+        biddedTaskController.getProviderOfflineBiddedTask(this);
+        assignedTaskController.getProviderOfflineAssignedTask(provider.getUserName(), this);
+        completedTaskController.getProviderOfflineCompletedTask(provider.getUserName(), this);
     }
 
     @Override
