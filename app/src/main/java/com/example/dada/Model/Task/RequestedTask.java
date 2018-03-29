@@ -29,7 +29,7 @@ public class RequestedTask extends Task {
      * @param description   description of the task
      */
     public RequestedTask(String title, String description, String requesterUserName) {
-        super(title, description, requesterUserName,"Requested");
+        super(title, description, requesterUserName,"requested");
     }
 
     /**

@@ -108,6 +108,7 @@ public abstract class Task {
          */
         public OnAsyncTaskCompleted listener;
         public OnAsyncTaskFailure offlineHandler;
+
         // http://stackoverflow.com/questions/9963691/android-asynctask-sending-callbacks-to-ui
         // Author: Dmitry Zaitsev
         private TaskException taskException;
@@ -329,7 +330,7 @@ public abstract class Task {
         /**
          * Fetch request list that matched the parameters, by keyword, geo-location, and all requests
          * @param search_parameters the parameter to search
-         * @return an arraylist of tasks
+         * @return an ArrayList of tasks
          */
         @Override
         protected ArrayList<NormalTask> doInBackground(String... search_parameters) {
@@ -347,7 +348,7 @@ public abstract class Task {
                 if (result.isSucceeded()) {
                     List<NormalTask> findTask = result.getSourceAsObjectList(NormalTask.class);
                     tasks.addAll(findTask);
-                    Log.i("Debug", "Successful get the request list");
+                    Log.i("Debug", "Successful get the task list");
                 }
                 else {
                     Log.i("Error", "The search query failed to find any tweets that matched.");

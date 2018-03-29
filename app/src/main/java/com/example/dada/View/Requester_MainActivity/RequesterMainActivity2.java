@@ -124,7 +124,7 @@ public class RequesterMainActivity2 extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
 
-        loadIntoList();
+//        loadIntoList();
 
     }
 
@@ -172,26 +172,26 @@ public class RequesterMainActivity2 extends AppCompatActivity {
     /**
      * load the list of tasks into listView
      */
-    private void loadIntoList(){
-        //For testing
-        NormalTask t1 = new NormalTask("name1","des1", "r1");
-        t1.setStatus("DONE");
-        NormalTask t2 = new NormalTask("name2","des2", "r2");
-        t2.setStatus("DONE");
-        NormalTask t3 = new NormalTask("name3","des3", "r3");
-        t3.setStatus("BIDDED");
-
-        tasks.add(t1);
-        tasks.add(t2);
-        tasks.add(t3);
-
-        /*
-
-         */
-
-        adapter = new taskAdapter(this, tasks);
-        rTaskList.setAdapter(adapter);
-
-    }
+//    private void loadIntoList(){
+//        //For testing
+//        NormalTask t1 = new NormalTask("name1","des1", "r1");
+//        t1.setStatus("DONE");
+//        NormalTask t2 = new NormalTask("name2","des2", "r2");
+//        t2.setStatus("DONE");
+//        NormalTask t3 = new NormalTask("name3","des3", "r3");
+//        t3.setStatus("BIDDED");
+//
+//        tasks.add(t1);
+//        tasks.add(t2);
+//        tasks.add(t3);
+//
+//        /*
+//
+//         */
+//
+//        adapter = new taskAdapter(this, tasks);
+//        rTaskList.setAdapter(adapter);
+//
+//    }
 
 }

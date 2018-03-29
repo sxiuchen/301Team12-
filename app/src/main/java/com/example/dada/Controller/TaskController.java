@@ -59,7 +59,6 @@ public class TaskController {
     public void createTask(Task task) {
         Task.CreateTaskTask t = new Task.CreateTaskTask(listener, offlineHandler);
         try {
-//            request.setID(UUID.randomUUID().toString());
             t.execute(task);
         } catch (Exception e) {
             e.printStackTrace();
@@ -202,50 +201,6 @@ public class TaskController {
     }
 
     /**
-     * Get a list of tasks that provider bidded but still waiting for assign from the requester
-     *
-     * @param providerUserName the provider's username
-     */
-    public void getProviderPendingTask(String providerUserName) {
-        String query = String.format(
-                "{\n" +
-                        "    \"filter\": {\n" +
-                        "       \"bool\" : {\n" +
-                        "           \"must_not\" : {" +
-                        "               \"term\": {\"isCompleted\": true}\n" +
-                        "           },\n" +
-                        "           \"must\" : [\n " +
-                        "               { \"term\": {\"providerList\": \"%s\"} }\n" +
-                        "           ]\n" +
-                        "       }\n" +
-                        "    }\n" +
-                        "}", providerUserName);
-        Task.GetTasksListTask task = new Task.GetTasksListTask(listener);
-        task.execute(query);
-    }
-
-    /**
-     * Get a list of tasks of provider's past tasks
-     *
-     * @param providerUserName the provider's user name
-     */
-    public void getProviderCompletedTask(String providerUserName) {
-        String query = String.format(
-                "{\n" +
-                        "    \"filter\": {\n" +
-                        "       \"bool\" : {\n" +
-                        "           \"must\" : [\n " +
-                        "               { \"term\": {\"providerUserName\": \"%s\"} },\n" +
-                        "               { \"term\": {\"isCompleted\": true} }\n" +
-                        "           ]\n" +
-                        "       }\n" +
-                        "    }\n" +
-                        "}", providerUserName);
-        Task.GetTasksListTask task = new Task.GetTasksListTask(listener);
-        task.execute(query);
-    }
-
-    /**
      * Get a list of tasks of requester's past tasks
      *
      * @param requesterUserName the requester's user name
@@ -269,7 +224,7 @@ public class TaskController {
     /**
      * Get a list of in progress tasks of requester
      *
-     * @param requesterUserName the rider's username
+     * @param requesterUserName the requester's username
      */
     public void getRequesterInProgressTask(String requesterUserName) {
         String query = String.format(
@@ -289,6 +244,77 @@ public class TaskController {
         task.execute(query);
     }
 
+    /**
+     * Get a list of requested tasks for provider
+     */
+    public void getProviderRequestedTask(){
+        String query = String.format(
+                "{\n" +
+                        "    \"query\": {\n" +
+                        "       \"term\" : { \"status\" : \"requested\" }\n" +
+                        "    }\n" +
+                        "}");
+        Task.GetTasksListTask task = new Task.GetTasksListTask(listener);
+        task.execute(query);
+    }
+
+    /**
+     * Get a list of bidded tasks for provider
+     */
+    public void getProviderBiddedTask(){
+        String query = String.format(
+                "{\n" +
+                        "    \"query\": {\n" +
+                        "       \"term\" : { \"status\" : \"bidded\" }\n" +
+                        "    }\n" +
+                        "}");
+        Task.GetTasksListTask task = new Task.GetTasksListTask(listener);
+        task.execute(query);
+    }
+
+    /**
+     * Get a list of tasks of provider's assigned tasks
+     *
+     * @param providerUserName the provider's user name
+     */
+    public void getProviderAssignedTask(String providerUserName){
+        String query = String.format(
+                "{\n" +
+                        "    \"filter\": {\n" +
+                        "       \"bool\" : {\n" +
+                        "           \"must\" : [\n " +
+                        "               { \"term\": {\"providerUserName\": \"%s\"} },\n" +
+                        "               { \"term\": {\"isCompleted\": false} }\n" +
+                        "               { \"term\": {\"status\": \"assigned\"} }\n" +
+                        "           ]\n" +
+                        "       }\n" +
+                        "    }\n" +
+                        "}", providerUserName);
+        Task.GetTasksListTask task = new Task.GetTasksListTask(listener);
+        task.execute(query);
+    }
+
+    /**
+     * Get a list of tasks of provider's past tasks
+     *
+     * @param providerUserName the provider's user name
+     */
+    public void getProviderCompletedTask(String providerUserName) {
+        String query = String.format(
+                "{\n" +
+                        "    \"filter\": {\n" +
+                        "       \"bool\" : {\n" +
+                        "           \"must\" : [\n " +
+                        "               { \"term\": {\"providerUserName\": \"%s\"} },\n" +
+                        "               { \"term\": {\"isCompleted\": true} }\n" +
+                        "               { \"term\": {\"status\": \"completed\"} }\n" +
+                        "           ]\n" +
+                        "       }\n" +
+                        "    }\n" +
+                        "}", providerUserName);
+        Task.GetTasksListTask task = new Task.GetTasksListTask(listener);
+        task.execute(query);
+    }
 
     // TODO offline task
 //    /**
