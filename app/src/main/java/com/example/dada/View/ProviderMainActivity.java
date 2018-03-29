@@ -39,14 +39,38 @@ public class ProviderMainActivity extends AppCompatActivity
 
     protected Merlin merlin;
 
-    private ListView assignedTaskListView;
     private ListView requestedTaskListView;
+    private ListView biddedTaskListView;
+    private ListView assignedTaskListView;
+    private ListView completedTaskListView;
 
-    private ArrayAdapter<Task> assignedTaskAdapter;
     private ArrayAdapter<Task> requestedTaskAdapter;
+    private ArrayAdapter<Task> biddedTaskAdapter;
+    private ArrayAdapter<Task> assignedTaskAdapter;
+    private ArrayAdapter<Task> completedTaskAdapter;
 
-    private ArrayList<Task> assignedTaskList = new ArrayList<>();
     private ArrayList<Task> requestedTaskList = new ArrayList<>();
+    private ArrayList<Task> biddedTaskList = new ArrayList<>();
+    private ArrayList<Task> assignedTaskList = new ArrayList<>();
+    private ArrayList<Task> completedTaskList = new ArrayList<>();
+
+    private TaskController requestedTaskController = new TaskController(new OnAsyncTaskCompleted() {
+        @Override
+        public void onTaskCompleted(Object o) {
+            requestedTaskList = (ArrayList<Task>) o;
+            requestedTaskAdapter.clear();
+            requestedTaskAdapter.addAll(requestedTaskList);
+        }
+    });
+
+    private TaskController biddedTaskController = new TaskController(new OnAsyncTaskCompleted() {
+        @Override
+        public void onTaskCompleted(Object o) {
+            biddedTaskList = (ArrayList<Task>) o;
+            biddedTaskAdapter.clear();
+            biddedTaskAdapter.addAll(biddedTaskList);
+        }
+    });
 
     private TaskController assignedTaskController = new TaskController(new OnAsyncTaskCompleted() {
         @Override
@@ -58,12 +82,13 @@ public class ProviderMainActivity extends AppCompatActivity
         }
     });
 
-    private TaskController requestedTaskController = new TaskController(new OnAsyncTaskCompleted() {
+    private TaskController completedTaskController = new TaskController(new OnAsyncTaskCompleted() {
         @Override
         public void onTaskCompleted(Object o) {
-            requestedTaskList = (ArrayList<Task>) o;
-            requestedTaskAdapter.clear();
-            requestedTaskAdapter.addAll(requestedTaskList);
+            completedTaskList = (ArrayList<Task>) o;
+            completedTaskAdapter.clear();
+            completedTaskAdapter.addAll(completedTaskList);
+            completedTaskAdapter.notifyDataSetChanged();
         }
     });
 
@@ -94,24 +119,6 @@ public class ProviderMainActivity extends AppCompatActivity
         TextView username = navHeader.findViewById(R.id.nav_drawer_provider_username);
         TextView email = navHeader.findViewById(R.id.nav_drawer_provider_email);
 
-        assignedTaskListView = findViewById(R.id.listView_assignedTask_ProviderMainActivity);
-        assignedTaskListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                // open request info dialog
-//                openRequestInfoDialog(assignedTaskList.get(position));
-            }
-        });
-
-        requestedTaskListView = findViewById(R.id.listView_requestedTask_ProviderMainActivity);
-        requestedTaskListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                // open request info dialog
-//                openRequestInfoDialog(requestedTaskList.get(position));
-            }
-        });
-
         // Get user profile
         provider = FileIOUtil.loadUserFromFile(getApplicationContext());
 
@@ -119,21 +126,64 @@ public class ProviderMainActivity extends AppCompatActivity
         username.setText(provider.getUserName());
         email.setText(provider.getEmail());
 
+        // list view
+        requestedTaskListView = findViewById(R.id.listView_requestedTask_ProviderMainActivity);
+        requestedTaskListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                // open request info dialog
+//                openTaskInfoDialog(requestedTaskList.get(position));
+            }
+        });
+
+        biddedTaskListView = findViewById(R.id.listView_biddedTask_ProviderMainActivity);
+        biddedTaskListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                // open request info dialog
+//                openTaskInfoDialog(biddedTaskList.get(position));
+            }
+        });
+
+        assignedTaskListView = findViewById(R.id.listView_assignedTask_ProviderMainActivity);
+        assignedTaskListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                // open request info dialog
+//                openTaskInfoDialog(assignedTaskList.get(position));
+            }
+        });
+
+        completedTaskListView = findViewById(R.id.listView_completedTask_ProviderMainActivity);
+        completedTaskListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                // open request info dialog
+//                openTaskInfoDialog(completedTaskList.get(position));
+            }
+        });
+
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        assignedTaskAdapter = new ArrayAdapter<>(this, R.layout.task_list_item, assignedTaskList);
         requestedTaskAdapter = new ArrayAdapter<>(this, R.layout.task_list_item, requestedTaskList);
-        assignedTaskListView.setAdapter(assignedTaskAdapter);
+        biddedTaskAdapter = new ArrayAdapter<>(this, R.layout.task_list_item, biddedTaskList);
+        assignedTaskAdapter = new ArrayAdapter<>(this, R.layout.task_list_item, assignedTaskList);
+        completedTaskAdapter = new ArrayAdapter<>(this, R.layout.task_list_item, completedTaskList);
         requestedTaskListView.setAdapter(requestedTaskAdapter);
+        biddedTaskListView.setAdapter(biddedTaskAdapter);
+        assignedTaskListView.setAdapter(assignedTaskAdapter);
+        completedTaskListView.setAdapter(completedTaskAdapter);
         updateTaskList();
     }
 
     private void updateTaskList() {
-//        assignedTaskController.getProviderAssignedRequest(provider.getUserName());
         requestedTaskController.getProviderRequestedTask();
+        biddedTaskController.getProviderBiddedTask();
+        assignedTaskController.getProviderAssignedTask(provider.getUserName());
+        completedTaskController.getProviderAssignedTask(provider.getUserName());
     }
 
     @Override
@@ -194,6 +244,8 @@ public class ProviderMainActivity extends AppCompatActivity
     protected void offlineHandler() {
 //        requestedTaskController.getProviderOfflineRequestedTask(provider.getUserName(), this);
 //        assignedTaskController.getProviderOfflineAssignedTask(provider.getUserName(), this);
+//        biddedTaskController.getProviderOfflineRequestedTask(provider.getUserName(), this);
+//        completedTaskController.getProviderOfflineAssignedTask(provider.getUserName(), this);
     }
 
     @Override
