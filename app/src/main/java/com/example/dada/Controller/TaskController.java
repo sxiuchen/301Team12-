@@ -59,7 +59,6 @@ public class TaskController {
     public void createTask(Task task) {
         Task.CreateTaskTask t = new Task.CreateTaskTask(listener, offlineHandler);
         try {
-//            request.setID(UUID.randomUUID().toString());
             t.execute(task);
         } catch (Exception e) {
             e.printStackTrace();
@@ -206,7 +205,7 @@ public class TaskController {
      *
      * @param providerUserName the provider's username
      */
-    public void getProviderPendingTask(String providerUserName) {
+    public void getProviderBiddedTask(String providerUserName) {
         String query = String.format(
                 "{\n" +
                         "    \"filter\": {\n" +
@@ -269,7 +268,7 @@ public class TaskController {
     /**
      * Get a list of in progress tasks of requester
      *
-     * @param requesterUserName the rider's username
+     * @param requesterUserName the requester's username
      */
     public void getRequesterInProgressTask(String requesterUserName) {
         String query = String.format(
@@ -285,6 +284,20 @@ public class TaskController {
                         "       }\n" +
                         "    }\n" +
                         "}", requesterUserName);
+        Task.GetTasksListTask task = new Task.GetTasksListTask(listener);
+        task.execute(query);
+    }
+
+    /**
+     * Get a list of requested tasks for provider
+     */
+    public void getProviderRequestedTask() {
+        String query = String.format(
+                "{\n" +
+                        "    \"query\": {\n" +
+                        "       \"term\" : { \"status\" : \"requested\" }\n" +
+                        "    }\n" +
+                        "}");
         Task.GetTasksListTask task = new Task.GetTasksListTask(listener);
         task.execute(query);
     }

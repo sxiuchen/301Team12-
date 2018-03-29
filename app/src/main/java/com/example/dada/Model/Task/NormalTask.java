@@ -18,8 +18,8 @@ public class NormalTask extends Task {
     public NormalTask() {
     }
 
-    public NormalTask(String title, String description, String requesterUserName) {
-        super(title, description, requesterUserName, "requested");
+    public NormalTask(String title, String description, String requesterUserName, String status) {
+        super(title, description, requesterUserName, status);
     }
 
     public NormalTask(String requesterUserName, String providerUserName, double price) {

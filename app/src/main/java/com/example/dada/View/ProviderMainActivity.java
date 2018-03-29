@@ -13,21 +13,71 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 
+import com.example.dada.Controller.TaskController;
+import com.example.dada.Model.OnAsyncTaskCompleted;
+import com.example.dada.Model.Task.Task;
 import com.example.dada.Model.User;
 import com.example.dada.R;
 import com.example.dada.Util.FileIOUtil;
+import com.novoda.merlin.Merlin;
+import com.novoda.merlin.NetworkStatus;
+import com.novoda.merlin.registerable.bind.Bindable;
+import com.novoda.merlin.registerable.connection.Connectable;
+import com.novoda.merlin.registerable.disconnection.Disconnectable;
+
+import java.util.ArrayList;
 
 public class ProviderMainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener, Connectable, Disconnectable, Bindable {
 
     private User provider;
+
+    protected Merlin merlin;
+
+    private ListView assignedTaskListView;
+    private ListView requestedTaskListView;
+
+    private ArrayAdapter<Task> assignedTaskAdapter;
+    private ArrayAdapter<Task> requestedTaskAdapter;
+
+    private ArrayList<Task> assignedTaskList = new ArrayList<>();
+    private ArrayList<Task> requestedTaskList = new ArrayList<>();
+
+    private TaskController assignedTaskController = new TaskController(new OnAsyncTaskCompleted() {
+        @Override
+        public void onTaskCompleted(Object o) {
+            assignedTaskList = (ArrayList<Task>) o;
+            assignedTaskAdapter.clear();
+            assignedTaskAdapter.addAll(assignedTaskList);
+            assignedTaskAdapter.notifyDataSetChanged();
+        }
+    });
+
+    private TaskController requestedTaskController = new TaskController(new OnAsyncTaskCompleted() {
+        @Override
+        public void onTaskCompleted(Object o) {
+            requestedTaskList = (ArrayList<Task>) o;
+            requestedTaskAdapter.clear();
+            requestedTaskAdapter.addAll(requestedTaskList);
+        }
+    });
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_provider_main);
+
+        // monitor network connectivity
+        merlin = new Merlin.Builder().withConnectableCallbacks().withDisconnectableCallbacks().withBindableCallbacks().build(this);
+        merlin.registerConnectable(this);
+        merlin.registerDisconnectable(this);
+        merlin.registerBindable(this);
+
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -44,6 +94,24 @@ public class ProviderMainActivity extends AppCompatActivity
         TextView username = navHeader.findViewById(R.id.nav_drawer_provider_username);
         TextView email = navHeader.findViewById(R.id.nav_drawer_provider_email);
 
+        assignedTaskListView = findViewById(R.id.listView_assignedTask_ProviderMainActivity);
+        assignedTaskListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                // open request info dialog
+//                openRequestInfoDialog(assignedTaskList.get(position));
+            }
+        });
+
+        requestedTaskListView = findViewById(R.id.listView_requestedTask_ProviderMainActivity);
+        requestedTaskListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                // open request info dialog
+//                openRequestInfoDialog(requestedTaskList.get(position));
+            }
+        });
+
         // Get user profile
         provider = FileIOUtil.loadUserFromFile(getApplicationContext());
 
@@ -51,6 +119,21 @@ public class ProviderMainActivity extends AppCompatActivity
         username.setText(provider.getUserName());
         email.setText(provider.getEmail());
 
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        assignedTaskAdapter = new ArrayAdapter<>(this, R.layout.task_list_item, assignedTaskList);
+        requestedTaskAdapter = new ArrayAdapter<>(this, R.layout.task_list_item, requestedTaskList);
+        assignedTaskListView.setAdapter(assignedTaskAdapter);
+        requestedTaskListView.setAdapter(requestedTaskAdapter);
+        updateTaskList();
+    }
+
+    private void updateTaskList() {
+//        assignedTaskController.getProviderAssignedRequest(provider.getUserName());
+        requestedTaskController.getProviderRequestedTask();
     }
 
     @Override
@@ -99,9 +182,38 @@ public class ProviderMainActivity extends AppCompatActivity
 
         }
 
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_provider_layout);
         drawer.closeDrawer(GravityCompat.START);
 
         return true;
+    }
+
+    /**
+     * Once the device went offline, try to get task list from internal storage
+     */
+    protected void offlineHandler() {
+//        requestedTaskController.getProviderOfflineRequestedTask(provider.getUserName(), this);
+//        assignedTaskController.getProviderOfflineAssignedTask(provider.getUserName(), this);
+    }
+
+    @Override
+    public void onBind(NetworkStatus networkStatus) {
+        if (networkStatus.isAvailable()) {
+            onConnect();
+        } else if (!networkStatus.isAvailable()) {
+            onDisconnect();
+        }
+    }
+
+    @Override
+    public void onConnect() {
+        // try to update offline assigned request
+//        requestedTaskController.updateDriverOfflineRequest(driver.getUserName(), this);
+//        updateRequestList();
+    }
+
+    @Override
+    public void onDisconnect() {
+        offlineHandler();
     }
 }

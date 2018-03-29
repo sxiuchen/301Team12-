@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -13,16 +14,58 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 
+import com.example.dada.Controller.TaskController;
+import com.example.dada.Model.OnAsyncTaskCompleted;
+import com.example.dada.Model.Task.Task;
 import com.example.dada.Model.User;
 import com.example.dada.R;
 import com.example.dada.Util.FileIOUtil;
+import com.novoda.merlin.Merlin;
+import com.novoda.merlin.NetworkStatus;
+import com.novoda.merlin.registerable.bind.Bindable;
+import com.novoda.merlin.registerable.connection.Connectable;
+import com.novoda.merlin.registerable.disconnection.Disconnectable;
+
+import java.util.ArrayList;
 
 public class RequesterMainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener, Connectable, Disconnectable, Bindable {
 
     private User requester;
+
+    protected Merlin merlin;
+
+    private ListView acceptedTaskListView;
+    private ListView pendingTaskListView;
+
+    private ArrayAdapter<Task> acceptedTaskAdapter;
+    private ArrayAdapter<Task> pendingTaskAdapter;
+
+    private ArrayList<Task> acceptedTaskList = new ArrayList<>();
+    private ArrayList<Task> pendingTaskList = new ArrayList<>();
+
+    private TaskController acceptedTaskController = new TaskController(new OnAsyncTaskCompleted() {
+        @Override
+        public void onTaskCompleted(Object o) {
+            acceptedTaskList = (ArrayList<Task>) o;
+            acceptedTaskAdapter.clear();
+            acceptedTaskAdapter.addAll(acceptedTaskList);
+            acceptedTaskAdapter.notifyDataSetChanged();
+        }
+    });
+
+    private TaskController pendingTaskController = new TaskController(new OnAsyncTaskCompleted() {
+        @Override
+        public void onTaskCompleted(Object o) {
+            pendingTaskList = (ArrayList<Task>) o;
+            pendingTaskAdapter.clear();
+            pendingTaskAdapter.addAll(pendingTaskList);
+        }
+    });
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,8 +150,38 @@ public class RequesterMainActivity extends AppCompatActivity
 
         }
 
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_requester_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    /**
+     * Update view
+     */
+    protected void updateRequest() {
+        Log.i("Debug", requester.getUserName());
+//        requestedTaskController.getRequesterRequestedTask(requester.getUserName());
+//        biddedTaskController.getRequesterTask
+//        completedTaskController.getRequesterCompletedTask(requester.getUserName());
+    }
+
+    @Override
+    public void onBind(NetworkStatus networkStatus) {
+        if (networkStatus.isAvailable()) {
+            onConnect();
+        } else if (!networkStatus.isAvailable()) {
+            onDisconnect();
+        }
+    }
+
+    @Override
+    public void onDisconnect() {
+        Log.i("Debug", "Offline");
+//        inProgressRequestController.getRiderOfflineRequest(requester.getUserName(), this);
+    }
+
+    @Override
+    public void onConnect() {
+
     }
 }
