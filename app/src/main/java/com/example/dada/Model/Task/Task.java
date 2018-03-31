@@ -426,7 +426,7 @@ public abstract class Task {
             throw new TaskException("This task has not been bidded by any provider yet");
         } else {
             // Assigned provider
-            assert this.status.equals("bidded");
+            assert getStatus().equals("bidded");
             setProviderUserName(providerUserName);
             setStatus("assigned");
             providerList.clear();
@@ -434,11 +434,12 @@ public abstract class Task {
     }
 
     /**
-     * Requester confirm task complete.
+     * Provider confirm task complete.
      */
-    public void requesterConfirmTaskComplete() {
-        this.isCompleted = true;
-        this.setStatus("completed");
+    public void providerCompleteTask() throws TaskException {
+        setIsCompleted(true);
+        assert getStatus().equals("assigned");
+        setStatus("completed");
     }
 
     /**

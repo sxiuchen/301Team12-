@@ -244,7 +244,7 @@ public class RequesterDetailActivity extends ListActivity {
      */
     public void doneOnClick(View view) {
         if (task.getStatus().equals(statusAssigned)) {
-            task.requesterConfirmTaskComplete();
+//            task.requesterConfirmTaskComplete();
             taskController.updateTask(task);
             setViews();
         }

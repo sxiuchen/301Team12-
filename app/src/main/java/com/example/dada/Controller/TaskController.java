@@ -147,34 +147,34 @@ public class TaskController {
 //        task.execute(query);
 //    }
 
-    /**
-     * Get a list of tasks that match the keyword
-     *
-     * @param keyword           The keyword to match
-     * @param providerUserName  The driver user name
-     * @return An Arraylist of matching tasks.
-     */
-    public void searchTaskByKeyword(String keyword, String providerUserName) {
-        String query = String.format(
-                "{\n" +
-                        "    \"query\": {\n" +
-                        "       \"match\" : {\n" +
-                        "           \"taskDescription\" : \"%s\" \n" +
-                        "       }\n" +
-                        "    },\n" +
-                        "    \"filter\": {\n" +
-                        "       \"bool\" : {\n" +
-                        "           \"must_not\" : [" +
-                        "               { \"term\": {\"isCompleted\": true} },\n" +
-                        "               { \"term\": {\"providerList\": \"%s\"} }\n" +
-                        "           ]\n" +
-                        "       }\n" +
-                        "    }\n" +
-                        "}", keyword, providerUserName);
-
-        Task.GetTasksListTask task = new Task.GetTasksListTask(listener);
-        task.execute(query);
-    }
+//    /**
+//     * Get a list of tasks that match the keyword
+//     *
+//     * @param keyword           The keyword to match
+//     * @param providerUserName  The provider user name
+//     * @return An ArrayList of matching tasks.
+//     */
+//    public void searchTaskByKeyword(String keyword, String providerUserName) {
+//        String query = String.format(
+//                "{\n" +
+//                        "    \"query\": {\n" +
+//                        "       \"match\" : {\n" +
+//                        "           \"taskDescription\" : \"%s\" \n" +
+//                        "       }\n" +
+//                        "    },\n" +
+//                        "    \"filter\": {\n" +
+//                        "       \"bool\" : {\n" +
+//                        "           \"must_not\" : [" +
+//                        "               { \"term\": {\"isCompleted\": true} },\n" +
+//                        "               { \"term\": {\"providerList\": \"%s\"} }\n" +
+//                        "           ]\n" +
+//                        "       }\n" +
+//                        "    }\n" +
+//                        "}", keyword, providerUserName);
+//
+//        Task.GetTasksListTask task = new Task.GetTasksListTask(listener);
+//        task.execute(query);
+//    }
 
     /**
      * Get a list of requested tasks for provider
@@ -216,7 +216,6 @@ public class TaskController {
                         "       \"bool\" : {\n" +
                         "           \"must\" : [\n " +
                         "               { \"term\": {\"providerUserName\": \"%s\"} },\n" +
-                        "               { \"term\": {\"isCompleted\": false} }\n" +
                         "               { \"term\": {\"status\": \"assigned\"} }\n" +
                         "           ]\n" +
                         "       }\n" +
@@ -238,7 +237,6 @@ public class TaskController {
                         "       \"bool\" : {\n" +
                         "           \"must\" : [\n " +
                         "               { \"term\": {\"providerUserName\": \"%s\"} },\n" +
-                        "               { \"term\": {\"isCompleted\": true} }\n" +
                         "               { \"term\": {\"status\": \"completed\"} }\n" +
                         "           ]\n" +
                         "       }\n" +
@@ -304,7 +302,7 @@ public class TaskController {
                         "               \"term\": {\"isCompleted\": true}\n" +
                         "           },\n" +
                         "           \"must\" : [\n " +
-                        "               { \"term\": {\"requesterUserName\": \"%s\"} }\n" +
+                        "               { \"term\": {\"requesterUserName\": \"%s\"} }, \n" +
                         "               { \"term\": {\"status\": \"assigned\"} }\n" +
                         "           ]\n" +
                         "       }\n" +
@@ -326,7 +324,6 @@ public class TaskController {
                         "       \"bool\" : {\n" +
                         "           \"must\" : [\n " +
                         "               { \"term\": {\"requesterUserName\": \"%s\"} },\n" +
-                        "               { \"term\": {\"isCompleted\": true} }\n" +
                         "               { \"term\": {\"status\": \"completed\"} }\n" +
                         "           ]\n" +
                         "       }\n" +
@@ -551,6 +548,7 @@ public class TaskController {
      *
      * @param task              the task
      * @param providerUserName  the provider user name
+     * @param price             the price of the task
      */
     public void providerBidTask(Task task, String providerUserName, double price) throws TaskException {
         task.providerBidTask(providerUserName, price);
@@ -561,6 +559,7 @@ public class TaskController {
      * Requester assign task.
      *
      * @param task the task to be assigned completed
+     * @param providerUserName the provider user name
      */
     public void requesterAssignTask(Task task, String providerUserName) throws TaskException {
         task.requesterAssignProvider(providerUserName);
@@ -568,12 +567,12 @@ public class TaskController {
     }
 
     /**
-     * Requester confirm task complete.
+     * Provider confirm task complete.
      *
      * @param task the task to be confirmed completed
      */
-    public void requesterConfirmTaskComplete(Task task) {
-        task.requesterConfirmTaskComplete();
+    public void providerCompleteTask(Task task) throws TaskException {
+        task.providerCompleteTask();
         updateTask(task);
     }
 
