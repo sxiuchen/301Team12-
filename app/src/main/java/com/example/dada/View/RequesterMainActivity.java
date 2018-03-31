@@ -1,9 +1,11 @@
 package com.example.dada.View;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -16,6 +18,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -25,6 +28,7 @@ import com.example.dada.Model.Task.Task;
 import com.example.dada.Model.User;
 import com.example.dada.R;
 import com.example.dada.Util.FileIOUtil;
+import com.example.dada.Util.TaskUtil;
 import com.novoda.merlin.Merlin;
 import com.novoda.merlin.NetworkStatus;
 import com.novoda.merlin.registerable.bind.Bindable;
@@ -150,8 +154,8 @@ public class RequesterMainActivity extends AppCompatActivity
         biddedTaskListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                // open request info dialog
-//                openTaskInfoDialog(biddedTaskList.get(position));
+                // open task info dialog
+                openBiddedTaskDialog(biddedTaskList.get(position));
             }
         });
 
@@ -239,11 +243,63 @@ public class RequesterMainActivity extends AppCompatActivity
             Intent intentUserEditProfile = new Intent(getApplicationContext(), UserEditProfileActivity.class);
             startActivity(intentUserEditProfile);
 
+        } else if (id == R.id.nav_logout) {
+
+            // intent to login activity
+            startActivity(new Intent(this, LoginActivity.class));
+            finish();
+
         }
 
         DrawerLayout drawer = findViewById(R.id.drawer_requester_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private void openRequestedTaskDialog(final Task task) {
+
+        // get task info, and show it on the dialog
+        String title = task.getTitle().toString();
+        String description = task.getTaskDescription();
+
+        final EditText input_price = new EditText(RequesterMainActivity.this);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(ProviderMainActivity.this);
+
+        builder.setTitle("Task Information")
+                .setMessage("Title: " + title + "\n" + "Description: " + description + "\n" + "Price: ")
+                .setView(input_price)
+                .setNeutralButton("view map", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+                        Intent intentProviderBrowse = new Intent(ProviderMainActivity.this, ProviderBrowseTaskActivity.class);
+
+                        // http://stackoverflow.com/questions/2736389/how-to-pass-an-object-from-one-activity-to-another-on-android
+                        // Serialize the task object and pass it over through the intent
+                        intentProviderBrowse.putExtra("task", TaskUtil.serializer(task));
+                        startActivity(intentProviderBrowse);
+                    }
+                })
+                .setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+                    }
+                })
+                .setPositiveButton("bid", new DialogInterface.OnClickListener() {
+                    @Override
+                    // Driver confirms request
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        double price = Double.parseDouble(input_price.getText().toString());
+
+                        // Bid requested task
+                        bidRequestedTaskController.providerBidTask(task, provider.getUserName(), price);
+                    }
+                });
+
+        // Create & Show the AlertDialog
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 
     /**

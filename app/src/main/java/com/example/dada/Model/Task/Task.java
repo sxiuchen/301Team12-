@@ -47,7 +47,6 @@ public abstract class Task {
     private String requesterUserName;
     private String providerUserName;
     private Boolean isCompleted;
-
     private ArrayList<String> providerList = new ArrayList<>();
 
     private transient static JestDroidClient client;
@@ -64,7 +63,8 @@ public abstract class Task {
      *
      * @param title         title of the task
      * @param description   description of the task
-     * @param
+     * @param requesterUserName
+     * @param status
      */
     public Task(String title, String description, String requesterUserName, String status) {
         this.title = title;
@@ -139,7 +139,6 @@ public abstract class Task {
         @Override
         protected Task doInBackground(Task... tasks) {
             verifySettings();
-            Task task = new RequestedTask();
             for (Task t : tasks) {
                 Index index = new Index.Builder(t).index("team12").type("task").id(t.getID()).build();
                 try {
@@ -147,7 +146,6 @@ public abstract class Task {
                     if (result.isSucceeded()) {
                         // set ID
                         t.setID(result.getId());
-                        task = t;
                         Log.i("Debug", "Successful create task");
                     } else {
                         Log.i("Debug", "Elastic search was not able to add the request.");
@@ -162,8 +160,8 @@ public abstract class Task {
         }
 
         /**
-         * Excute after async task is finished
-         * Stuff like notify arrayadapter the data set is changed
+         * Execute after async task is finished
+         * Stuff like notify ArrayAdapter the data set is changed
          * @param task the request
          */
         @Override
@@ -218,9 +216,7 @@ public abstract class Task {
             String query = TaskUtil.serializer(tasks[0]);
             Log.i("Debug", query);
             Index index = new Index.Builder(query)
-                    .index("team12")
-                    .type("task")
-                    .id(tasks[0].getID()).build();
+                    .index("team12").type("task").id(tasks[0].getID()).build();
             try {
                 DocumentResult result = client.execute(index);
 
@@ -238,7 +234,7 @@ public abstract class Task {
         }
 
         /**
-         * Excute after async task is finished
+         * Execute after async task is finished
          * Stuff like notify arrayadapter the data set is changed
          * @param task the task
          */
@@ -391,22 +387,28 @@ public abstract class Task {
 
     /**
      * Overide toString method
-     * @return the descitipion
+     * @return the description of the task
      */
     @Override
     public String toString() {
-        if (taskDescription == null) return null;
-        return taskDescription;
+        if ( title == null ) return null;
+        if ( status.equals("requested")){
+            return title + " " + status;
+        }else{
+            return title + " " + status + " " + price + " ";
+        }
     }
 
     /**
      * Provider bids the requested task.
      *
      * @param providerUserName the provider user name who bids the requested task
+     * @param price the bidded price
      */
-    public void providerBidTask(String providerUserName) {
-        if ( this.status == "REQUESTER" ){
-            this.status = "BIDDED";
+    public void providerBidTask(String providerUserName, double price) {
+        if ( getStatus().equals("requested") ){
+            setStatus("bidded");
+            setPrice(price);
         }
         providerList.add(providerUserName);
     }
@@ -424,9 +426,9 @@ public abstract class Task {
             throw new TaskException("This task has not been bidded by any provider yet");
         } else {
             // Assigned provider
-            assert this.status == "BIDDED";
+            assert this.status == "bidded";
             this.providerUserName = providerUserName;
-            this.status = "ASSIGNED";
+            this.status = "assigned";
             providerList.clear();
         }
     }
@@ -436,14 +438,14 @@ public abstract class Task {
      */
     public void requesterConfirmTaskComplete() {
         this.isCompleted = true;
-        this.setStatus("DONE");
+        this.setStatus("completed");
     }
 
     /**
      * Requester confirm task not complete.
      */
     public void requesterConfirmTaskNotComplete() {
-        this.setStatus("REQUESTED");
+        this.setStatus("requested");
     }
 
     /**
