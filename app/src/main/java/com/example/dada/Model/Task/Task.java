@@ -41,13 +41,14 @@ public abstract class Task {
 
     private String ID;
     private double price;
+    private double lowestPrice;
     private String title;
-    private String taskDescription;
+    private String description;
     private String status;
     private String requesterUserName;
     private String providerUserName;
-    private Boolean isCompleted;
-    private ArrayList<String> providerList = new ArrayList<>();
+
+    private ArrayList<ArrayList<String>> bidList = new ArrayList<>();
 
     private transient static JestDroidClient client;
 
@@ -59,7 +60,7 @@ public abstract class Task {
     }
 
     /**
-     * Constructor for a new task.
+     * Constructor for a requested task.
      *
      * @param title         title of the task
      * @param description   description of the task
@@ -68,7 +69,7 @@ public abstract class Task {
      */
     public Task(String title, String description, String requesterUserName, String status) {
         this.title = title;
-        this.taskDescription = description;
+        this.description = description;
         this.status = status;
         this.requesterUserName = requesterUserName;
     }
@@ -90,12 +91,12 @@ public abstract class Task {
      * Constructor for BiddedTask
      *
      * @param requesterUserName     the requester user name
-     * @param providerList          the list of providers username who bidded the task
+     * @param bid                   the list of providers username and price who bidded the task
      * @param price                 the price
      */
-    public Task(String requesterUserName, ArrayList<String> providerList, Double price){
+    public Task(String requesterUserName, ArrayList<String> bid, Double price){
         this.requesterUserName = requesterUserName;
-        this.providerList = providerList;
+        this.bidList.add(bid);
         this.price = price;
     }
 
@@ -408,28 +409,49 @@ public abstract class Task {
     public void providerBidTask(String providerUserName, double price) throws TaskException{
         if ( getStatus().equals("requested") ){
             setStatus("bidded");
-            setPrice(price);
         }
-        providerList.add(providerUserName);
+        boolean found = false;
+        Double lowestPrice = -Double.MAX_VALUE;
+        for ( ArrayList<String> bid : bidList ){
+            if ( bid.get(0).equals(providerUserName) ){
+                found = true;
+                bid.set(1, Double.toString(price));
+            }
+            lowestPrice = (lowestPrice < Double.parseDouble(bid.get(1))) ? Double.parseDouble(bid.get(1)) : lowestPrice;
+        }
+        if ( !found ){
+            ArrayList<String> bid = new ArrayList<>();
+            bid.add(providerUserName);
+            bid.add(Double.toString(price));
+            bidList.add(bid);
+            lowestPrice = (lowestPrice < Double.parseDouble(bid.get(1))) ? Double.parseDouble(bid.get(1)) : lowestPrice;
+        }
+        setLowestPrice(lowestPrice);
     }
 
     /**
      * Requester assign provider.
      *
-     * @param  providerUserName the provider user name
-     * @throws TaskException    the request exception
+     * @param  providerUserName the provider user namen
      * @throws TaskException    raise exception when request has not been confirmed
      */
     public void requesterAssignProvider(String providerUserName) throws TaskException {
-        if (providerList == null || providerList.isEmpty()) {
+        if (bidList == null || bidList.isEmpty()) {
             // If the task has not been bidded yet
             throw new TaskException("This task has not been bidded by any provider yet");
         } else {
             // Assigned provider
             assert getStatus().equals("bidded");
-            setProviderUserName(providerUserName);
             setStatus("assigned");
-            providerList.clear();
+            setProviderUserName(providerUserName);
+
+            for ( ArrayList<String> bid : bidList ){
+                if ( bid.get(0).equals(providerUserName) ){
+                   setPrice(Double.parseDouble(bid.get(1)));
+                }
+            }
+
+            bidList.clear();
         }
     }
 
@@ -437,7 +459,6 @@ public abstract class Task {
      * Provider confirm task complete.
      */
     public void providerCompleteTask() throws TaskException {
-        setIsCompleted(true);
         assert getStatus().equals("assigned");
         setStatus("completed");
     }
@@ -462,17 +483,19 @@ public abstract class Task {
 
     public void setPrice(Double price){ this.price = price; }
 
+    public Double getLowestPrice(){ return this.price; }
+
+    public void setLowestPrice(Double price){ this.price = price; }
+
     public String getTitle(){ return this.title; }
 
     public void setTitle(String title){ this.title = title; }
 
-    public String getTaskDescription(){
-        return this.taskDescription;
+    public String getDescription(){
+        return this.description;
     }
 
-    public void setTaskDescription(String taskDescription){
-        this.taskDescription = taskDescription;
-    }
+    public void setDescription(String description){ this.description = description; }
 
     public String getStatus(){
         return this.status;
@@ -490,11 +513,8 @@ public abstract class Task {
 
     public void setProviderUserName(String providerUserName){ this.providerUserName = providerUserName; }
 
-    public Boolean getIsCompleted(){ return this.isCompleted; }
+    public ArrayList<ArrayList<String>> getBidList(){ return this.bidList; }
 
-    public void setIsCompleted(boolean isCompleted){ this.isCompleted = isCompleted; }
+    public void setProviderList(ArrayList<ArrayList<String>> bidList){ this.bidList = bidList; }
 
-    public ArrayList<String> getProviderList(){ return this.providerList; }
-
-    public void setProviderList(ArrayList<String> providerList){ this.providerList = providerList; }
 }

@@ -276,7 +276,7 @@ public class ProviderMainActivity extends AppCompatActivity
 
         // get task info, and show it on the dialog
         String title = task.getTitle().toString();
-        String description = task.getTaskDescription();
+        String description = task.getDescription();
 
         final EditText input_price = new EditText(ProviderMainActivity.this);
 
@@ -326,7 +326,7 @@ public class ProviderMainActivity extends AppCompatActivity
 
         // get task info, and show it on the dialog
         String title = task.getTitle().toString();
-        String description = task.getTaskDescription();
+        String description = task.getDescription();
         String price = task.getPrice().toString();
 
         AlertDialog.Builder builder = new AlertDialog.Builder(ProviderMainActivity.this);

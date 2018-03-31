@@ -27,7 +27,7 @@ public class AssignedTask extends Task{
         super(requesterUserName, providerUserName, price);
     }
 
-    public void requesterCompleteTask() throws TaskException {
+    public void providerCompleteTask() throws TaskException {
         super.providerCompleteTask();
     }
 }

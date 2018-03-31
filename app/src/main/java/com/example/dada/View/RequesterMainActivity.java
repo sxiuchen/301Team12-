@@ -274,7 +274,7 @@ public class RequesterMainActivity extends AppCompatActivity
 
         // get task info, and show it on the dialog
         String title = task.getTitle().toString();
-        String description = task.getTaskDescription();
+        String description = task.getDescription();
         String lowest_price = task.getPrice().toString();
 
         AlertDialog.Builder builder = new AlertDialog.Builder(RequesterMainActivity.this);
@@ -304,7 +304,7 @@ public class RequesterMainActivity extends AppCompatActivity
 
                         // Assign bidded task
                         try {
-                            assignBiddedTaskController.requesterAssignTask(task, task.getProviderList().get(0));
+                            assignBiddedTaskController.requesterAssignTask(task, task.getBidList().get(0).get(0));
                         } catch (TaskException e) {
                             e.printStackTrace();
                         }
