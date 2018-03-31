@@ -405,7 +405,7 @@ public abstract class Task {
      * @param providerUserName the provider user name who bids the requested task
      * @param price the bidded price
      */
-    public void providerBidTask(String providerUserName, double price) {
+    public void providerBidTask(String providerUserName, double price) throws TaskException{
         if ( getStatus().equals("requested") ){
             setStatus("bidded");
             setPrice(price);
@@ -426,9 +426,9 @@ public abstract class Task {
             throw new TaskException("This task has not been bidded by any provider yet");
         } else {
             // Assigned provider
-            assert this.status == "bidded";
-            this.providerUserName = providerUserName;
-            this.status = "assigned";
+            assert this.status.equals("bidded");
+            setProviderUserName(providerUserName);
+            setStatus("assigned");
             providerList.clear();
         }
     }

@@ -23,6 +23,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.dada.Controller.TaskController;
+import com.example.dada.Exception.TaskException;
 import com.example.dada.Model.OnAsyncTaskCompleted;
 import com.example.dada.Model.Task.Task;
 import com.example.dada.Model.User;
@@ -298,7 +299,11 @@ public class ProviderMainActivity extends AppCompatActivity
                         double price = Double.parseDouble(input_price.getText().toString());
 
                         // Bid requested task
-                        bidRequestedTaskController.providerBidTask(task, provider.getUserName(), price);
+                        try {
+                            bidRequestedTaskController.providerBidTask(task, provider.getUserName(), price);
+                        } catch (TaskException e) {
+                            e.printStackTrace();
+                        }
                     }
                 });
 

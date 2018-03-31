@@ -552,8 +552,18 @@ public class TaskController {
      * @param task              the task
      * @param providerUserName  the provider user name
      */
-    public void providerBidTask(Task task, String providerUserName, double price) {
+    public void providerBidTask(Task task, String providerUserName, double price) throws TaskException {
         task.providerBidTask(providerUserName, price);
+        updateTask(task);
+    }
+
+    /**
+     * Requester assign task.
+     *
+     * @param task the task to be assigned completed
+     */
+    public void requesterAssignTask(Task task, String providerUserName) throws TaskException {
+        task.requesterAssignProvider(providerUserName);
         updateTask(task);
     }
 
