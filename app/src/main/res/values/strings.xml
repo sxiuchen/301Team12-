@@ -23,5 +23,6 @@
     </string-array>
 
     <string name="title_activity_requester_add_task">Add new task</string>
+    <string name="title_activity_provider_bid_task">ProviderBidTaskActivity</string>
 
 </resources>

@@ -38,8 +38,8 @@ public class RequestedTask extends Task {
      * @param providerUserName the provider user name who bids the requested task
      */
     @Override
-    public void providerBidTask(String providerUserName) {
-        super.providerBidTask(providerUserName);
+    public void providerBidTask(String providerUserName, double price) {
+        super.providerBidTask(providerUserName, price);
     }
 
 }

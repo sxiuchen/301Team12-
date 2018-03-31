@@ -30,6 +30,8 @@ import com.example.dada.Model.User;
 import com.example.dada.R;
 import com.example.dada.Util.FileIOUtil;
 
+import java.util.UUID;
+
 /**
  * activity to handle interface of adding new task from user
  */
@@ -80,17 +82,18 @@ public class RequesterAddTaskActivity extends AppCompatActivity {
         String title = titleText.getText().toString();
         String description = descriptionText.getText().toString();
 
-        boolean validUsername = !(title.isEmpty() || title.trim().isEmpty());
+        boolean validTitle = !(title.isEmpty() || title.trim().isEmpty());
         boolean validDescription = !(description.isEmpty() || description.trim().isEmpty());
 
-        if (!(validUsername && validDescription)) {
+        if (!(validTitle && validDescription)) {
             Toast.makeText(this, "Task Title/Description is not valid.", Toast.LENGTH_SHORT).show();
         } else {
-
-            final Task task = new RequestedTask(title, description, requester.getUserName());
+            Task task = new RequestedTask(title, description, requester.getUserName());
+            task.setID(UUID.randomUUID().toString());
+            task.setPrice(0.0);
             taskController.createTask(task);
-            finish();
-
+            Intent intentProviderMain = new Intent(getApplicationContext(), ProviderMainActivity.class);
+            startActivity(intentProviderMain);
         }
     }
 }

@@ -77,7 +77,7 @@ public class TaskController {
     }
 
     /**
-     * Cancel a task
+     * Delete a task
      *
      * @param task The task to be deleted
      */
@@ -87,7 +87,7 @@ public class TaskController {
     }
 
     /**
-     * Get a list of all task
+     * Get a list of all tasks
      *
      * @return An ArrayList of tasks
      */
@@ -279,11 +279,8 @@ public class TaskController {
                 "{\n" +
                         "    \"filter\": {\n" +
                         "       \"bool\" : {\n" +
-                        "           \"must_not\" : {" +
-                        "               \"term\": {\"isCompleted\": true}\n" +
-                        "           },\n" +
                         "           \"must\" : [\n " +
-                        "               { \"term\": {\"requesterUserName\": \"%s\"} }\n" +
+                        "               { \"term\": {\"requesterUserName\": \"%s\"} }, \n" +
                         "               { \"term\": {\"status\": \"bidded\"} }\n" +
                         "           ]\n" +
                         "       }\n" +
@@ -555,8 +552,8 @@ public class TaskController {
      * @param task              the task
      * @param providerUserName  the provider user name
      */
-    public void providerBidTask(Task task, String providerUserName) {
-        task.providerBidTask(providerUserName);
+    public void providerBidTask(Task task, String providerUserName, double price) {
+        task.providerBidTask(providerUserName, price);
         updateTask(task);
     }
 
