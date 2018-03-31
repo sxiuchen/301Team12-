@@ -240,6 +240,12 @@ public class ProviderMainActivity extends AppCompatActivity
             Intent intentUserEditProfile = new Intent(getApplicationContext(), UserEditProfileActivity.class);
             startActivity(intentUserEditProfile);
 
+        } else if (id == R.id.nav_logout) {
+
+            // intent to login activity
+            startActivity(new Intent(this, LoginActivity.class));
+            finish();
+
         }
 
         DrawerLayout drawer = findViewById(R.id.drawer_provider_layout);
