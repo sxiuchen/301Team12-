@@ -317,7 +317,7 @@ public class RequesterMainActivity extends AppCompatActivity
 
         AlertDialog.Builder builder = new AlertDialog.Builder(RequesterMainActivity.this);
 
-        final ArrayAdapter<String> bidAdapter = new ArrayAdapter<>(RequesterMainActivity.this, R.layout.task_list_item);
+        final ArrayAdapter<String> bidAdapter = new ArrayAdapter<>(RequesterMainActivity.this, android.R.layout.select_dialog_singlechoice);
 
         for ( ArrayList<String> bid : bidList ){
             Log.d("Bid", bid.toString());
