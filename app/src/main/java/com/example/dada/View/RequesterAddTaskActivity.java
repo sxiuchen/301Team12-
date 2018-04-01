@@ -90,10 +90,10 @@ public class RequesterAddTaskActivity extends AppCompatActivity {
         } else {
             Task task = new RequestedTask(title, description, requester.getUserName());
             task.setID(UUID.randomUUID().toString());
-            task.setPrice(0.0);
             taskController.createTask(task);
-            Intent intentProviderMain = new Intent(getApplicationContext(), ProviderMainActivity.class);
-            startActivity(intentProviderMain);
+            finish();
+            Intent intentRequesterMain = new Intent(getApplicationContext(), RequesterMainActivity.class);
+            startActivity(intentRequesterMain);
         }
     }
 }
