@@ -274,47 +274,71 @@ public class RequesterMainActivity extends AppCompatActivity
     private void openBiddedTaskDialog(final Task task) {
 
         // get task info, and show it on the dialog
-        String title = task.getTitle().toString();
+        String title = task.getTitle();
         String description = task.getDescription();
         String lowest_price = task.getPrice().toString();
+        ArrayList<ArrayList<String>> bidList = task.getBidList();
 
         AlertDialog.Builder builder = new AlertDialog.Builder(RequesterMainActivity.this);
 
-        builder.setTitle("Task Information")
-                .setMessage("Title: " + title + "\n" + "Description: " + description + "\n" + "Price: " + lowest_price + "\n")
-                .setNeutralButton("view map", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int id) {
-                        Intent intentRequesterBrowse = new Intent(RequesterMainActivity.this, RequesterBrowseTaskActivity.class);
+        final ArrayAdapter<String> bidAdapter = new ArrayAdapter<>(RequesterMainActivity.this, R.layout.task_list_item);
 
-                        // http://stackoverflow.com/questions/2736389/how-to-pass-an-object-from-one-activity-to-another-on-android
-                        // Serialize the task object and pass it over through the intent
-                        intentRequesterBrowse.putExtra("task", TaskUtil.serializer(task));
-                        startActivity(intentRequesterBrowse);
-                    }
-                })
-                .setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+        for ( ArrayList<String> bid : bidList ){
+            Log.d("Bid", bid.toString());
+            bidAdapter.add(bid.get(0) + " " + bid.get(1));
+        }
+
+        builder.setTitle("Title: " + title);
+        builder.setNeutralButton("view map", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int id) {
+                Intent intentRequesterBrowse = new Intent(RequesterMainActivity.this, RequesterBrowseTaskActivity.class);
+
+                // http://stackoverflow.com/questions/2736389/how-to-pass-an-object-from-one-activity-to-another-on-android
+                // Serialize the task object and pass it over through the intent
+                intentRequesterBrowse.putExtra("task", TaskUtil.serializer(task));
+                startActivity(intentRequesterBrowse);
+            }
+        });
+        builder.setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int id) {
+            }
+        });
+        builder.setAdapter(bidAdapter, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int id) {
+
+                final String[] provider_price = bidAdapter.getItem(id).split(" ");
+
+                AlertDialog.Builder builderInner = new AlertDialog.Builder(RequesterMainActivity.this);
+                builderInner.setMessage("Provider: " + provider_price[0] + " Price: " + provider_price[1]);
+                builderInner.setTitle("Your Task Assigned To: ");
+                builderInner.setPositiveButton("Assign", new DialogInterface.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialog, int id) {
-                    }
-                })
-                .setPositiveButton("assign", new DialogInterface.OnClickListener() {
-                    @Override
-                    // Driver confirms request
-                    public void onClick(DialogInterface dialog, int which) {
+                    public void onClick(DialogInterface dialog,int id) {
 
                         // Assign bidded task
                         try {
-                            assignBiddedTaskController.requesterAssignTask(task, task.getBidList().get(0).get(0));
+                            assignBiddedTaskController.requesterAssignTask(task, provider_price[0]);
                         } catch (TaskException e) {
                             e.printStackTrace();
                         }
                     }
                 });
+                builderInner.setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+                    }
+                });
+                builderInner.show();
+            }
+        });
 
         // Create & Show the AlertDialog
         AlertDialog dialog = builder.create();
         dialog.show();
+
     }
 
     /**

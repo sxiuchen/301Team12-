@@ -282,7 +282,7 @@ public class ProviderMainActivity extends AppCompatActivity
     private void openRequestedTaskDialog(final Task task) {
 
         // get task info, and show it on the dialog
-        String title = task.getTitle().toString();
+        String title = task.getTitle();
         String description = task.getDescription();
 
         final EditText input_price = new EditText(ProviderMainActivity.this);
@@ -332,7 +332,7 @@ public class ProviderMainActivity extends AppCompatActivity
     private void openBiddedTaskDialog(final Task task) {
 
         // get task info, and show it on the dialog
-        String title = task.getTitle().toString();
+        String title = task.getTitle();
         String description = task.getDescription();
         ArrayList<ArrayList<String>> bidList = task.getBidList();
         String lowestPrice = task.getLowestPrice().toString();
@@ -400,7 +400,7 @@ public class ProviderMainActivity extends AppCompatActivity
     private void openAssignedTaskDialog(final Task task) {
 
         // get task info, and show it on the dialog
-        String title = task.getTitle().toString();
+        String title = task.getTitle();
         String description = task.getDescription();
         String price = task.getPrice().toString();
 
