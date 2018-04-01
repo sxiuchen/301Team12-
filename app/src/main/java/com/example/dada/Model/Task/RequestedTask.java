@@ -12,6 +12,8 @@
 package com.example.dada.Model.Task;
 
 
+import com.example.dada.Exception.TaskException;
+
 /**
  * Task that has been requested by the requester
  *
@@ -38,7 +40,7 @@ public class RequestedTask extends Task {
      * @param providerUserName the provider user name who bids the requested task
      */
     @Override
-    public void providerBidTask(String providerUserName, double price) {
+    public void providerBidTask(String providerUserName, double price) throws TaskException {
         super.providerBidTask(providerUserName, price);
     }
 

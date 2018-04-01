@@ -23,6 +23,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.dada.Controller.TaskController;
+import com.example.dada.Exception.TaskException;
 import com.example.dada.Model.OnAsyncTaskCompleted;
 import com.example.dada.Model.Task.Task;
 import com.example.dada.Model.User;
@@ -109,6 +110,16 @@ public class ProviderMainActivity extends AppCompatActivity
         }
     });
 
+    private TaskController completeAssignedTaskController = new TaskController(new OnAsyncTaskCompleted() {
+        @Override
+        public void onTaskCompleted(Object o) {
+            assignedTaskAdapter.remove((Task) o);
+            completedTaskAdapter.add((Task) o);
+            assignedTaskAdapter.notifyDataSetChanged();
+            completedTaskAdapter.notifyDataSetChanged();
+        }
+    });
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -166,8 +177,8 @@ public class ProviderMainActivity extends AppCompatActivity
         assignedTaskListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                // open request info dialog
-//                openTaskInfoDialog(assignedTaskList.get(position));
+                // open request info dialog
+                openAssignedTaskDialog(assignedTaskList.get(position));
             }
         });
 
@@ -265,7 +276,7 @@ public class ProviderMainActivity extends AppCompatActivity
 
         // get task info, and show it on the dialog
         String title = task.getTitle().toString();
-        String description = task.getTaskDescription();
+        String description = task.getDescription();
 
         final EditText input_price = new EditText(ProviderMainActivity.this);
 
@@ -298,7 +309,57 @@ public class ProviderMainActivity extends AppCompatActivity
                         double price = Double.parseDouble(input_price.getText().toString());
 
                         // Bid requested task
-                        bidRequestedTaskController.providerBidTask(task, provider.getUserName(), price);
+                        try {
+                            bidRequestedTaskController.providerBidTask(task, provider.getUserName(), price);
+                        } catch (TaskException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+
+        // Create & Show the AlertDialog
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+    private void openAssignedTaskDialog(final Task task) {
+
+        // get task info, and show it on the dialog
+        String title = task.getTitle().toString();
+        String description = task.getDescription();
+        String price = task.getPrice().toString();
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(ProviderMainActivity.this);
+
+        builder.setTitle("Task Information")
+                .setMessage("Title: " + title + "\n" + "Description: " + description + "\n" + "Price: " + price + "\n")
+                .setNeutralButton("view map", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+                        Intent intentProviderBrowse = new Intent(ProviderMainActivity.this, ProviderBrowseTaskActivity.class);
+
+                        // http://stackoverflow.com/questions/2736389/how-to-pass-an-object-from-one-activity-to-another-on-android
+                        // Serialize the task object and pass it over through the intent
+                        intentProviderBrowse.putExtra("task", TaskUtil.serializer(task));
+                        startActivity(intentProviderBrowse);
+                    }
+                })
+                .setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+                    }
+                })
+                .setPositiveButton("complete", new DialogInterface.OnClickListener() {
+                    @Override
+                    // Driver confirms request
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        // Bid requested task
+                        try {
+                            completeAssignedTaskController.providerCompleteTask(task);
+                        } catch (TaskException e) {
+                            e.printStackTrace();
+                        }
                     }
                 });
 

@@ -31,11 +31,12 @@ import io.searchbox.core.Search;
 import io.searchbox.core.SearchResult;
 
 public class User {
+
+    private String ID;
     private String userName;
     private String phone;
     private String email;
 
-    private String ID;
     private int type;
     private Image profile_photo;
 

@@ -11,6 +11,8 @@
 
 package com.example.dada.Model.Task;
 
+import com.example.dada.Exception.TaskException;
+
 /**
  * Task that has been sent by the requester,
  * and accepted by one or more driver. Also,
@@ -25,7 +27,7 @@ public class AssignedTask extends Task{
         super(requesterUserName, providerUserName, price);
     }
 
-    public void requesterCompleteTask() {
-        super.requesterConfirmTaskComplete();
+    public void providerCompleteTask() throws TaskException {
+        super.providerCompleteTask();
     }
 }

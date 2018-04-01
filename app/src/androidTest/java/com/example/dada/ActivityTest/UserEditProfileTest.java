@@ -25,10 +25,10 @@ import junit.framework.TestCase;
 /**
  * Test for edit profile
  */
-public class UserEaditProfilrTest extends ActivityInstrumentationTestCase2{
+public class UserEditProfileTest extends ActivityInstrumentationTestCase2{
     private Solo solo;
 
-    public UserEaditProfilrTest(){
+    public UserEditProfileTest(){
         super(com.example.dada.View.UserEditProfileActivity.class);
     }
 
