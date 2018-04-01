@@ -396,7 +396,7 @@ public abstract class Task {
         if ( status.equals("requested")){
             return title + " " + status;
         }else{
-            return title + " " + status + " " + price + " ";
+            return title + " " + status + " " + lowestPrice + " ";
         }
     }
 
@@ -411,20 +411,20 @@ public abstract class Task {
             setStatus("bidded");
         }
         boolean found = false;
-        Double lowestPrice = -Double.MAX_VALUE;
+        Double lowestPrice = Double.MAX_VALUE;
         for ( ArrayList<String> bid : bidList ){
             if ( bid.get(0).equals(providerUserName) ){
                 found = true;
                 bid.set(1, Double.toString(price));
             }
-            lowestPrice = (lowestPrice < Double.parseDouble(bid.get(1))) ? Double.parseDouble(bid.get(1)) : lowestPrice;
+            lowestPrice = (lowestPrice > Double.parseDouble(bid.get(1))) ? Double.parseDouble(bid.get(1)) : lowestPrice;
         }
         if ( !found ){
             ArrayList<String> bid = new ArrayList<>();
             bid.add(providerUserName);
             bid.add(Double.toString(price));
             bidList.add(bid);
-            lowestPrice = (lowestPrice < Double.parseDouble(bid.get(1))) ? Double.parseDouble(bid.get(1)) : lowestPrice;
+            lowestPrice = (lowestPrice > Double.parseDouble(bid.get(1))) ? Double.parseDouble(bid.get(1)) : lowestPrice;
         }
         setLowestPrice(lowestPrice);
     }
@@ -483,9 +483,9 @@ public abstract class Task {
 
     public void setPrice(Double price){ this.price = price; }
 
-    public Double getLowestPrice(){ return this.price; }
+    public Double getLowestPrice(){ return this.lowestPrice; }
 
-    public void setLowestPrice(Double price){ this.price = price; }
+    public void setLowestPrice(Double price){ this.lowestPrice = price; }
 
     public String getTitle(){ return this.title; }
 
@@ -515,6 +515,6 @@ public abstract class Task {
 
     public ArrayList<ArrayList<String>> getBidList(){ return this.bidList; }
 
-    public void setProviderList(ArrayList<ArrayList<String>> bidList){ this.bidList = bidList; }
+    public void setBidList(ArrayList<ArrayList<String>> bidList){ this.bidList = bidList; }
 
 }

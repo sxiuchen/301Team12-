@@ -2,7 +2,6 @@ package com.example.dada.View;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Typeface;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -17,7 +16,6 @@ import com.example.dada.Model.OnAsyncTaskCompleted;
 import com.example.dada.Model.User;
 import com.example.dada.R;
 import com.example.dada.Util.FileIOUtil;
-import com.example.dada.View.Requester_MainActivity.RequesterMainActivity2;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -27,7 +25,7 @@ public class LoginActivity extends AppCompatActivity {
     private RadioButton providerRadio;
 
     private Button loginButton;
-    private Button signinButton;
+    private Button signUpButton;
 
     private String roleSel;
 
@@ -58,9 +56,9 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        signinButton = findViewById(R.id.button_sign_in);
-        assert signinButton != null;
-        signinButton.setOnClickListener(new View.OnClickListener() {
+        signUpButton = findViewById(R.id.button_sign_in);
+        assert signUpButton != null;
+        signUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intentSignup = new Intent(getApplicationContext(), SignupActivity.class);

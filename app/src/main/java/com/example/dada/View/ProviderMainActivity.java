@@ -110,6 +110,13 @@ public class ProviderMainActivity extends AppCompatActivity
         }
     });
 
+    private TaskController bidBiddedTaskController = new TaskController(new OnAsyncTaskCompleted() {
+        @Override
+        public void onTaskCompleted(Object o) {
+
+        }
+    });
+
     private TaskController completeAssignedTaskController = new TaskController(new OnAsyncTaskCompleted() {
         @Override
         public void onTaskCompleted(Object o) {
@@ -159,7 +166,7 @@ public class ProviderMainActivity extends AppCompatActivity
         requestedTaskListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                // open task info dialog
+                // open requested task info dialog
                 openRequestedTaskDialog(requestedTaskList.get(position));
             }
         });
@@ -168,8 +175,8 @@ public class ProviderMainActivity extends AppCompatActivity
         biddedTaskListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                // open request info dialog
-//                openTaskInfoDialog(biddedTaskList.get(position));
+                // open bidded task info dialog
+                openBiddedTaskDialog(biddedTaskList.get(position));
             }
         });
 
@@ -322,6 +329,74 @@ public class ProviderMainActivity extends AppCompatActivity
         dialog.show();
     }
 
+    private void openBiddedTaskDialog(final Task task) {
+
+        // get task info, and show it on the dialog
+        String title = task.getTitle().toString();
+        String description = task.getDescription();
+        ArrayList<ArrayList<String>> bidList = task.getBidList();
+        String lowestPrice = task.getLowestPrice().toString();
+
+        Boolean hasOldBiddedPrice = false;
+        String oldBiddedPrice = "";
+        for ( ArrayList<String> bid : bidList ){
+            if ( bid.get(0).equals(provider.getUserName()) ){
+                hasOldBiddedPrice = true;
+                oldBiddedPrice = bid.get(1);
+            }
+        }
+
+        String message;
+        if ( hasOldBiddedPrice ){
+            message = "Title: " + title + "\n" + "Description: " + description + "\n" + "Lowest Price: " + lowestPrice + "\n" + "Old Bidded Price: " + oldBiddedPrice + "\n" + "Updated Price: " + "\n";
+        }else{
+            message = "Title: " + title + "\n" + "Description: " + description + "\n" + "Lowest Price: " + lowestPrice + "\n" + "Price: " + "\n";
+        }
+
+        final EditText input_price = new EditText(ProviderMainActivity.this);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(ProviderMainActivity.this);
+
+        builder.setTitle("Task Information")
+                .setMessage(message)
+                .setView(input_price)
+                .setNeutralButton("view map", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+                        Intent intentProviderBrowse = new Intent(ProviderMainActivity.this, ProviderBrowseTaskActivity.class);
+
+                        // http://stackoverflow.com/questions/2736389/how-to-pass-an-object-from-one-activity-to-another-on-android
+                        // Serialize the task object and pass it over through the intent
+                        intentProviderBrowse.putExtra("task", TaskUtil.serializer(task));
+                        startActivity(intentProviderBrowse);
+                    }
+                })
+                .setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+                    }
+                })
+                .setPositiveButton("bid", new DialogInterface.OnClickListener() {
+                    @Override
+                    // Driver confirms request
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        double price = Double.parseDouble(input_price.getText().toString());
+
+                        // Bid bidded task
+                        try {
+                            bidBiddedTaskController.providerBidTask(task, provider.getUserName(), price);
+                        } catch (TaskException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+
+        // Create & Show the AlertDialog
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
     private void openAssignedTaskDialog(final Task task) {
 
         // get task info, and show it on the dialog
@@ -367,6 +442,8 @@ public class ProviderMainActivity extends AppCompatActivity
         AlertDialog dialog = builder.create();
         dialog.show();
     }
+
+
 
     /**
      * Once the device went offline, try to get task list from internal storage
