@@ -287,12 +287,12 @@ public class RequesterMainActivity extends AppCompatActivity
                 .setNeutralButton("view map", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
-                        Intent intentProviderBrowse = new Intent(RequesterMainActivity.this, ProviderBrowseTaskActivity.class);
+                        Intent intentRequesterBrowse = new Intent(RequesterMainActivity.this, RequesterBrowseTaskActivity.class);
 
                         // http://stackoverflow.com/questions/2736389/how-to-pass-an-object-from-one-activity-to-another-on-android
                         // Serialize the task object and pass it over through the intent
-                        intentProviderBrowse.putExtra("task", TaskUtil.serializer(task));
-                        startActivity(intentProviderBrowse);
+                        intentRequesterBrowse.putExtra("task", TaskUtil.serializer(task));
+                        startActivity(intentRequesterBrowse);
                     }
                 })
                 .setNegativeButton("cancel", new DialogInterface.OnClickListener() {
@@ -394,12 +394,12 @@ public class RequesterMainActivity extends AppCompatActivity
                 .setNeutralButton("view map", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
-                        Intent intentProviderBrowse = new Intent(RequesterMainActivity.this, ProviderBrowseTaskActivity.class);
+                        Intent intentRequesterBrowse = new Intent(RequesterMainActivity.this, RequesterBrowseTaskActivity.class);
 
                         // http://stackoverflow.com/questions/2736389/how-to-pass-an-object-from-one-activity-to-another-on-android
                         // Serialize the task object and pass it over through the intent
-                        intentProviderBrowse.putExtra("task", TaskUtil.serializer(task));
-                        startActivity(intentProviderBrowse);
+                        intentRequesterBrowse.putExtra("task", TaskUtil.serializer(task));
+                        startActivity(intentRequesterBrowse);
                     }
                 })
                 .setNegativeButton("cancel", new DialogInterface.OnClickListener() {
@@ -431,12 +431,12 @@ public class RequesterMainActivity extends AppCompatActivity
                 .setNeutralButton("view map", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
-                        Intent intentProviderBrowse = new Intent(RequesterMainActivity.this, ProviderBrowseTaskActivity.class);
+                        Intent intentRequesterBrowse = new Intent(RequesterMainActivity.this, RequesterBrowseTaskActivity.class);
 
                         // http://stackoverflow.com/questions/2736389/how-to-pass-an-object-from-one-activity-to-another-on-android
                         // Serialize the task object and pass it over through the intent
-                        intentProviderBrowse.putExtra("task", TaskUtil.serializer(task));
-                        startActivity(intentProviderBrowse);
+                        intentRequesterBrowse.putExtra("task", TaskUtil.serializer(task));
+                        startActivity(intentRequesterBrowse);
                     }
                 })
                 .setNegativeButton("cancel", new DialogInterface.OnClickListener() {

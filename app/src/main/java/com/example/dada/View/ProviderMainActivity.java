@@ -166,7 +166,7 @@ public class ProviderMainActivity extends AppCompatActivity
         requestedTaskListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                // open requested task info dialog
+                // open requested task dialog
                 openRequestedTaskDialog(requestedTaskList.get(position));
             }
         });
@@ -175,7 +175,7 @@ public class ProviderMainActivity extends AppCompatActivity
         biddedTaskListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                // open bidded task info dialog
+                // open bidded task dialog
                 openBiddedTaskDialog(biddedTaskList.get(position));
             }
         });
@@ -184,7 +184,7 @@ public class ProviderMainActivity extends AppCompatActivity
         assignedTaskListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                // open request info dialog
+                // open assigned task dialog
                 openAssignedTaskDialog(assignedTaskList.get(position));
             }
         });
@@ -193,8 +193,8 @@ public class ProviderMainActivity extends AppCompatActivity
         completedTaskListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                // open request info dialog
-//                openTaskInfoDialog(completedTaskList.get(position));
+                // open completed task dialog
+                openCompletedTaskDialog(completedTaskList.get(position));
             }
         });
 
@@ -279,18 +279,23 @@ public class ProviderMainActivity extends AppCompatActivity
         completedTaskController.getProviderCompletedTask(provider.getUserName());
     }
 
+    /**
+     * Dialog for Requested Task
+     * @param task
+     */
     private void openRequestedTaskDialog(final Task task) {
 
         // get task info, and show it on the dialog
         String title = task.getTitle();
         String description = task.getDescription();
+        String requesterUserName = task.getRequesterUserName();
 
         final EditText input_price = new EditText(ProviderMainActivity.this);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(ProviderMainActivity.this);
 
         builder.setTitle("Task Information")
-                .setMessage("Title: " + title + "\n" + "Description: " + description + "\n" + "Price: ")
+                .setMessage("Title: " + title + "\n" + "Description: " + description + "\n" + "Requester: " + requesterUserName + "\n" + "Price: ")
                 .setView(input_price)
                 .setNeutralButton("view map", new DialogInterface.OnClickListener() {
                     @Override
@@ -329,11 +334,16 @@ public class ProviderMainActivity extends AppCompatActivity
         dialog.show();
     }
 
+    /**
+     * Dialog for Bidded Task
+     * @param task
+     */
     private void openBiddedTaskDialog(final Task task) {
 
         // get task info, and show it on the dialog
         String title = task.getTitle();
         String description = task.getDescription();
+        String requesterUserName = task.getRequesterUserName();
         ArrayList<ArrayList<String>> bidList = task.getBidList();
         String lowestPrice = task.getLowestPrice().toString();
 
@@ -348,9 +358,13 @@ public class ProviderMainActivity extends AppCompatActivity
 
         String message;
         if ( hasOldBiddedPrice ){
-            message = "Title: " + title + "\n" + "Description: " + description + "\n" + "Lowest Price: " + lowestPrice + "\n" + "Old Bidded Price: " + oldBiddedPrice + "\n" + "Updated Price: " + "\n";
+            message = "Title: " + title + "\n" + "Description: " + description + "\n" +
+                    "Requester: " + requesterUserName + "\n" + "Lowest Price: " + lowestPrice + "\n" +
+                    "Old Bidded Price: " + oldBiddedPrice + "\n" + "Updated Price: " + "\n";
         }else{
-            message = "Title: " + title + "\n" + "Description: " + description + "\n" + "Lowest Price: " + lowestPrice + "\n" + "Price: " + "\n";
+            message = "Title: " + title + "\n" + "Description: " + description + "\n" +
+                    "Requester: " + requesterUserName + "\n" + "Lowest Price: " + lowestPrice +
+                    "\n" + "Price: " + "\n";
         }
 
         final EditText input_price = new EditText(ProviderMainActivity.this);
@@ -397,17 +411,22 @@ public class ProviderMainActivity extends AppCompatActivity
         dialog.show();
     }
 
+    /**
+     * Dialog for Assigned Task
+     * @param task
+     */
     private void openAssignedTaskDialog(final Task task) {
 
         // get task info, and show it on the dialog
         String title = task.getTitle();
         String description = task.getDescription();
         String price = task.getPrice().toString();
+        String requesterUserName = task.getRequesterUserName();
 
         AlertDialog.Builder builder = new AlertDialog.Builder(ProviderMainActivity.this);
 
         builder.setTitle("Task Information")
-                .setMessage("Title: " + title + "\n" + "Description: " + description + "\n" + "Price: " + price + "\n")
+                .setMessage("Title: " + title + "\n" + "Description: " + description + "\n" + "Requester: " + requesterUserName + "\n" + "Price: " + price + "\n")
                 .setNeutralButton("view map", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
@@ -443,6 +462,43 @@ public class ProviderMainActivity extends AppCompatActivity
         dialog.show();
     }
 
+    /**
+     * Dialog for Completed Task
+     * @param task
+     */
+    private void openCompletedTaskDialog(final Task task) {
+
+        // get task info, and show it on the dialog
+        String title = task.getTitle();
+        String description = task.getDescription();
+        String requesterUserName = task.getRequesterUserName();
+        String price = task.getPrice().toString();
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(ProviderMainActivity.this);
+
+        builder.setTitle("Task Information")
+                .setMessage("Title: " + title + "\n" + "Description: " + description + "\n" + "Requester: " + requesterUserName + "\n" + "Price: " + price + "\n")
+                .setNeutralButton("view map", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+                        Intent intentProviderBrowse = new Intent(ProviderMainActivity.this, ProviderBrowseTaskActivity.class);
+
+                        // http://stackoverflow.com/questions/2736389/how-to-pass-an-object-from-one-activity-to-another-on-android
+                        // Serialize the task object and pass it over through the intent
+                        intentProviderBrowse.putExtra("task", TaskUtil.serializer(task));
+                        startActivity(intentProviderBrowse);
+                    }
+                })
+                .setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+                    }
+                });
+
+        // Create & Show the AlertDialog
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
 
     /**
      * Once the device went offline, try to get task list from internal storage
