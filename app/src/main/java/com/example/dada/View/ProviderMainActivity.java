@@ -113,7 +113,7 @@ public class ProviderMainActivity extends AppCompatActivity
     private TaskController bidBiddedTaskController = new TaskController(new OnAsyncTaskCompleted() {
         @Override
         public void onTaskCompleted(Object o) {
-
+            biddedTaskAdapter.notifyDataSetChanged();
         }
     });
 
