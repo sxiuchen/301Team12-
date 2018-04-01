@@ -131,6 +131,7 @@ public class RequesterMainActivity extends AppCompatActivity
             public void onClick(View view) {
                 Intent intentRequesterAddTask = new Intent(getApplicationContext(), RequesterAddTaskActivity.class);
                 startActivity(intentRequesterAddTask);
+                finish();
             }
         });
 

@@ -444,7 +444,6 @@ public class ProviderMainActivity extends AppCompatActivity
     }
 
 
-
     /**
      * Once the device went offline, try to get task list from internal storage
      */
