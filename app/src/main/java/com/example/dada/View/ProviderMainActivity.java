@@ -300,7 +300,7 @@ public class ProviderMainActivity extends AppCompatActivity
                 .setNeutralButton("view map", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
-                        Intent intentProviderBrowse = new Intent(ProviderMainActivity.this, ProviderBrowseTaskActivity.class);
+                        Intent intentProviderBrowse = new Intent(ProviderMainActivity.this, MapsActivity.class);
 
                         // http://stackoverflow.com/questions/2736389/how-to-pass-an-object-from-one-activity-to-another-on-android
                         // Serialize the task object and pass it over through the intent

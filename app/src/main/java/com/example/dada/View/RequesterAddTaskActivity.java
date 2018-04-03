@@ -29,6 +29,11 @@ import com.example.dada.Model.Task.Task;
 import com.example.dada.Model.User;
 import com.example.dada.R;
 import com.example.dada.Util.FileIOUtil;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
 
 import java.util.UUID;
 
@@ -36,7 +41,7 @@ import java.util.UUID;
  * activity to handle interface of adding new task from user
  */
 
-public class RequesterAddTaskActivity extends AppCompatActivity {
+public class RequesterAddTaskActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     private EditText titleText;
     private EditText descriptionText;
@@ -52,12 +57,12 @@ public class RequesterAddTaskActivity extends AppCompatActivity {
         }
     });
 
+    private GoogleMap mMap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_requester_add_task);
-
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -76,6 +81,10 @@ public class RequesterAddTaskActivity extends AppCompatActivity {
         // Get user profile
         requester = FileIOUtil.loadUserFromFile(getApplicationContext());
 
+        // map
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.map_requester_add_task);
+        mapFragment.getMapAsync(this);
     }
 
     public void addTask() {
@@ -95,5 +104,15 @@ public class RequesterAddTaskActivity extends AppCompatActivity {
             Intent intentRequesterMain = new Intent(getApplicationContext(), RequesterMainActivity.class);
             startActivity(intentRequesterMain);
         }
+    }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        mMap = googleMap;
+
+        // Move the camera to Edmonton
+        LatLng edmonton = new LatLng(53.631611, -113.323975);
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(edmonton,10));
+
     }
 }
